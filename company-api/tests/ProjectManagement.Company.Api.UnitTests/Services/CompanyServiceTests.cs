@@ -8,6 +8,7 @@ using ProjectManagement.CompanyAPI.Domain.Specifications;
 using ProjectManagement.CompanyAPI.DTO;
 using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
+using ProjectManagement.Persistence.Abstractions;
 
 namespace ProjectManagement.CompanyAPI.UnitTests.Services;
 

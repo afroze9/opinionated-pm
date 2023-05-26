@@ -1,17 +1,14 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using ProjectManagement.ProjectAPI.Abstractions;
-using ProjectManagement.ProjectAPI.Authorization;
-using ProjectManagement.ProjectAPI.Configuration;
+using ProjectManagement.Auth;
+using ProjectManagement.Configuration;
+using ProjectManagement.Persistence.Abstractions;
 using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Mapping;
-using ProjectManagement.ProjectAPI.Services;
 using Steeltoe.Connector.PostgreSql;
 using Steeltoe.Connector.PostgreSql.EFCore;
 using Steeltoe.Discovery.Client;
@@ -78,21 +75,11 @@ public static class DependencyInjectionExtensions
     
     private static void AddApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
     }
 
     private static void AddConsulDiscovery(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDiscoveryClient(configuration);
-    }
-
-    private static void AddCrudPolicies(this AuthorizationOptions options, string resource)
-    {
-        foreach (string action in Actions)
-        {
-            options.AddPolicy($"{action}:{resource}",
-                policy => policy.Requirements.Add(new ScopeRequirement($"{action}:{resource}")));
-        }
     }
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
@@ -104,26 +91,6 @@ public static class DependencyInjectionExtensions
         services.AddPostgresHealthContributor(configuration);
     }
 
-    private static void AddSecurity(this IServiceCollection services, IConfiguration configuration)
-    {
-        Auth0Settings auth0Settings = new ();
-        configuration.GetRequiredSection(nameof(Auth0Settings)).Bind(auth0Settings);
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.Authority = auth0Settings.Authority;
-            options.Audience = auth0Settings.Audience;
-        });
-
-
-        services.AddAuthorization(options => { options.AddCrudPolicies("project"); });
-        services.AddSingleton<IAuthorizationHandler, ScopeRequirementHandler>();
-    }
-    
     private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)
     {
         TelemetrySettings telemetrySettings = new ();
@@ -179,7 +146,7 @@ public static class DependencyInjectionExtensions
         services.AddControllers();
         services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
         services.AddPersistence(configuration);
-        services.AddSecurity(configuration);
+        services.AddAuth(configuration, "project");
         services.AddTelemetry(configuration);
         services.AddValidatorsFromAssemblyContaining(typeof(Program));
 

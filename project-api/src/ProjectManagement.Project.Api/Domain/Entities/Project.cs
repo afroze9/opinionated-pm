@@ -1,10 +1,8 @@
-﻿using ProjectManagement.ProjectAPI.Abstractions;
-using ProjectManagement.ProjectAPI.Common;
-using ProjectManagement.ProjectAPI.Domain.Entities.Events;
+﻿using ProjectManagement.Core;
 
 namespace ProjectManagement.ProjectAPI.Domain.Entities;
 
-public class Project : EntityBase, IAggregateRoot, IAuditable<string>
+public class Project : AuditableEntityBase
 {
     private readonly List<TodoItem> _todoItems = new ();
 
@@ -41,20 +39,9 @@ public class Project : EntityBase, IAggregateRoot, IAuditable<string>
         }
     }
 
-    public string CreatedBy { get; set; } = string.Empty;
-
-    public DateTime CreatedOn { get; set; }
-
-    public string ModifiedBy { get; set; } = string.Empty;
-
-    public DateTime ModifiedOn { get; set; }
-
     public void AddTodoItem(TodoItem item)
     {
         _todoItems.Add(item);
-
-        NewItemAddedEvent @event = new (this, item);
-        RegisterDomainEvent(@event);
     }
 
     public void UpdateName(string name)

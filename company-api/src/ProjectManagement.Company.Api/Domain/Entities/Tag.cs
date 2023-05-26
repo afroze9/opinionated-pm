@@ -1,12 +1,11 @@
-﻿using ProjectManagement.CompanyAPI.Abstractions;
-using ProjectManagement.CompanyAPI.Contracts;
+﻿using ProjectManagement.Core;
 
 namespace ProjectManagement.CompanyAPI.Domain.Entities;
 
 /// <summary>
 ///     Represents a tag that can be associated with one or more companies.
 /// </summary>
-public class Tag : EntityBase, IAggregateRoot, IAuditable<string>
+public class Tag : AuditableEntityBase
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Tag" /> class with the specified name.
@@ -26,24 +25,4 @@ public class Tag : EntityBase, IAggregateRoot, IAuditable<string>
     ///     Gets or sets the list of companies that are associated with this tag.
     /// </summary>
     public virtual List<Company> Companies { get; set; } = new ();
-
-    /// <summary>
-    ///     Gets or sets the name of the user who created this entity.
-    /// </summary>
-    public string CreatedBy { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the date and time when this entity was created.
-    /// </summary>
-    public DateTime CreatedOn { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the name of the user who last modified this entity.
-    /// </summary>
-    public string ModifiedBy { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the date and time when this entity was last modified.
-    /// </summary>
-    public DateTime ModifiedOn { get; set; }
 }

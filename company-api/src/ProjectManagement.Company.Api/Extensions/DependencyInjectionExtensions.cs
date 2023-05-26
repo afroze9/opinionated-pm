@@ -1,18 +1,19 @@
 ﻿using System.Reflection;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using ProjectManagement.Auth;
 using ProjectManagement.CompanyAPI.Abstractions;
-using ProjectManagement.CompanyAPI.Authorization;
-using ProjectManagement.CompanyAPI.Configuration;
 using ProjectManagement.CompanyAPI.Data;
 using ProjectManagement.CompanyAPI.Filters;
 using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
+using ProjectManagement.Configuration;
+using ProjectManagement.Persistence;
+using ProjectManagement.Persistence.Abstractions;
+using ProjectManagement.Persistence.Auditing;
 using Steeltoe.Common.Http.Discovery;
 using Steeltoe.Connector.PostgreSql;
 using Steeltoe.Connector.PostgreSql.EFCore;
@@ -82,7 +83,8 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<ITagService, TagService>();
-        services.AddScoped<IDomainEventDispatcher, DomainEventDispatcher>();
+        services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<IDateTime, DateTimeService>();
     }
     
     private static void AddConsulDiscovery(this IServiceCollection services, IConfiguration configuration)
@@ -122,42 +124,15 @@ public static class DependencyInjectionExtensions
             })
             .AddTypedClient<IProjectService, ProjectService>();
     }
-    
-    private static void AddCrudPolicies(this AuthorizationOptions options, string resource)
-    {
-        foreach (string action in Actions)
-        {
-            options.AddPolicy($"{action}:{resource}",
-                policy => policy.Requirements.Add(new ScopeRequirement($"{action}:{resource}")));
-        }
-    }
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-        services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
+        services.AddScoped(typeof(IRepository<>), typeof(EfRepositoryBase<>));
+        services.AddScoped(typeof(IReadRepository<>), typeof(EfRepositoryBase<>));
         services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(configuration); });
+        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
 
         services.AddPostgresHealthContributor(configuration);
-    }
-
-    private static void AddSecurity(this IServiceCollection services, IConfiguration configuration)
-    {
-        Auth0Settings auth0Settings = new ();
-        configuration.GetRequiredSection(nameof(Auth0Settings)).Bind(auth0Settings);
-
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(options =>
-        {
-            options.Authority = auth0Settings.Authority;
-            options.Audience = auth0Settings.Audience;
-        });
-
-        services.AddAuthorization(options => { options.AddCrudPolicies("company"); });
-        services.AddSingleton<IAuthorizationHandler, ScopeRequirementHandler>();
     }
 
     private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)
@@ -214,7 +189,7 @@ public static class DependencyInjectionExtensions
         services.AddControllers(options => { options.Filters.Add<LoggingFilter>(); });
         services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
         services.AddPersistence(configuration);
-        services.AddSecurity(configuration);
+        services.AddAuth(configuration, "company");
         services.AddTelemetry(configuration);
         services.AddValidatorsFromAssemblyContaining(typeof(Program));
 

@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Moq;
-using ProjectManagement.ProjectAPI.Authorization;
+using ProjectManagement.Auth;
 
 namespace ProjectManagement.ProjectAPI.UnitTests.Authorization;
 

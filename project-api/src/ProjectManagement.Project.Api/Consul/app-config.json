@@ -5,7 +5,7 @@
   },
   "Postgres": {
     "Client": {
-      "Host": "project-db",
+      "Host": "localhost",
       "Port": 5439,
       "Username": "developer",
       "Password": "dev123",
@@ -14,14 +14,14 @@
   },
   "SerilogSettings": {
     "ElasticSearchSettings": {
-      "Uri": "https://es01:9200",
+      "Uri": "https://localhost:9200",
       "Username": "elastic",
       "Password": "dev123",
       "IndexFormat": "logs-project-api-{0:yyyy.MM}"
     }
   },
   "Consul": {
-    "Token": "c1c658c5-4ee3-62ea-b040-053b339d91fc",
+    "Token": "88e4067e-8920-8c45-2e2a-2ea617d3e7d7",
     "Discovery": {
       "ServiceName": "project-api",
       "Scheme": "https",
@@ -32,7 +32,7 @@
     }
   },
   "TelemetrySettings": {
-    "Endpoint": "http://jaeger:4317",
+    "Endpoint": "http://localhost:4317",
     "ServiceName": "project-api",
     "ServiceVersion": "v1",
     "EnableAlwaysOnSampler": false,

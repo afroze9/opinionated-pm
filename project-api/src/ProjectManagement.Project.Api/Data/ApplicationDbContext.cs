@@ -1,7 +1,6 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using ProjectManagement.ProjectAPI.Abstractions;
-using ProjectManagement.ProjectAPI.Common;
+using ProjectManagement.Persistence.Auditing;
 using ProjectManagement.ProjectAPI.Domain.Entities;
 
 namespace ProjectManagement.ProjectAPI.Data;
@@ -9,12 +8,14 @@ namespace ProjectManagement.ProjectAPI.Data;
 [ExcludeFromCodeCoverage]
 public class ApplicationDbContext : DbContext
 {
-    private readonly IDomainEventDispatcher? _dispatcher;
+    private readonly AuditableEntitySaveChangesInterceptor _auditableEntitySaveChangesInterceptor;
 
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventDispatcher dispatcher)
+    public ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options,
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options)
     {
-        _dispatcher = dispatcher;
+        _auditableEntitySaveChangesInterceptor = auditableEntitySaveChangesInterceptor;
     }
 
     public DbSet<Project> Projects => Set<Project>();
@@ -27,26 +28,9 @@ public class ApplicationDbContext : DbContext
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new ())
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        int result = await base.SaveChangesAsync(cancellationToken);
-
-        if (_dispatcher == null)
-        {
-            return result;
-        }
-
-        EntityBase[] entitiesWithEvents = ChangeTracker.Entries<EntityBase>()
-            .Select(e => e.Entity)
-            .Where(e => e.DomainEvents.Any())
-            .ToArray();
-
-        await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);
-        return result;
-    }
-
-    public override int SaveChanges()
-    {
-        return SaveChangesAsync().GetAwaiter().GetResult();
+        base.OnConfiguring(optionsBuilder);
+        optionsBuilder.AddInterceptors(_auditableEntitySaveChangesInterceptor);
     }
 }

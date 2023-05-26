@@ -57,4 +57,11 @@
         <PackageReference Include="Winton.Extensions.Configuration.Consul" Version="3.3.0"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
+        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
+        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Core\ProjectManagement.Core.csproj"/>
+        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
+    </ItemGroup>
+
 </Project>

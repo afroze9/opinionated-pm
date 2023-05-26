@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Moq;
-using ProjectManagement.ProjectAPI.Abstractions;
+using ProjectManagement.Persistence.Abstractions;
 using ProjectManagement.ProjectAPI.Domain.Entities;
 using ProjectManagement.ProjectAPI.Endpoints;
 using ProjectManagement.ProjectAPI.Models;

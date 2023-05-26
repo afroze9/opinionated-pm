@@ -1,13 +1,11 @@
-﻿using ProjectManagement.CompanyAPI.Abstractions;
-using ProjectManagement.CompanyAPI.Contracts;
-using ProjectManagement.CompanyAPI.Domain.Events;
+﻿using ProjectManagement.Core;
 
 namespace ProjectManagement.CompanyAPI.Domain.Entities;
 
 /// <summary>
 ///     Represents a Company entity in the system.
 /// </summary>
-public class Company : EntityBase, IAggregateRoot, IAuditable<string>
+public class Company : AuditableEntityBase
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Company" /> class.
@@ -27,27 +25,7 @@ public class Company : EntityBase, IAggregateRoot, IAuditable<string>
     ///     Gets or sets the list of tags associated with the company.
     /// </summary>
     public virtual List<Tag> Tags { get; set; } = new ();
-
-    /// <summary>
-    ///     Gets or sets the user who created the company.
-    /// </summary>
-    public string CreatedBy { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the date and time the company was created.
-    /// </summary>
-    public DateTime CreatedOn { get; set; }
-
-    /// <summary>
-    ///     Gets or sets the user who last modified the company.
-    /// </summary>
-    public string ModifiedBy { get; set; } = string.Empty;
-
-    /// <summary>
-    ///     Gets or sets the date and time the company was last modified.
-    /// </summary>
-    public DateTime ModifiedOn { get; set; }
-
+    
     /// <summary>
     ///     Adds a tag to the list of tags associated with the company.
     /// </summary>
@@ -57,8 +35,6 @@ public class Company : EntityBase, IAggregateRoot, IAuditable<string>
         if (!Tags.Contains(tag))
         {
             Tags.Add(tag);
-            NewTagAddedEvent newTagAddedEvent = new (this, tag);
-            RegisterDomainEvent(newTagAddedEvent);
         }
     }
 
@@ -94,8 +70,6 @@ public class Company : EntityBase, IAggregateRoot, IAuditable<string>
         if (tagToRemove != null)
         {
             Tags.Remove(tagToRemove);
-            TagRemovedEvent @event = new (this, tagToRemove);
-            RegisterDomainEvent(@event);
         }
     }
 

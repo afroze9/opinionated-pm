@@ -5,6 +5,7 @@ using ProjectManagement.CompanyAPI.Domain.Entities;
 using ProjectManagement.CompanyAPI.Domain.Specifications;
 using ProjectManagement.CompanyAPI.DTO;
 using ProjectManagement.CompanyAPI.Services;
+using ProjectManagement.Persistence.Abstractions;
 
 namespace ProjectManagement.CompanyAPI.UnitTests.Services;
 

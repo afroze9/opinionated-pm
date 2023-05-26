@@ -14,6 +14,7 @@ function Get-EnvValue([string]$name)
 $api_gateway_port = Get-EnvValue "API_GATEWAY_PORT_EXTERNAL"
 $company_api_port = Get-EnvValue "COMPANY_API_PORT_EXTERNAL"
 $project_api_port = Get-EnvValue "PROJECT_API_PORT_EXTERNAL"
+$health_checks_dashboard_port = Get-EnvValue "HEALTH_CHECKS_DASHBOARD_PORT_EXTERNAL"
 
 echo "Generating Dev Certs"
 $CreateCert = (dotnet dev-certs https -c | Select-String -SimpleMatch "No valid certificate found.")

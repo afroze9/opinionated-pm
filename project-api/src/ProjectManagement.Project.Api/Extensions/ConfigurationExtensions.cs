@@ -1,4 +1,4 @@
-﻿using ProjectManagement.ProjectAPI.Configuration;
+﻿using ProjectManagement.Configuration;
 using Winton.Extensions.Configuration.Consul;
 
 namespace ProjectManagement.ProjectAPI.Extensions;

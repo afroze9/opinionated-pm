@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
-using ProjectManagement.CompanyAPI.Abstractions;
 using ProjectManagement.CompanyAPI.Domain.Entities;
 using ProjectManagement.CompanyAPI.Domain.Specifications;
+using ProjectManagement.Persistence.Abstractions;
 
 namespace ProjectManagement.CompanyAPI.Model.Validation;
 

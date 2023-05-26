@@ -12,7 +12,6 @@ public class TagTests
 
         Assert.Equal("tag a", sut.Name);
         Assert.Empty(sut.Companies);
-        Assert.Empty(sut.DomainEvents);
         Assert.Equal(string.Empty, sut.CreatedBy);
         Assert.Equal(string.Empty, sut.ModifiedBy);
     }
@@ -34,7 +33,6 @@ public class TagTests
         Assert.Equal(1, sut.Id);
         Assert.Equal("tag a", sut.Name);
         Assert.NotEmpty(sut.Companies);
-        Assert.Empty(sut.DomainEvents);
         Assert.Equal("cb", sut.CreatedBy);
         Assert.Equal(date, sut.CreatedOn);
         Assert.Equal("mb", sut.ModifiedBy);

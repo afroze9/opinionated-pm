@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
-using ProjectManagement.CompanyAPI.Abstractions;
-using ProjectManagement.CompanyAPI.Contracts;
 using ProjectManagement.CompanyAPI.Domain.Entities;
 
 namespace ProjectManagement.CompanyAPI.Data;
@@ -12,17 +10,14 @@ namespace ProjectManagement.CompanyAPI.Data;
 [ExcludeFromCodeCoverage]
 public class ApplicationDbContext : DbContext
 {
-    private readonly IDomainEventDispatcher? _dispatcher;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="ApplicationDbContext" /> class.
     /// </summary>
     /// <param name="options">The options for this context.</param>
-    /// <param name="dispatcher">The domain event dispatcher.</param>
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IDomainEventDispatcher dispatcher)
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
     {
-        _dispatcher = dispatcher;
     }
 
     /// <summary>
@@ -44,40 +39,5 @@ public class ApplicationDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    }
-
-    /// <summary>
-    ///     Asynchronously saves all changes made in this context to the database.
-    /// </summary>
-    /// <param name="cancellationToken">A <see cref="CancellationToken" /> to observe while waiting for the task to complete.</param>
-    /// <returns>
-    ///     A task that represents the asynchronous save operation. The task result contains the number of state entries
-    ///     written to the database.
-    /// </returns>
-    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new ())
-    {
-        int result = await base.SaveChangesAsync(cancellationToken);
-
-        if (_dispatcher == null)
-        {
-            return result;
-        }
-
-        EntityBase[] entitiesWithEvents = ChangeTracker.Entries<EntityBase>()
-            .Select(e => e.Entity)
-            .Where(e => e.DomainEvents.Any())
-            .ToArray();
-
-        await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);
-        return result;
-    }
-
-    /// <summary>
-    ///     Saves all changes made in this context to the database.
-    /// </summary>
-    /// <returns>The number of state entries written to the database.</returns>
-    public override int SaveChanges()
-    {
-        return SaveChangesAsync().GetAwaiter().GetResult();
     }
 }

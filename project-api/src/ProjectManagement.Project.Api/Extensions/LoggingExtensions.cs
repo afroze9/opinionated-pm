@@ -1,4 +1,4 @@
-﻿using ProjectManagement.ProjectAPI.Configuration;
+﻿using ProjectManagement.Configuration;
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Elasticsearch;

@@ -2,7 +2,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.ProjectAPI.Abstractions;
+using ProjectManagement.Persistence.Abstractions;
 using ProjectManagement.ProjectAPI.Domain.Entities;
 using ProjectManagement.ProjectAPI.Domain.Specifications;
 using ProjectManagement.ProjectAPI.Models;

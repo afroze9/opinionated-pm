@@ -39,7 +39,7 @@ public class TodoItemTests
     }
 
     [Fact]
-    public void MarkComplete_WhenTodoItemIsNotCompleted_ShouldSetIsCompletedToTrueAndRaiseEvent()
+    public void MarkComplete_WhenTodoItemIsNotCompleted_ShouldSetIsCompletedToTrue()
     {
         // Arrange
         TodoItem todoItem = new ()
@@ -50,11 +50,10 @@ public class TodoItemTests
 
         // Assert
         Assert.True(todoItem.IsCompleted);
-        Assert.Single(todoItem.DomainEvents);
     }
 
     [Fact]
-    public void AssignTodoItem_ShouldSetAssignedToIdAndRaiseEvent()
+    public void AssignTodoItem_ShouldSetAssignedToId()
     {
         // Arrange
         TodoItem todoItem = new ()
@@ -67,6 +66,5 @@ public class TodoItemTests
 
         // Assert
         Assert.Equal(assignedToId, todoItem.AssignedToId);
-        Assert.Single(todoItem.DomainEvents);
     }
 }

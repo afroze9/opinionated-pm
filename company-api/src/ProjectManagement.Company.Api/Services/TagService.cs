@@ -3,6 +3,7 @@ using ProjectManagement.CompanyAPI.Abstractions;
 using ProjectManagement.CompanyAPI.Domain.Entities;
 using ProjectManagement.CompanyAPI.Domain.Specifications;
 using ProjectManagement.CompanyAPI.DTO;
+using ProjectManagement.Persistence.Abstractions;
 
 namespace ProjectManagement.CompanyAPI.Services;
 

@@ -1,4 +1,4 @@
-﻿using ProjectManagement.ProjectAPI.Authorization;
+﻿using ProjectManagement.Auth;
 
 namespace ProjectManagement.ProjectAPI.UnitTests.Authorization;
 

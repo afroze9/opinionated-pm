@@ -8,7 +8,7 @@
   "addresses": {
     "http": "0.0.0.0"
   },
-  "bind_addr": "{{ GetPrivateInterfaces | include \"network\" \"172.26.0.0/16\" | attr \"address\" }}",
+  "bind_addr": "{{ GetPrivateInterfaces | include \"network\" \"172.19.0.0/16\" | attr \"address\" }}",
   "retry_join": [
     "consul-server1",
     "consul-server3"
