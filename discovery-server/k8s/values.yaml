@@ -1,0 +1,33 @@
+global:
+  name: consul
+  tls:
+    enabled: false 
+    verify: false
+  acls:
+    manageSystemACLs: true
+
+connectInject:
+  enabled: true
+
+client:
+  enabled: true
+  updateStrategy: |
+    type: RollingUpdate
+
+server:
+  replicas: 1
+  bootstrapExpect: 1 
+  disruptionBudget:
+    enabled: true
+    maxUnavailable: 0
+  updatePartition: 0
+
+ui:
+  enabled: true
+  service:
+    enabled: true
+    type: LoadBalancer
+    port:
+      http: 8500
+      https: 8501
+

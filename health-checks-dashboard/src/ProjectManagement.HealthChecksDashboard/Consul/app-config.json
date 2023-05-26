@@ -1,0 +1,38 @@
+{
+  "SerilogSettings": {
+    "ElasticSearchSettings": {
+      "Uri": "https://es01:9200",
+      "Username": "elastic",
+      "Password": "dev123",
+      "IndexFormat": "logs-project-api-{0:yyyy.MM}"
+    }
+  },
+  "Consul": {
+    "Token": "ff4c2801-76b9-3104-21f9-5dc138487052",
+    "Discovery": {
+      "ServiceName": "health-checks-dashboard",
+      "Scheme": "https",
+      "Retry": {
+        "Enabled": true,
+        "MaxAttempts": 5
+      }
+    }
+  },
+  "HealthCheck": {
+    "IntervalInSeconds": 3,
+    "Clients": [
+      {
+        "Name": "Company API",
+        "Url": "http://company-api/actuator/health"
+      },
+      {
+        "Name": "Project API",
+        "Url": "http://project-api/actuator/health"
+      },
+      {
+        "Name": "API Gateway",
+        "Url": "http://api-gateway/actuator/health"
+      }
+    ]
+  }
+}

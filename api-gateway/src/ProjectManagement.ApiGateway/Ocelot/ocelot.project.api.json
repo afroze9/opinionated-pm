@@ -1,0 +1,175 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/Project",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "read:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Project/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "read:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Project",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "write:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Project/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project/{id}",
+      "UpstreamHttpMethod": [
+        "Put"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "update:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Project/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project/{id}",
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "delete:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Project/{id}/Todo",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project/{id}/Todo",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "read:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Project/{id}/Todo",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Project/{id}/Todo",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "write:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Todo/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Todo/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "read:project"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/Todo/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/Todo/{id}",
+      "UpstreamHttpMethod": [
+        "Put"
+      ],
+      "ServiceName": "project-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Auth0",
+        "AllowedScopes": [
+          "update:project"
+        ]
+      }
+    }
+  ]
+}
