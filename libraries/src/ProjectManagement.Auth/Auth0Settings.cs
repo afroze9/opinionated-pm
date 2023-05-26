@@ -1,6 +1,5 @@
 ﻿namespace ProjectManagement.Auth;
 
-
 /// <summary>
 ///     Represents the settings for authenticating with Auth0.
 /// </summary>

@@ -1,4 +1,4 @@
-﻿namespace ProjectManagement.CompanyAPI.Model;
+﻿namespace ProjectManagement.Core.Contracts;
 
 public class HttpResponseModel<T>
 {

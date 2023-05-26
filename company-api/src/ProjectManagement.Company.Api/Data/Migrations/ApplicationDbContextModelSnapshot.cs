@@ -11,14 +11,13 @@ using ProjectManagement.CompanyAPI.Data;
 namespace ProjectManagement.CompanyAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [ExcludeFromCodeCoverage]
     partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -38,7 +37,7 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
                     b.ToTable("CompanyTag");
                 });
 
-            modelBuilder.Entity("ProjectManagement.CompanyAPI.Domain.Entities.Company", b =>
+            modelBuilder.Entity("ProjectManagement.CompanyAPI.Entities.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -70,7 +69,7 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
                     b.ToTable("Company", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectManagement.CompanyAPI.Domain.Entities.Tag", b =>
+            modelBuilder.Entity("ProjectManagement.CompanyAPI.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -104,13 +103,13 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
 
             modelBuilder.Entity("CompanyTag", b =>
                 {
-                    b.HasOne("ProjectManagement.CompanyAPI.Domain.Entities.Company", null)
+                    b.HasOne("ProjectManagement.CompanyAPI.Entities.Company", null)
                         .WithMany()
                         .HasForeignKey("CompaniesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectManagement.CompanyAPI.Domain.Entities.Tag", null)
+                    b.HasOne("ProjectManagement.CompanyAPI.Entities.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)

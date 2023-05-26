@@ -52,10 +52,10 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Core\ProjectManagement.Core.csproj"/>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Core\ProjectManagement.Core.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
     </ItemGroup>
 
 

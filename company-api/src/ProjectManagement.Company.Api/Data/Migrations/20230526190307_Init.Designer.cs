@@ -12,15 +12,15 @@ using ProjectManagement.CompanyAPI.Data;
 namespace ProjectManagement.CompanyAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230311153950_Initial")]
-    partial class Initial
+    [Migration("20230526190307_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.3")
+                .HasAnnotation("ProductVersion", "7.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -40,7 +40,7 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
                     b.ToTable("CompanyTag");
                 });
 
-            modelBuilder.Entity("ProjectManagement.CompanyAPI.Domain.Company", b =>
+            modelBuilder.Entity("ProjectManagement.CompanyAPI.Entities.Company", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -72,7 +72,7 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
                     b.ToTable("Company", (string)null);
                 });
 
-            modelBuilder.Entity("ProjectManagement.CompanyAPI.Domain.Tag", b =>
+            modelBuilder.Entity("ProjectManagement.CompanyAPI.Entities.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -80,14 +80,16 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CreatedBy")
-                        .HasColumnType("integer");
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("ModifiedBy")
-                        .HasColumnType("integer");
+                    b.Property<string>("ModifiedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("ModifiedOn")
                         .HasColumnType("timestamp with time zone");
@@ -104,13 +106,13 @@ namespace ProjectManagement.CompanyAPI.Data.Migrations
 
             modelBuilder.Entity("CompanyTag", b =>
                 {
-                    b.HasOne("ProjectManagement.CompanyAPI.Domain.Company", null)
+                    b.HasOne("ProjectManagement.CompanyAPI.Entities.Company", null)
                         .WithMany()
                         .HasForeignKey("CompaniesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ProjectManagement.CompanyAPI.Domain.Tag", null)
+                    b.HasOne("ProjectManagement.CompanyAPI.Entities.Tag", null)
                         .WithMany()
                         .HasForeignKey("TagsId")
                         .OnDelete(DeleteBehavior.Cascade)

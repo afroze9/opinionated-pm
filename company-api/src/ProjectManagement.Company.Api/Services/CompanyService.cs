@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using ProjectManagement.CompanyAPI.Abstractions;
 using ProjectManagement.CompanyAPI.Data;
-using ProjectManagement.CompanyAPI.Domain.Entities;
 using ProjectManagement.CompanyAPI.DTO;
+using ProjectManagement.CompanyAPI.Entities;
 
 namespace ProjectManagement.CompanyAPI.Services;
 

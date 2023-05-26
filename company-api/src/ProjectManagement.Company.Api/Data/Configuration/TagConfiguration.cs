@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using ProjectManagement.CompanyAPI.Domain.Entities;
+using ProjectManagement.CompanyAPI.Entities;
 
 namespace ProjectManagement.CompanyAPI.Data.Configuration;
 

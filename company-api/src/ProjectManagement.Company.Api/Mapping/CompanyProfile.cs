@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using ProjectManagement.CompanyAPI.Domain.Entities;
 using ProjectManagement.CompanyAPI.DTO;
+using ProjectManagement.CompanyAPI.Entities;
 using ProjectManagement.CompanyAPI.Model;
 
 namespace ProjectManagement.CompanyAPI.Mapping;

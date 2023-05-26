@@ -1,7 +1,8 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Logging;
 
-namespace ProjectManagement.CompanyAPI.Filters;
+namespace ProjectManagement.Framework.Web.Filters;
 
 public class LoggingFilter : IAsyncActionFilter
 {

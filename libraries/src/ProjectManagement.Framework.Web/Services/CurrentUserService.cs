@@ -1,7 +1,8 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 using ProjectManagement.Persistence.Auditing;
 
-namespace ProjectManagement.CompanyAPI.Services;
+namespace ProjectManagement.Framework.Web.Services;
 
 public class CurrentUserService : ICurrentUserService
 {

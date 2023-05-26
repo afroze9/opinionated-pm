@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProjectManagement.CompanyAPI.Domain.Entities;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using ProjectManagement.CompanyAPI.Entities;
 using ProjectManagement.Persistence;
 using ProjectManagement.Persistence.Auditing;
 
@@ -22,6 +23,12 @@ public class ApplicationDbContext : AuditableDbContext
     {
     }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+    }
+    
     /// <summary>
     ///     Gets the companies.
     /// </summary>

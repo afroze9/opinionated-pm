@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ProjectManagement.CompanyAPI.Domain.Entities;
+using ProjectManagement.CompanyAPI.Entities;
 using ProjectManagement.Persistence;
 
 namespace ProjectManagement.CompanyAPI.Data.Repositories;

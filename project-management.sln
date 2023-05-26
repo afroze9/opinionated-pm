@@ -65,25 +65,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{D868CAB4
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.ApiGateway.UnitTests", "api-gateway\tests\ProjectManagement.ApiGateway.UnitTests\ProjectManagement.ApiGateway.UnitTests.csproj", "{814E3389-208F-484D-B94C-31AEB3222DFF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "core", "core", "{98619345-8D6E-4EA6-87C4-4B68C2AB9899}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "libraries", "libraries", "{98619345-8D6E-4EA6-87C4-4B68C2AB9899}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{3DE0DE4D-34AA-4DE1-BBD2-DFFC6FAEBE81}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Core", "core\src\ProjectManagement.Core\ProjectManagement.Core.csproj", "{A64C561D-0EB8-4FAB-9BCD-351D9E186A59}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Core", "libraries\src\ProjectManagement.Core\ProjectManagement.Core.csproj", "{A64C561D-0EB8-4FAB-9BCD-351D9E186A59}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Configuration", "core\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj", "{01EE5C94-2396-409C-8BCB-45D2CFE18EAE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Configuration", "libraries\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj", "{01EE5C94-2396-409C-8BCB-45D2CFE18EAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Auth", "core\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj", "{70CB1C8F-118A-4793-949B-179BBA851600}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Auth", "libraries\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj", "{70CB1C8F-118A-4793-949B-179BBA851600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Logging", "core\src\ProjectManagement.Logging\ProjectManagement.Logging.csproj", "{CF787A21-5F95-4E6E-A79C-BAA4A7EAD837}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Logging", "libraries\src\ProjectManagement.Logging\ProjectManagement.Logging.csproj", "{CF787A21-5F95-4E6E-A79C-BAA4A7EAD837}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Telemetry", "core\src\ProjectManagement.Telemetry\ProjectManagement.Telemetry.csproj", "{44599632-71DF-470F-BF52-B316DF0D331F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Telemetry", "libraries\src\ProjectManagement.Telemetry\ProjectManagement.Telemetry.csproj", "{44599632-71DF-470F-BF52-B316DF0D331F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2FE7F389-148B-44C2-8F16-9A912D127E4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Auth.UnitTests", "core\tests\ProjectManagement.Auth.UnitTests\ProjectManagement.Auth.UnitTests.csproj", "{7F5520F1-B31F-462D-8238-2EB7972FEFA1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Auth.UnitTests", "libraries\tests\ProjectManagement.Auth.UnitTests\ProjectManagement.Auth.UnitTests.csproj", "{7F5520F1-B31F-462D-8238-2EB7972FEFA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Persistence", "core\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj", "{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Persistence", "libraries\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj", "{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Core.UnitTests", "libraries\tests\ProjectManagement.Core.UnitTests\ProjectManagement.Core.UnitTests.csproj", "{D8659CE4-CF0A-463A-BC50-0BDDC968337F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Framework.Web", "libraries\src\ProjectManagement.Framework.Web\ProjectManagement.Framework.Web.csproj", "{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -154,6 +158,14 @@ Global
 		{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8659CE4-CF0A-463A-BC50-0BDDC968337F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8659CE4-CF0A-463A-BC50-0BDDC968337F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8659CE4-CF0A-463A-BC50-0BDDC968337F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8659CE4-CF0A-463A-BC50-0BDDC968337F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{271B890A-46CB-4878-B70F-05CB98785206} = {702FE086-BFA7-4B4C-A60E-ACF6FB9BA618}
@@ -180,5 +192,7 @@ Global
 		{2FE7F389-148B-44C2-8F16-9A912D127E4E} = {98619345-8D6E-4EA6-87C4-4B68C2AB9899}
 		{7F5520F1-B31F-462D-8238-2EB7972FEFA1} = {2FE7F389-148B-44C2-8F16-9A912D127E4E}
 		{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407} = {3DE0DE4D-34AA-4DE1-BBD2-DFFC6FAEBE81}
+		{D8659CE4-CF0A-463A-BC50-0BDDC968337F} = {2FE7F389-148B-44C2-8F16-9A912D127E4E}
+		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29} = {3DE0DE4D-34AA-4DE1-BBD2-DFFC6FAEBE81}
 	EndGlobalSection
 EndGlobal

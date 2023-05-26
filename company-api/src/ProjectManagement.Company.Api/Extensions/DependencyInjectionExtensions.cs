@@ -1,17 +1,14 @@
-﻿using System.Reflection;
-using FluentValidation;
-using Microsoft.OpenApi.Models;
+﻿using FluentValidation;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using ProjectManagement.Auth;
 using ProjectManagement.CompanyAPI.Abstractions;
 using ProjectManagement.CompanyAPI.Data;
 using ProjectManagement.CompanyAPI.Data.Repositories;
-using ProjectManagement.CompanyAPI.Filters;
 using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
 using ProjectManagement.Configuration;
+using ProjectManagement.Framework.Web;
 using ProjectManagement.Persistence;
 using ProjectManagement.Persistence.Auditing;
 using Steeltoe.Common.Http.Discovery;
@@ -26,8 +23,6 @@ namespace ProjectManagement.CompanyAPI.Extensions;
 [ExcludeFromCodeCoverage]
 public static class DependencyInjectionExtensions
 {
-    private static readonly string[] Actions = { "read", "write", "update", "delete" };
-
     private static void AddActuators(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddHealthActuator(configuration);
@@ -37,52 +32,13 @@ public static class DependencyInjectionExtensions
         services.ActivateActuatorEndpoints();
     }
     
-    private static void AddApiDocumentation(this IServiceCollection services)
-    {
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(options =>
-        {
-            options.SwaggerDoc("v1", new OpenApiInfo
-            {
-                Version = "v1",
-                Title = "Company API",
-                Description = "Company Microservice",
-            });
-
-            string xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
-
-            options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
-            {
-                Type = SecuritySchemeType.Http,
-                Scheme = "bearer",
-                BearerFormat = "JWT",
-                Description = "JWT Authorization header using the Bearer scheme.",
-            });
-
-            options.AddSecurityRequirement(new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "bearer",
-                        },
-                    },
-                    Array.Empty<string>()
-                },
-            });
-        });
-    }
-    
     private static void AddApplicationServices(this IServiceCollection services)
     {
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<ITagService, TagService>();
-        services.AddSingleton<ICurrentUserService, CurrentUserService>();
         services.AddSingleton<IDateTime, DateTimeService>();
+        services.AddAutoMapper(typeof(CompanyProfile));
+        services.AddValidatorsFromAssemblyContaining(typeof(Program));
     }
     
     private static void AddConsulDiscovery(this IServiceCollection services, IConfiguration configuration)
@@ -177,21 +133,11 @@ public static class DependencyInjectionExtensions
     
     public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddActuators(configuration);
-        services.AddApiDocumentation();
         services.AddApplicationServices();
-        services.AddAutoMapper(typeof(CompanyProfile));
+        services.AddActuators(configuration);
         services.AddConsulDiscovery(configuration);
-        services.AddControllers(options => { options.Filters.Add<LoggingFilter>(); });
-        services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
+        services.AddWebFramework(configuration);
         services.AddPersistence(configuration);
-        services.AddCoreAuth(configuration, "company");
         services.AddTelemetry(configuration);
-        services.AddValidatorsFromAssemblyContaining(typeof(Program));
-
-        services.AddCors(options =>
-        {
-            options.AddPolicy("AllowAll", policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });
-        });
     }
 }

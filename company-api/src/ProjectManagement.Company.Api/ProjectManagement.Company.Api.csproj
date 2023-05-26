@@ -19,7 +19,6 @@
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0"/>
         <PackageReference Include="FluentValidation" Version="11.5.1"/>
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.1"/>
-        <PackageReference Include="MediatR" Version="12.0.1"/>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.4"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.4"/>
@@ -56,10 +55,15 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Core\ProjectManagement.Core.csproj"/>
-        <ProjectReference Include="..\..\..\core\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Core\ProjectManagement.Core.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Framework.Web\ProjectManagement.Framework.Web.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="Data\Migrations\"/>
     </ItemGroup>
 
 </Project>

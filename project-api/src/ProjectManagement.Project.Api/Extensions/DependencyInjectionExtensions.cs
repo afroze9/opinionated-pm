@@ -44,8 +44,13 @@ public static class DependencyInjectionExtensions
                 Description = "Project Microservice",
             });
 
-            string xmlFileName = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-            options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+            Assembly? entryAssembly = Assembly.GetEntryAssembly();
+
+            if (entryAssembly != null)
+            {
+                string xmlFileName = $"{entryAssembly.GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFileName));
+            }
 
             options.AddSecurityDefinition("bearer", new OpenApiSecurityScheme
             {

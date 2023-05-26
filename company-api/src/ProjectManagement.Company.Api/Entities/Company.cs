@@ -1,6 +1,6 @@
 ﻿using ProjectManagement.Core;
 
-namespace ProjectManagement.CompanyAPI.Domain.Entities;
+namespace ProjectManagement.CompanyAPI.Entities;
 
 /// <summary>
 ///     Represents a Company entity in the system.

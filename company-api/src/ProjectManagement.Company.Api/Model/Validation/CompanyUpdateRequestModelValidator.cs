@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using ProjectManagement.CompanyAPI.Data.Repositories;
-using ProjectManagement.CompanyAPI.Domain.Entities;
+using ProjectManagement.CompanyAPI.Entities;
 
 namespace ProjectManagement.CompanyAPI.Model.Validation;
 

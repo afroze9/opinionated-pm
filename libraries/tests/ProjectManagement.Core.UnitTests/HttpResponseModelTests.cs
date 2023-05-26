@@ -1,8 +1,5 @@
-﻿using ProjectManagement.CompanyAPI.Model;
+﻿namespace ProjectManagement.Core.UnitTests;
 
-namespace ProjectManagement.CompanyAPI.UnitTests.Model;
-
-[ExcludeFromCodeCoverage]
 public class HttpResponseModelTests
 {
     [Fact]
