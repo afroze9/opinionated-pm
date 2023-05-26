@@ -6,11 +6,10 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using ProjectManagement.Auth;
 using ProjectManagement.Configuration;
-using ProjectManagement.Persistence.Abstractions;
+using ProjectManagement.Persistence;
 using ProjectManagement.ProjectAPI.Data;
+using ProjectManagement.ProjectAPI.Data.Repositories;
 using ProjectManagement.ProjectAPI.Mapping;
-using Steeltoe.Connector.PostgreSql;
-using Steeltoe.Connector.PostgreSql.EFCore;
 using Steeltoe.Discovery.Client;
 using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Endpoint.Health;
@@ -84,11 +83,10 @@ public static class DependencyInjectionExtensions
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
-        services.AddScoped(typeof(IReadRepository<>), typeof(EfRepository<>));
-        services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(configuration); });
-
-        services.AddPostgresHealthContributor(configuration);
+        services.AddCorePersistence<ApplicationDbContext>(configuration);
+        services.AddScoped<ProjectRepository>();
+        services.AddScoped<TodoRepository>();
+        services.AddScoped<UnitOfWork>();
     }
 
     private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)

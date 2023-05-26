@@ -12,8 +12,4 @@
     <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Ardalis.Specification" Version="6.1.0"/>
-  </ItemGroup>
-
 </Project>

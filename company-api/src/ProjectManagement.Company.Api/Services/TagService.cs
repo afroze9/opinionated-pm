@@ -11,7 +11,7 @@ namespace ProjectManagement.CompanyAPI.Services;
 public class TagService : ITagService
 {
     private readonly IMapper _mapper;
-    private readonly CompanyUnitOfWork _unitOfWork;
+    private readonly UnitOfWork _unitOfWork;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="TagService" /> class.
@@ -19,7 +19,7 @@ public class TagService : ITagService
     /// <param name="tagRepository">The tag repository.</param>
     /// <param name="mapper">The mapper.</param>
     /// <param name="companyRepository">The company repository.</param>
-    public TagService(IMapper mapper, CompanyUnitOfWork unitOfWork)
+    public TagService(IMapper mapper, UnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;

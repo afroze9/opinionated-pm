@@ -13,7 +13,7 @@ public class CompanyService : ICompanyService
 {
     private readonly IMapper _mapper;
     private readonly IProjectService _projectService;
-    private readonly CompanyUnitOfWork _unitOfWork;
+    private readonly UnitOfWork _unitOfWork;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="CompanyService" /> class.
@@ -22,7 +22,7 @@ public class CompanyService : ICompanyService
     /// <param name="projectService">The project service.</param>
     /// <param name="unitOfWork">Unit of work for the project.</param>
     public CompanyService(IMapper mapper,
-        IProjectService projectService, CompanyUnitOfWork unitOfWork)
+        IProjectService projectService, UnitOfWork unitOfWork)
     {
         _mapper = mapper;
         _projectService = projectService;

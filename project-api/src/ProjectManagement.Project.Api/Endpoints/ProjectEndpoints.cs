@@ -2,9 +2,8 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.Persistence.Abstractions;
+using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Domain.Entities;
-using ProjectManagement.ProjectAPI.Domain.Specifications;
 using ProjectManagement.ProjectAPI.Models;
 
 namespace ProjectManagement.ProjectAPI.Endpoints;
@@ -42,26 +41,26 @@ public static class ProjectEndpoints
             .WithTags("Project");
     }
 
-    internal static async Task<IResult> GetAllProjects(IRepository<Project> repository, int? companyId)
+    internal static async Task<IResult> GetAllProjects(UnitOfWork unitOfWork, int companyId)
     {
-        List<Project> projects =
-            await repository.ListAsync(new AllProjectsByCompanyIdWithTagsSpec(companyId));
-
+        List<Project> projects = await unitOfWork.Projects.GetAllByCompanyIdAsync(companyId, true);
         return projects.Count == 0 ? Results.NotFound() : Results.Ok(projects);
     }
 
-    internal static async Task<IResult> GetProjectById(int id, IRepository<Project> repository)
+    internal static async Task<IResult> GetProjectById(int id, UnitOfWork unitOfWork)
     {
-        return Results.Ok(await repository.FirstOrDefaultAsync(new ProjectByIdSpec(id)));
+        return Results.Ok(await unitOfWork.Projects.GetByIdAsync(id, true));
     }
 
-    internal static async Task<IResult> DeleteProject(int id, IRepository<Project> repository)
+    internal static async Task<IResult> DeleteProject(int id, UnitOfWork unitOfWork)
     {
-        Project? projectToDelete = await repository.GetByIdAsync(id);
+        Project? projectToDelete = await unitOfWork.Projects.GetByIdAsync(id, false);
 
         if (projectToDelete != null)
         {
-            await repository.DeleteAsync(projectToDelete);
+            unitOfWork.BeginTransaction();
+            unitOfWork.Projects.Delete(projectToDelete);
+            unitOfWork.Commit();
         }
 
         return Results.NoContent();
@@ -69,7 +68,7 @@ public static class ProjectEndpoints
 
     internal static async Task<IResult> UpdateProject(
         int id,
-        IRepository<Project> repository,
+        UnitOfWork unitOfWork,
         IValidator<UpdateProjectRequestModel> validator,
         UpdateProjectRequestModel req)
     {
@@ -80,7 +79,8 @@ public static class ProjectEndpoints
             return Results.BadRequest(validationResult.Errors);
         }
 
-        Project? projectToUpdate = await repository.GetByIdAsync(id);
+        unitOfWork.BeginTransaction();
+        Project? projectToUpdate = await unitOfWork.Projects.GetByIdAsync(id, false);
 
         if (projectToUpdate == null)
         {
@@ -90,12 +90,12 @@ public static class ProjectEndpoints
         projectToUpdate.UpdateName(req.Name);
         projectToUpdate.UpdatePriority(req.Priority);
 
-        await repository.SaveChangesAsync();
+        unitOfWork.Commit();
         return Results.Ok(projectToUpdate);
     }
 
     internal static async Task<IResult> CreateProject(
-        IRepository<Project> repository,
+        UnitOfWork unitOfWork,
         IMapper mapper,
         IValidator<ProjectRequestModel> validator,
         ProjectRequestModel req)
@@ -107,9 +107,11 @@ public static class ProjectEndpoints
             return Results.BadRequest(validationResult.Errors);
         }
 
+        unitOfWork.BeginTransaction();
         Project? project = mapper.Map<Project>(req);
-        Project result = await repository.AddAsync(project);
+        unitOfWork.Projects.Add(project);
 
-        return Results.Created($"api/v1/Project/{result.Id}", result);
+        unitOfWork.Commit();
+        return Results.Created($"api/v1/Project/{project.Id}", project);
     }
 }

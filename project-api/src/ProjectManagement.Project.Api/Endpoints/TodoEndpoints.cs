@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using ProjectManagement.Persistence.Abstractions;
+using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Domain.Entities;
 using ProjectManagement.ProjectAPI.Models;
 
@@ -10,7 +10,7 @@ public static class TodoEndpoints
 {
     public static void AddTodoEndpoints(this WebApplication app)
     {
-        app.MapPost("api/v1/Project/{id}/Todo", GetTodosByProjectId)
+        app.MapPost("api/v1/Project/{id}/Todo", AddTodoToProject)
             .RequireAuthorization("write:project")
             .WithTags("Todo");
 
@@ -26,10 +26,10 @@ public static class TodoEndpoints
             .WithTags("Todo");
     }
 
-    internal static async Task<IResult> UpdateTodo(int id, IRepository<TodoItem> repository,
+    internal static async Task<IResult> UpdateTodo(int id, UnitOfWork unitOfWork,
         TodoItemAssignmentUpdateModel req)
     {
-        TodoItem? itemToUpdate = await repository.GetByIdAsync(id);
+        TodoItem? itemToUpdate = unitOfWork.Todos.GetById(id);
 
         if (itemToUpdate == null)
         {
@@ -43,30 +43,33 @@ public static class TodoEndpoints
             itemToUpdate.MarkComplete();
         }
 
-        await repository.SaveChangesAsync();
+        unitOfWork.BeginTransaction();
+        unitOfWork.Todos.Update(itemToUpdate);
+        unitOfWork.Commit();
 
         return Results.Ok(itemToUpdate);
     }
 
-    internal static async Task<IResult> GetTodoById(int id, IRepository<TodoItem> repository)
+    internal static async Task<IResult> GetTodoById(int id, UnitOfWork unitOfWork)
     {
-        return Results.Ok(await repository.GetByIdAsync(id));
+        return Results.Ok(await unitOfWork.Todos.GetByIdAsync(id));
     }
 
-    internal static async Task<IResult> GetTodosByProjectId(int id, TodoItemRequestModel req,
-        IRepository<Project> repository, IMapper mapper)
+    internal static async Task<IResult> AddTodoToProject(int id, TodoItemRequestModel req,
+        UnitOfWork unitOfWork, IMapper mapper)
     {
-        Project? dbProject = await repository.GetByIdAsync(id);
+        Project? dbProject = await unitOfWork.Projects.GetByIdAsync(id, true);
 
         if (dbProject == null)
         {
             return Results.NotFound();
         }
 
+        unitOfWork.BeginTransaction();
         TodoItem? todoItem = mapper.Map<TodoItem>(req);
         dbProject.AddTodoItem(todoItem);
-
-        await repository.SaveChangesAsync();
+        unitOfWork.Commit();
+        
         return Results.Created($"api/v1/Todo/{todoItem.Id}", todoItem);
     }
 }

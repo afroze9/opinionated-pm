@@ -1,14 +1,13 @@
 ﻿using FluentValidation;
-using ProjectManagement.Persistence.Abstractions;
+using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Domain.Entities;
-using ProjectManagement.ProjectAPI.Domain.Specifications;
 
 namespace ProjectManagement.ProjectAPI.Models.Validation;
 
 [ExcludeFromCodeCoverage]
 public class UpdateProjectRequestModelValidator : AbstractValidator<UpdateProjectRequestModel>
 {
-    public UpdateProjectRequestModelValidator(IRepository<Project> repository)
+    public UpdateProjectRequestModelValidator(UnitOfWork unitOfWork)
     {
         RuleFor(p => p.Name)
             .NotNull()
@@ -16,9 +15,7 @@ public class UpdateProjectRequestModelValidator : AbstractValidator<UpdateProjec
             .MaximumLength(255)
             .MustAsync(async (model, name, cancellationToken) =>
             {
-                Project? existingProject =
-                    await repository.FirstOrDefaultAsync(new ProjectByNameSpec(name), cancellationToken);
-
+                Project? existingProject = await unitOfWork.Projects.GetByNameAsync(name, cancellationToken);
                 return existingProject == null || existingProject.Id == model.Id;
             })
             .WithMessage("Project with this name already exists");

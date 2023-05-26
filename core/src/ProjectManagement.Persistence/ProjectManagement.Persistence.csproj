@@ -13,8 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Ardalis.Specification" Version="6.1.0"/>
-    <PackageReference Include="Ardalis.Specification.EntityFrameworkCore" Version="6.1.0"/>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.3"/>
     <PackageReference Include="Steeltoe.Connector.ConnectorCore" Version="3.2.3"/>
     <PackageReference Include="Steeltoe.Connector.EFCore" Version="3.2.3"/>

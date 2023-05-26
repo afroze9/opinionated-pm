@@ -7,6 +7,7 @@ using OpenTelemetry.Trace;
 using ProjectManagement.Auth;
 using ProjectManagement.CompanyAPI.Abstractions;
 using ProjectManagement.CompanyAPI.Data;
+using ProjectManagement.CompanyAPI.Data.Repositories;
 using ProjectManagement.CompanyAPI.Filters;
 using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
@@ -127,7 +128,7 @@ public static class DependencyInjectionExtensions
         services.AddCorePersistence<ApplicationDbContext>(configuration);
         services.AddScoped<CompanyRepository>();
         services.AddScoped<TagRepository>();
-        services.AddScoped<CompanyUnitOfWork>();
+        services.AddScoped<UnitOfWork>();
     }
 
     private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)

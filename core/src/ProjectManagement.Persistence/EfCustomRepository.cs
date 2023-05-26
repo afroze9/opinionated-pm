@@ -19,6 +19,11 @@ public class EfCustomRepository<T> : ICustomRepository<T>
         return DbSet.Find(id);
     }
 
+    public Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return DbSet.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
+
     public void Add(T entity)
     {
         DbSet.Add(entity);
