@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ProjectManagement.Persistence;
 
-public abstract class DbContextBase : DbContext
+public class DbContextBase : DbContext
 {
     protected DbContextBase(DbContextOptions options)
         : base(options)

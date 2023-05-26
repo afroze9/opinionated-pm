@@ -1,6 +1,7 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.CompanyAPI.Domain.Entities;
+using ProjectManagement.Persistence;
+using ProjectManagement.Persistence.Auditing;
 
 namespace ProjectManagement.CompanyAPI.Data;
 
@@ -8,15 +9,16 @@ namespace ProjectManagement.CompanyAPI.Data;
 ///     Application database context.
 /// </summary>
 [ExcludeFromCodeCoverage]
-public class ApplicationDbContext : DbContext
+public class ApplicationDbContext : AuditableDbContext
 {
-
     /// <summary>
     ///     Initializes a new instance of the <see cref="ApplicationDbContext" /> class.
     /// </summary>
     /// <param name="options">The options for this context.</param>
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-        : base(options)
+    /// <param name="auditableEntitySaveChangesInterceptor">Service to handle audit information.</param>
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+        AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
+        : base(options, auditableEntitySaveChangesInterceptor)
     {
     }
 
@@ -29,15 +31,4 @@ public class ApplicationDbContext : DbContext
     ///     Gets the tags.
     /// </summary>
     public DbSet<Tag> Tags => Set<Tag>();
-
-    /// <summary>
-    ///     Configures the model that was discovered by convention from the entity types
-    ///     exposed in <see cref="DbSet{TEntity}" /> properties on your derived context.
-    /// </summary>
-    /// <param name="modelBuilder">The builder being used to construct the model for this context.</param>
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        base.OnModelCreating(modelBuilder);
-        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    }
 }

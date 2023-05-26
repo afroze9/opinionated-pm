@@ -1,14 +1,12 @@
 ﻿using FluentValidation;
-using ProjectManagement.CompanyAPI.Domain.Entities;
-using ProjectManagement.CompanyAPI.Domain.Specifications;
-using ProjectManagement.Persistence.Abstractions;
+using ProjectManagement.CompanyAPI.Data;
 
 namespace ProjectManagement.CompanyAPI.Model.Validation;
 
 [ExcludeFromCodeCoverage]
 public class CompanyRequestModelValidator : AbstractValidator<CompanyRequestModel>
 {
-    public CompanyRequestModelValidator(IRepository<Company> repository)
+    public CompanyRequestModelValidator(CompanyRepository repository)
     {
         RuleFor(c => c.Name)
             .NotNull()
@@ -16,7 +14,7 @@ public class CompanyRequestModelValidator : AbstractValidator<CompanyRequestMode
             .MaximumLength(255)
             .MustAsync(async (name, cancellationToken) =>
             {
-                bool exists = await repository.AnyAsync(new CompanyByNameSpec(name), cancellationToken);
+                bool exists = await repository.ExistsWithNameAsync(name, cancellationToken);
                 return !exists;
             })
             .WithMessage("Company with this name already exists");

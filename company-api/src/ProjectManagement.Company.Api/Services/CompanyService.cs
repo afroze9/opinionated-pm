@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
 using ProjectManagement.CompanyAPI.Abstractions;
+using ProjectManagement.CompanyAPI.Data;
 using ProjectManagement.CompanyAPI.Domain.Entities;
-using ProjectManagement.CompanyAPI.Domain.Specifications;
 using ProjectManagement.CompanyAPI.DTO;
-using ProjectManagement.Persistence.Abstractions;
 
 namespace ProjectManagement.CompanyAPI.Services;
 
@@ -12,25 +11,22 @@ namespace ProjectManagement.CompanyAPI.Services;
 /// </summary>
 public class CompanyService : ICompanyService
 {
-    private readonly IRepository<Company> _companyRepository;
     private readonly IMapper _mapper;
     private readonly IProjectService _projectService;
-    private readonly IRepository<Tag> _tagRepository;
+    private readonly CompanyUnitOfWork _unitOfWork;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="CompanyService" /> class.
     /// </summary>
-    /// <param name="companyRepository">The company repository.</param>
-    /// <param name="tagRepository">The tag repository.</param>
     /// <param name="mapper">The mapper.</param>
     /// <param name="projectService">The project service.</param>
-    public CompanyService(IRepository<Company> companyRepository, IRepository<Tag> tagRepository, IMapper mapper,
-        IProjectService projectService)
+    /// <param name="unitOfWork">Unit of work for the project.</param>
+    public CompanyService(IMapper mapper,
+        IProjectService projectService, CompanyUnitOfWork unitOfWork)
     {
-        _companyRepository = companyRepository;
-        _tagRepository = tagRepository;
         _mapper = mapper;
         _projectService = projectService;
+        _unitOfWork = unitOfWork;
     }
 
     /// <summary>
@@ -39,7 +35,7 @@ public class CompanyService : ICompanyService
     /// <returns>A list of all companies.</returns>
     public async Task<List<CompanySummaryDto>> GetAllAsync()
     {
-        List<Company> companies = await _companyRepository.ListAsync(new AllCompaniesWithTagsSpec());
+        List<Company> companies = await _unitOfWork.Companies.AllCompaniesWithTagsAsync();
         List<CompanySummaryDto> mappedCompanies = _mapper.Map<List<CompanySummaryDto>>(companies);
 
         foreach (CompanySummaryDto company in mappedCompanies)
@@ -58,31 +54,45 @@ public class CompanyService : ICompanyService
     /// <returns>The created company.</returns>
     public async Task<CompanySummaryDto> CreateAsync(CompanySummaryDto companySummary)
     {
-        Company companyToCreate = new (companySummary.Name);
-        List<Tag> tagsToAdd = new ();
-
-        if (companySummary.Tags.Count != 0)
+        try
         {
-            foreach (string tagName in companySummary.Tags.Select(t => t.Name))
-            {
-                Tag? dbTag = await _tagRepository.FirstOrDefaultAsync(new TagByNameSpec(tagName));
+            _unitOfWork.BeginTransaction();
+            Company companyToCreate = new (companySummary.Name);
+            List<Tag> tagsToAdd = new ();
 
-                if (dbTag != null)
+            if (companySummary.Tags.Count != 0)
+            {
+                foreach (string tagName in companySummary.Tags.Select(t => t.Name))
                 {
-                    tagsToAdd.Add(dbTag);
-                }
-                else
-                {
-                    Tag addedTag = await _tagRepository.AddAsync(new Tag(tagName));
-                    tagsToAdd.Add(addedTag);
+                    Tag? dbTag = await _unitOfWork.Tags.GetByName(tagName);
+
+                    if (dbTag != null)
+                    {
+                        tagsToAdd.Add(dbTag);
+                    }
+                    else
+                    {
+                        Tag tagToAdd = new (tagName);
+                        _unitOfWork.Tags.Add(tagToAdd);
+                        tagsToAdd.Add(tagToAdd);
+                    }
                 }
             }
+
+            companyToCreate.AddTags(tagsToAdd);
+            _unitOfWork.Companies.Add(companyToCreate);
+
+            _unitOfWork.Commit();
+
+            return _mapper.Map<CompanySummaryDto>(companyToCreate);
         }
+        catch (Exception e)
+        {
+            Console.WriteLine("error hmmm");
+            _unitOfWork.Rollback();
 
-        companyToCreate.AddTags(tagsToAdd);
-        Company createdCompany = await _companyRepository.AddAsync(companyToCreate);
-
-        return _mapper.Map<CompanySummaryDto>(createdCompany);
+            return new CompanySummaryDto { Name = "" };
+        }
     }
 
     /// <summary>
@@ -92,18 +102,19 @@ public class CompanyService : ICompanyService
     /// <returns>The company with the specified ID, or null if not found.</returns>
     public async Task<CompanyDto?> GetByIdAsync(int id)
     {
-        Company? company = await _companyRepository.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
-
-        if (company == null)
-        {
-            return null;
-        }
-
-        CompanyDto mappedCompanySummary = _mapper.Map<CompanyDto>(company);
-        List<ProjectSummaryDto> projects = await _projectService.GetProjectsByCompanyIdAsync(id);
-        mappedCompanySummary.Projects = projects;
-
-        return mappedCompanySummary;
+        return new CompanyDto { Name = "" };
+        // Company? company = await _unitOfWork.Companies.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
+        //
+        // if (company == null)
+        // {
+        //     return null;
+        // }
+        //
+        // CompanyDto mappedCompanySummary = _mapper.Map<CompanyDto>(company);
+        // List<ProjectSummaryDto> projects = await _projectService.GetProjectsByCompanyIdAsync(id);
+        // mappedCompanySummary.Projects = projects;
+        //
+        // return mappedCompanySummary;
     }
 
     /// <summary>
@@ -114,18 +125,20 @@ public class CompanyService : ICompanyService
     /// <returns>The updated company, or null if not found.</returns>
     public async Task<CompanySummaryDto?> UpdateNameAsync(int id, string name)
     {
-        Company? companyToUpdate = await _companyRepository.GetByIdAsync(id);
-
-        if (companyToUpdate == null)
-        {
-            return null;
-        }
-
-        companyToUpdate.UpdateName(name);
-        await _companyRepository.SaveChangesAsync();
-
-        CompanySummaryDto summaryDto = _mapper.Map<CompanySummaryDto>(companyToUpdate);
-        return summaryDto;
+        return new CompanySummaryDto
+            { Name = "" };
+        // Company? companyToUpdate = await _unitOfWork.Companies.GetByIdAsync(id);
+        //
+        // if (companyToUpdate == null)
+        // {
+        //     return null;
+        // }
+        //
+        // companyToUpdate.UpdateName(name);
+        // await _unitOfWork.Companies.SaveChangesAsync();
+        //
+        // CompanySummaryDto summaryDto = _mapper.Map<CompanySummaryDto>(companyToUpdate);
+        // return summaryDto;
     }
 
     /// <summary>
@@ -136,27 +149,28 @@ public class CompanyService : ICompanyService
     /// <returns>The updated company, or null if not found.</returns>
     public async Task<CompanySummaryDto?> AddTagAsync(int id, string tagName)
     {
-        Company? companyToUpdate = await _companyRepository.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
-
-        if (companyToUpdate == null)
-        {
-            return null;
-        }
-
-        Tag? dbTag = await _tagRepository.FirstOrDefaultAsync(new TagByNameSpec(tagName));
-
-        if (dbTag != null)
-        {
-            companyToUpdate.AddTag(dbTag);
-        }
-        else
-        {
-            Tag addedTag = await _tagRepository.AddAsync(new Tag(tagName));
-            companyToUpdate.AddTag(addedTag);
-        }
-
-        await _companyRepository.SaveChangesAsync();
-        return _mapper.Map<CompanySummaryDto>(companyToUpdate);
+        return new CompanySummaryDto { Name = "" };
+        // Company? companyToUpdate = await _unitOfWork.Companies.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
+        //
+        // if (companyToUpdate == null)
+        // {
+        //     return null;
+        // }
+        //
+        // Tag? dbTag = await _unitOfWork.Tags.FirstOrDefaultAsync(new TagByNameSpec(tagName));
+        //
+        // if (dbTag != null)
+        // {
+        //     companyToUpdate.AddTag(dbTag);
+        // }
+        // else
+        // {
+        //     Tag addedTag = await _unitOfWork.Tags.AddAsync(new Tag(tagName));
+        //     companyToUpdate.AddTag(addedTag);
+        // }
+        //
+        // await _unitOfWork.Companies.SaveChangesAsync();
+        // return _mapper.Map<CompanySummaryDto>(companyToUpdate);
     }
 
     /// <summary>
@@ -167,19 +181,20 @@ public class CompanyService : ICompanyService
     /// <returns>The updated company, or null if not found.</returns>
     public async Task<CompanySummaryDto?> DeleteTagAsync(int id, string tagName)
     {
-        Company? companyToUpdate = await _companyRepository.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
-
-        if (companyToUpdate == null)
-        {
-            return null;
-        }
-
-        companyToUpdate.RemoveTag(tagName);
-
-        await _companyRepository.SaveChangesAsync();
-        CompanySummaryDto summaryDto = _mapper.Map<CompanySummaryDto>(companyToUpdate);
-
-        return summaryDto;
+        return new CompanySummaryDto { Name = "" };
+        // Company? companyToUpdate = await _unitOfWork.Companies.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
+        //
+        // if (companyToUpdate == null)
+        // {
+        //     return null;
+        // }
+        //
+        // companyToUpdate.RemoveTag(tagName);
+        //
+        // await _unitOfWork.Companies.SaveChangesAsync();
+        // CompanySummaryDto summaryDto = _mapper.Map<CompanySummaryDto>(companyToUpdate);
+        //
+        // return summaryDto;
     }
 
     /// <summary>
@@ -188,16 +203,16 @@ public class CompanyService : ICompanyService
     /// <param name="id">The ID of the company to delete.</param>
     public async Task DeleteAsync(int id)
     {
-        Company? companyToDelete = await _companyRepository.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
-
-        if (companyToDelete == null)
-        {
-            return;
-        }
-
-        companyToDelete.RemoveTags();
-
-        await _companyRepository.SaveChangesAsync();
-        await _companyRepository.DeleteAsync(companyToDelete);
+        // Company? companyToDelete = await _unitOfWork.Companies.FirstOrDefaultAsync(new CompanyByIdWithTagsSpec(id));
+        //
+        // if (companyToDelete == null)
+        // {
+        //     return;
+        // }
+        //
+        // companyToDelete.RemoveTags();
+        //
+        // await _unitOfWork.Companies.SaveChangesAsync();
+        // await _unitOfWork.Companies.DeleteAsync(companyToDelete);
     }
 }

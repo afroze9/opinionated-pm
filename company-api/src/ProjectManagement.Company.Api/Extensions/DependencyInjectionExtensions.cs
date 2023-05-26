@@ -12,11 +12,8 @@ using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
 using ProjectManagement.Configuration;
 using ProjectManagement.Persistence;
-using ProjectManagement.Persistence.Abstractions;
 using ProjectManagement.Persistence.Auditing;
 using Steeltoe.Common.Http.Discovery;
-using Steeltoe.Connector.PostgreSql;
-using Steeltoe.Connector.PostgreSql.EFCore;
 using Steeltoe.Discovery.Client;
 using Steeltoe.Management.Endpoint;
 using Steeltoe.Management.Endpoint.Health;
@@ -127,12 +124,10 @@ public static class DependencyInjectionExtensions
 
     private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(EfRepositoryBase<>));
-        services.AddScoped(typeof(IReadRepository<>), typeof(EfRepositoryBase<>));
-        services.AddDbContext<ApplicationDbContext>(options => { options.UseNpgsql(configuration); });
-        services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-
-        services.AddPostgresHealthContributor(configuration);
+        services.AddCorePersistence<ApplicationDbContext>(configuration);
+        services.AddScoped<CompanyRepository>();
+        services.AddScoped<TagRepository>();
+        services.AddScoped<CompanyUnitOfWork>();
     }
 
     private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)

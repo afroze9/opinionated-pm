@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ProjectManagement.Auth;
 
-public static class RegistrationExtensions
+public static class DependencyInjectionExtensions
 {
     private static readonly string[] Actions = { "read", "write", "update", "delete" };
     
