@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using ProjectManagement.Auth;
 
-namespace ProjectManagement.Auth;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjectionExtensions
 {

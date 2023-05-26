@@ -13,15 +13,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
-    <ProjectReference Include="..\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
+    <ProjectReference Include="..\ProjectManagement.Auth\ProjectManagement.Auth.csproj" />
+    <ProjectReference Include="..\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj" />
+    <ProjectReference Include="..\ProjectManagement.Telemetry\ProjectManagement.Telemetry.csproj" />
   </ItemGroup>
 </Project>

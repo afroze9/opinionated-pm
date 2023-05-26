@@ -1,15 +1,9 @@
 ﻿using FluentValidation;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
 using ProjectManagement.CompanyAPI.Abstractions;
 using ProjectManagement.CompanyAPI.Data;
 using ProjectManagement.CompanyAPI.Data.Repositories;
 using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
-using ProjectManagement.Configuration;
-using ProjectManagement.Framework.Web;
-using ProjectManagement.Persistence;
 using ProjectManagement.Persistence.Auditing;
 using Steeltoe.Common.Http.Discovery;
 using Steeltoe.Discovery.Client;
@@ -86,50 +80,6 @@ public static class DependencyInjectionExtensions
         services.AddScoped<TagRepository>();
         services.AddScoped<UnitOfWork>();
     }
-
-    private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)
-    {
-        TelemetrySettings telemetrySettings = new ();
-        configuration.GetRequiredSection(nameof(TelemetrySettings)).Bind(telemetrySettings);
-
-        services
-            .AddOpenTelemetry()
-            .WithTracing(builder =>
-                {
-                    builder
-                        .AddHttpClientInstrumentation()
-                        .AddAspNetCoreInstrumentation()
-                        .ConfigureResource(options =>
-                        {
-                            options.AddService(
-                                telemetrySettings.ServiceName,
-                                serviceVersion: telemetrySettings.ServiceVersion,
-                                autoGenerateServiceInstanceId: true);
-                        })
-                        .AddOtlpExporter(options => { options.Endpoint = new Uri(telemetrySettings.Endpoint); });
-
-                    if (telemetrySettings.EnableConsoleExporter)
-                    {
-                        builder.AddConsoleExporter();
-                    }
-
-                    if (telemetrySettings.EnableAlwaysOnSampler)
-                    {
-                        builder.SetSampler<AlwaysOnSampler>();
-                    }
-                    else
-                    {
-                        builder.SetSampler(new TraceIdRatioBasedSampler(telemetrySettings.SampleProbability));
-                    }
-                }
-            )
-            .WithMetrics(builder =>
-            {
-                builder
-                    .AddAspNetCoreInstrumentation()
-                    .AddOtlpExporter(options => { options.Endpoint = new Uri(telemetrySettings.Endpoint); });
-            });
-    }
     
     public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
     {
@@ -138,6 +88,5 @@ public static class DependencyInjectionExtensions
         services.AddConsulDiscovery(configuration);
         services.AddWebFramework(configuration);
         services.AddPersistence(configuration);
-        services.AddTelemetry(configuration);
     }
 }

@@ -1,15 +1,15 @@
-﻿using ProjectManagement.Configuration;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
 using Serilog.Formatting.Elasticsearch;
 using Serilog.Sinks.Elasticsearch;
 
-namespace ProjectManagement.CompanyAPI.Extensions;
+namespace ProjectManagement.Logging;
 
-[ExcludeFromCodeCoverage]
 public static class LoggingExtensions
 {
-    public static void AddApplicationLogging(this ILoggingBuilder builder, IConfiguration configuration)
+    public static void AddCoreLogging(this ILoggingBuilder builder, IConfiguration configuration)
     {
         SerilogSettings serilogSettings = new ();
         configuration.GetRequiredSection(nameof(SerilogSettings)).Bind(serilogSettings);

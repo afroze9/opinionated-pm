@@ -1,11 +1,13 @@
 using Microsoft.EntityFrameworkCore;
+using ProjectManagement.Configuration;
+using ProjectManagement.Logging;
 using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Endpoints;
 using ProjectManagement.ProjectAPI.Extensions;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddApplicationConfiguration();
-builder.Logging.AddApplicationLogging(builder.Configuration);
+builder.Configuration.AddCoreConfiguration();
+builder.Logging.AddCoreLogging(builder.Configuration);
 builder.Services.RegisterDependencies(builder.Configuration);
 
 WebApplication app = builder.Build();

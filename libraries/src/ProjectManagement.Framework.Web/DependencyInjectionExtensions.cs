@@ -1,18 +1,17 @@
 ﻿using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using ProjectManagement.Auth;
 using ProjectManagement.Framework.Web.Configuration;
 using ProjectManagement.Framework.Web.Filters;
 using ProjectManagement.Framework.Web.Services;
 using ProjectManagement.Persistence.Auditing;
 
-namespace ProjectManagement.Framework.Web;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjectionExtensions
 {
-    private static void AddApiDocumentation(this IServiceCollection services, SwaggerSettings settings)
+    private static void AddApiDocumentation(this IServiceCollection services, ApiDocs settings)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -74,6 +73,11 @@ public static class DependencyInjectionExtensions
                 options.Filters.Add<LoggingFilter>();
             }
         });
+        
+        if (settings.Telemetry is { Enable: true })
+        {
+            services.AddCoreTelemetry(configuration);
+        }
 
         services.AddCoreAuth(configuration, "company");
         services.AddSingleton<ICurrentUserService, CurrentUserService>();

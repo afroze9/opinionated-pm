@@ -1,9 +1,8 @@
-﻿using ProjectManagement.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Winton.Extensions.Configuration.Consul;
 
-namespace ProjectManagement.ProjectAPI.Extensions;
+namespace ProjectManagement.Configuration;
 
-[ExcludeFromCodeCoverage]
 public static class ConfigurationExtensions
 {
     private static void AddConsulKv(this ConfigurationManager configuration, ConsulKVSettings settings)
@@ -20,8 +19,8 @@ public static class ConfigurationExtensions
             options.ReloadOnChange = true;
         });
     }
-    
-    public static void AddApplicationConfiguration(this ConfigurationManager configuration)
+
+    public static void AddCoreConfiguration(this ConfigurationManager configuration)
     {
         configuration.SetBasePath(Directory.GetCurrentDirectory())
             .AddEnvironmentVariables();

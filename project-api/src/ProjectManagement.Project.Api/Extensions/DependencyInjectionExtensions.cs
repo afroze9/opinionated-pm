@@ -1,12 +1,6 @@
 ﻿using System.Reflection;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
-using OpenTelemetry.Metrics;
-using OpenTelemetry.Resources;
-using OpenTelemetry.Trace;
-using ProjectManagement.Auth;
-using ProjectManagement.Configuration;
-using ProjectManagement.Persistence;
 using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Data.Repositories;
 using ProjectManagement.ProjectAPI.Mapping;
@@ -93,51 +87,6 @@ public static class DependencyInjectionExtensions
         services.AddScoped<TodoRepository>();
         services.AddScoped<UnitOfWork>();
     }
-
-    private static void AddTelemetry(this IServiceCollection services, IConfiguration configuration)
-    {
-        TelemetrySettings telemetrySettings = new ();
-        configuration.GetRequiredSection(nameof(TelemetrySettings)).Bind(telemetrySettings);
-
-        services
-            .AddOpenTelemetry()
-            .WithTracing(builder =>
-                {
-                    builder
-                        .AddHttpClientInstrumentation()
-                        .AddAspNetCoreInstrumentation()
-                        .ConfigureResource(options =>
-                        {
-                            options.AddService(
-                                telemetrySettings.ServiceName,
-                                serviceVersion: telemetrySettings.ServiceVersion,
-                                autoGenerateServiceInstanceId: true);
-                        })
-                        .AddOtlpExporter(options => { options.Endpoint = new Uri(telemetrySettings.Endpoint); });
-
-                    if (telemetrySettings.EnableConsoleExporter)
-                    {
-                        builder.AddConsoleExporter();
-                    }
-
-                    if (telemetrySettings.EnableAlwaysOnSampler)
-                    {
-                        builder.SetSampler<AlwaysOnSampler>();
-                    }
-                    else
-                    {
-                        builder.SetSampler(new TraceIdRatioBasedSampler(telemetrySettings.SampleProbability));
-                    }
-                }
-            )
-            .WithMetrics(builder =>
-            {
-                builder
-                    .AddAspNetCoreInstrumentation()
-                    .AddConsoleExporter()
-                    .AddOtlpExporter(options => { options.Endpoint = new Uri(telemetrySettings.Endpoint); });
-            });
-    }
     
     public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
     {
@@ -150,7 +99,7 @@ public static class DependencyInjectionExtensions
         services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
         services.AddPersistence(configuration);
         services.AddCoreAuth(configuration, "project");
-        services.AddTelemetry(configuration);
+        services.AddCoreTelemetry(configuration);
         services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
         services.AddCors(options =>

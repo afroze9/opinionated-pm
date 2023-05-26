@@ -23,4 +23,8 @@
         <PackageReference Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.14"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <ProjectReference Include="..\..\..\libraries\src\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
+    </ItemGroup>
+
 </Project>

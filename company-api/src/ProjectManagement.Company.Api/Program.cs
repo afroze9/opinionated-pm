@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.CompanyAPI.Data;
 using ProjectManagement.CompanyAPI.Extensions;
+using ProjectManagement.Configuration;
+using ProjectManagement.Logging;
 using Serilog;
 
 namespace ProjectManagement.CompanyAPI;
@@ -11,8 +13,8 @@ public class Program
     public static void Main(string[] args)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Configuration.AddApplicationConfiguration();
-        builder.Logging.AddApplicationLogging(builder.Configuration);
+        builder.Configuration.AddCoreConfiguration();
+        builder.Logging.AddCoreLogging(builder.Configuration);
         builder.Services.RegisterDependencies(builder.Configuration);
 
         WebApplication app = builder.Build();

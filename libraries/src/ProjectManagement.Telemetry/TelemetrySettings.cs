@@ -1,10 +1,15 @@
-﻿namespace ProjectManagement.Configuration;
+﻿namespace ProjectManagement.Telemetry;
 
 /// <summary>
 ///     Represents settings related to telemetry and distributed tracing.
 /// </summary>
 public class TelemetrySettings
 {
+    /// <summary>
+    /// Gets or sets if telemetry is enabled.
+    /// </summary>
+    public bool Enable { get; set; }
+    
     /// <summary>
     ///     Gets or sets the endpoint or URL where telemetry data will be sent.
     /// </summary>

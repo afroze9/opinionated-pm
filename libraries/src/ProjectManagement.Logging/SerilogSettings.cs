@@ -1,4 +1,4 @@
-﻿namespace ProjectManagement.Configuration;
+﻿namespace ProjectManagement.Logging;
 
 /// <summary>
 ///     Represents the Serilog settings for logging to Elasticsearch.

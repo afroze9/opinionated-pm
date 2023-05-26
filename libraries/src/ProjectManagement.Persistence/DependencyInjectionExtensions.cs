@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using ProjectManagement.Persistence.Auditing;
 using Steeltoe.Connector.PostgreSql;
 using Steeltoe.Connector.PostgreSql.EFCore;
 
-namespace ProjectManagement.Persistence;
+// ReSharper disable once CheckNamespace
+namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjectionExtensions
 {
