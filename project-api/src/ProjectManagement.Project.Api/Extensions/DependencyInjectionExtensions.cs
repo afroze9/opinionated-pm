@@ -144,7 +144,7 @@ public static class DependencyInjectionExtensions
         services.AddControllers();
         services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
         services.AddPersistence(configuration);
-        services.AddAuth(configuration, "project");
+        services.AddCoreAuth(configuration, "project");
         services.AddTelemetry(configuration);
         services.AddValidatorsFromAssemblyContaining(typeof(Program));
 

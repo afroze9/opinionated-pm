@@ -185,7 +185,7 @@ public static class DependencyInjectionExtensions
         services.AddControllers(options => { options.Filters.Add<LoggingFilter>(); });
         services.AddMediatR(options => options.RegisterServicesFromAssembly(typeof(Program).Assembly));
         services.AddPersistence(configuration);
-        services.AddAuth(configuration, "company");
+        services.AddCoreAuth(configuration, "company");
         services.AddTelemetry(configuration);
         services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
