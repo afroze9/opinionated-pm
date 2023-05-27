@@ -17,14 +17,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0"/>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+      <PackageReference Include="Steeltoe.Discovery.Consul" Version="3.2.3"/>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ProjectManagement.Auth\ProjectManagement.Auth.csproj" />
-    <ProjectReference Include="..\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj" />
-    <ProjectReference Include="..\ProjectManagement.Telemetry\ProjectManagement.Telemetry.csproj" />
-  </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\ProjectManagement.Auth\ProjectManagement.Auth.csproj"/>
+        <ProjectReference Include="..\ProjectManagement.Configuration\ProjectManagement.Configuration.csproj"/>
+        <ProjectReference Include="..\ProjectManagement.Logging\ProjectManagement.Logging.csproj"/>
+        <ProjectReference Include="..\ProjectManagement.Management\ProjectManagement.Management.csproj"/>
+        <ProjectReference Include="..\ProjectManagement.Persistence\ProjectManagement.Persistence.csproj"/>
+        <ProjectReference Include="..\ProjectManagement.Telemetry\ProjectManagement.Telemetry.csproj"/>
+    </ItemGroup>
 </Project>

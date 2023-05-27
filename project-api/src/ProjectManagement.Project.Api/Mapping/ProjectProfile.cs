@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ProjectManagement.ProjectAPI.Domain.Entities;
+using ProjectManagement.ProjectAPI.Entities;
 using ProjectManagement.ProjectAPI.Models;
 
 namespace ProjectManagement.ProjectAPI.Mapping;

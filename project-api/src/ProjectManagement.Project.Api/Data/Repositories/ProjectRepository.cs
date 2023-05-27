@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Persistence;
-using ProjectManagement.ProjectAPI.Domain.Entities;
+using ProjectManagement.ProjectAPI.Entities;
 
 namespace ProjectManagement.ProjectAPI.Data.Repositories;
 
 public class ProjectRepository : EfCustomRepository<Project>
 {
-    protected ProjectRepository(DbContext context) : base(context)
+    public ProjectRepository(ApplicationDbContext context) : base(context)
     {
     }
 

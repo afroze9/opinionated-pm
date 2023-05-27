@@ -4,14 +4,16 @@ using Microsoft.OpenApi.Models;
 using ProjectManagement.Framework.Web.Configuration;
 using ProjectManagement.Framework.Web.Filters;
 using ProjectManagement.Framework.Web.Services;
+using ProjectManagement.Management;
 using ProjectManagement.Persistence.Auditing;
+using Steeltoe.Discovery.Client;
 
 // ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class DependencyInjectionExtensions
 {
-    private static void AddApiDocumentation(this IServiceCollection services, ApiDocs settings)
+    private static void AddApiDocumentation(this IServiceCollection services, ApiDocumentationSettings settings)
     {
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
@@ -79,8 +81,25 @@ public static class DependencyInjectionExtensions
             services.AddCoreTelemetry(configuration);
         }
 
-        services.AddCoreAuth(configuration, "company");
+        if (settings.Management is { Enable: true })
+        {
+            services.AddCoreActuators(configuration);
+        }
+
+        if (settings.Discovery is { Enable: true })
+        {
+            services.AddDiscoveryClient(configuration);
+        }
+
+        if (settings.Auth is { Enable: true })
+        {
+            services.AddCoreAuth(configuration, settings.Auth.ResourceName);
+        }
+
+        services.AddHttpContextAccessor();
         services.AddSingleton<ICurrentUserService, CurrentUserService>();
+        services.AddSingleton<IDateTime, DateTimeService>();
+        
         services.AddCors(options =>
         {
             options.AddPolicy("AllowAll", policy => { policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod(); });

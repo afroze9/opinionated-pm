@@ -1,33 +1,17 @@
 using Microsoft.EntityFrameworkCore;
-using ProjectManagement.Configuration;
-using ProjectManagement.Logging;
 using ProjectManagement.ProjectAPI.Data;
 using ProjectManagement.ProjectAPI.Endpoints;
 using ProjectManagement.ProjectAPI.Extensions;
 
-WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-builder.Configuration.AddCoreConfiguration();
-builder.Logging.AddCoreLogging(builder.Configuration);
-builder.Services.RegisterDependencies(builder.Configuration);
+CoreWebApplicationBuilder.BuildConfigureAndRun(args,
+    (services, configuration) => { services.RegisterDependencies(configuration); },
+    app =>
+    {
+        // DB Migration
+        using IServiceScope scope = app.Services.CreateScope();
+        ApplicationDbContext db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
 
-WebApplication app = builder.Build();
-
-using IServiceScope scope = app.Services.CreateScope();
-ApplicationDbContext db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-db.Database.Migrate();
-
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-app.UseCors("AllowAll");
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.AddProjectEndpoints();
-app.AddTodoEndpoints();
-
-app.Run();
+        app.AddProjectEndpoints();
+        app.AddTodoEndpoints();
+    });

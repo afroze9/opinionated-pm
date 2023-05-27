@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ProjectManagement.Persistence;
-using ProjectManagement.ProjectAPI.Domain.Entities;
+﻿using ProjectManagement.Persistence;
+using ProjectManagement.ProjectAPI.Entities;
 
 namespace ProjectManagement.ProjectAPI.Data.Repositories;
 
 public class TodoRepository : EfCustomRepository<TodoItem>
 {
-    protected TodoRepository(DbContext context) : base(context)
+    public TodoRepository(ApplicationDbContext context) : base(context)
     {
     }
 }

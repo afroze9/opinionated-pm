@@ -4,42 +4,18 @@ using ProjectManagement.CompanyAPI.Data;
 using ProjectManagement.CompanyAPI.Data.Repositories;
 using ProjectManagement.CompanyAPI.Mapping;
 using ProjectManagement.CompanyAPI.Services;
-using ProjectManagement.Persistence.Auditing;
 using Steeltoe.Common.Http.Discovery;
-using Steeltoe.Discovery.Client;
-using Steeltoe.Management.Endpoint;
-using Steeltoe.Management.Endpoint.Health;
-using Steeltoe.Management.Endpoint.Info;
-using Steeltoe.Management.Endpoint.Refresh;
 
 namespace ProjectManagement.CompanyAPI.Extensions;
 
 [ExcludeFromCodeCoverage]
 public static class DependencyInjectionExtensions
 {
-    private static void AddActuators(this IServiceCollection services, IConfiguration configuration)
+    public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddHealthActuator(configuration);
-        services.AddInfoActuator(configuration);
-        services.AddHealthChecks();
-        services.AddRefreshActuator();
-        services.ActivateActuatorEndpoints();
-    }
-    
-    private static void AddApplicationServices(this IServiceCollection services)
-    {
+        // Internal Services
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<ITagService, TagService>();
-        services.AddSingleton<IDateTime, DateTimeService>();
-        services.AddAutoMapper(typeof(CompanyProfile));
-        services.AddValidatorsFromAssemblyContaining(typeof(Program));
-    }
-    
-    private static void AddConsulDiscovery(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddDiscoveryClient(configuration);
-
-        services.AddHttpContextAccessor();
         services
             .AddHttpClient("projects")
             .AddServiceDiscovery()
@@ -71,22 +47,15 @@ public static class DependencyInjectionExtensions
                 };
             })
             .AddTypedClient<IProjectService, ProjectService>();
-    }
 
-    private static void AddPersistence(this IServiceCollection services, IConfiguration configuration)
-    {
+        // Libraries
+        services.AddAutoMapper(typeof(CompanyProfile));
+        services.AddValidatorsFromAssemblyContaining(typeof(Program));
+
+        // Persistence
         services.AddCorePersistence<ApplicationDbContext>(configuration);
         services.AddScoped<CompanyRepository>();
         services.AddScoped<TagRepository>();
         services.AddScoped<UnitOfWork>();
-    }
-    
-    public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.AddApplicationServices();
-        services.AddActuators(configuration);
-        services.AddConsulDiscovery(configuration);
-        services.AddWebFramework(configuration);
-        services.AddPersistence(configuration);
     }
 }

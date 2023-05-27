@@ -1,6 +1,6 @@
 ﻿using ProjectManagement.Core;
 
-namespace ProjectManagement.ProjectAPI.Domain.Entities;
+namespace ProjectManagement.ProjectAPI.Entities;
 
 public class TodoItem : AuditableEntityBase
 {

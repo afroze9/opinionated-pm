@@ -1,4 +1,4 @@
-﻿using ProjectManagement.ProjectAPI.Domain.Entities;
+﻿using ProjectManagement.ProjectAPI.Entities;
 
 namespace ProjectManagement.ProjectAPI.UnitTests.Domain.Entities;
 

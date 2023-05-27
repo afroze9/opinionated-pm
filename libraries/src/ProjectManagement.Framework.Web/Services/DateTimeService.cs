@@ -1,6 +1,6 @@
 ﻿using ProjectManagement.Persistence.Auditing;
 
-namespace ProjectManagement.CompanyAPI.Services;
+namespace ProjectManagement.Framework.Web.Services;
 
 public class DateTimeService : IDateTime
 {

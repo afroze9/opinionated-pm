@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ProjectManagement.ProjectAPI.Data;
-using ProjectManagement.ProjectAPI.Domain.Entities;
+using ProjectManagement.ProjectAPI.Entities;
 using ProjectManagement.ProjectAPI.Models;
 
 namespace ProjectManagement.ProjectAPI.Endpoints;

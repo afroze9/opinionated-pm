@@ -1,7 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using ProjectManagement.Persistence;
 using ProjectManagement.Persistence.Auditing;
-using ProjectManagement.ProjectAPI.Domain.Entities;
+using ProjectManagement.ProjectAPI.Entities;
 
 namespace ProjectManagement.ProjectAPI.Data;
 
@@ -13,6 +14,12 @@ public class ApplicationDbContext : AuditableDbContext
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options, auditableEntitySaveChangesInterceptor)
     {
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        base.OnModelCreating(modelBuilder);
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 
     public DbSet<Project> Projects => Set<Project>();

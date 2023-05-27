@@ -89,6 +89,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Core.Unit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Framework.Web", "libraries\src\ProjectManagement.Framework.Web\ProjectManagement.Framework.Web.csproj", "{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectManagement.Management", "libraries\src\ProjectManagement.Management\ProjectManagement.Management.csproj", "{18AB6058-A1DA-4EEA-B7EB-4ADEDFB5C30B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -166,6 +168,10 @@ Global
 		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18AB6058-A1DA-4EEA-B7EB-4ADEDFB5C30B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18AB6058-A1DA-4EEA-B7EB-4ADEDFB5C30B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18AB6058-A1DA-4EEA-B7EB-4ADEDFB5C30B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18AB6058-A1DA-4EEA-B7EB-4ADEDFB5C30B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{271B890A-46CB-4878-B70F-05CB98785206} = {702FE086-BFA7-4B4C-A60E-ACF6FB9BA618}
@@ -194,5 +200,6 @@ Global
 		{98D51F1D-F9E0-4D7F-B106-B8E51ED1B407} = {3DE0DE4D-34AA-4DE1-BBD2-DFFC6FAEBE81}
 		{D8659CE4-CF0A-463A-BC50-0BDDC968337F} = {2FE7F389-148B-44C2-8F16-9A912D127E4E}
 		{95E00B4C-C09A-4D80-BDA5-E7730DFDCF29} = {3DE0DE4D-34AA-4DE1-BBD2-DFFC6FAEBE81}
+		{18AB6058-A1DA-4EEA-B7EB-4ADEDFB5C30B} = {3DE0DE4D-34AA-4DE1-BBD2-DFFC6FAEBE81}
 	EndGlobalSection
 EndGlobal

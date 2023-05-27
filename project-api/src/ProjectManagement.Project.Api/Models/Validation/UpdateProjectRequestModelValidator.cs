@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using ProjectManagement.ProjectAPI.Data;
-using ProjectManagement.ProjectAPI.Domain.Entities;
+using ProjectManagement.ProjectAPI.Entities;
 
 namespace ProjectManagement.ProjectAPI.Models.Validation;
 

@@ -1,4 +1,4 @@
-﻿namespace ProjectManagement.ProjectAPI.Domain.Entities;
+﻿namespace ProjectManagement.ProjectAPI.Entities;
 
 public enum ProjectStatus
 {

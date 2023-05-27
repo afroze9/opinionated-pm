@@ -17,7 +17,8 @@ public class ApplicationDbContext : AuditableDbContext
     /// </summary>
     /// <param name="options">The options for this context.</param>
     /// <param name="auditableEntitySaveChangesInterceptor">Service to handle audit information.</param>
-    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+    public ApplicationDbContext(
+        DbContextOptions<ApplicationDbContext> options,
         AuditableEntitySaveChangesInterceptor auditableEntitySaveChangesInterceptor)
         : base(options, auditableEntitySaveChangesInterceptor)
     {
