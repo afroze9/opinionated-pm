@@ -27,7 +27,7 @@
 
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Nexus.Core\Nexus.Core.csproj"/>
+        <ProjectReference Include="..\..\src\Nexus.Core\Nexus.Core.csproj" />
     </ItemGroup>
 
 </Project>

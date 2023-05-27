@@ -26,7 +26,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Nexus.Auth\Nexus.Auth.csproj"/>
+        <ProjectReference Include="..\..\src\Nexus.Auth\Nexus.Auth.csproj" />
     </ItemGroup>
 
 </Project>

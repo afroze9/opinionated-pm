@@ -19,7 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Nexus.Core\Nexus.Core.csproj"/>
+        <ProjectReference Include="..\Nexus.Core\Nexus.Core.csproj" />
     </ItemGroup>
 
 </Project>

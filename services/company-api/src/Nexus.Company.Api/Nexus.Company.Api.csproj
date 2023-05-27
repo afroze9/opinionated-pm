@@ -13,8 +13,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="AspNetCore.HealthChecks.UI"/>
-        <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage"/>
+        <PackageReference Include="AspNetCore.HealthChecks.UI" />
+        <PackageReference Include="AspNetCore.HealthChecks.UI.InMemory.Storage" />
         <PackageReference Include="AutoMapper" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
         <PackageReference Include="FluentValidation" />
@@ -39,17 +39,17 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Auth\Nexus.Auth.csproj"/>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Configuration\Nexus.Configuration.csproj"/>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Core\Nexus.Core.csproj"/>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Logging\Nexus.Logging.csproj"/>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Persistence\Nexus.Persistence.csproj"/>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj"/>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Telemetry\Nexus.Telemetry.csproj"/>
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Auth\Nexus.Auth.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Configuration\Nexus.Configuration.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Core\Nexus.Core.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Logging\Nexus.Logging.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Persistence\Nexus.Persistence.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Telemetry\Nexus.Telemetry.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Data\Migrations\"/>
+        <Folder Include="Data\Migrations\" />
     </ItemGroup>
 
 </Project>

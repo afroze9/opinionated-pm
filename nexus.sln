@@ -69,6 +69,29 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0D52296F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Project.Api.UnitTests", "services\project-api\tests\Nexus.Project.Api.UnitTests\Nexus.Project.Api.UnitTests.csproj", "{5FECAAB2-7A03-4145-81A2-0FBA398CD2EA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A13717A5-5107-4A86-898A-ABD223ACB0D6}"
+	ProjectSection(SolutionItems) = preProject
+		build-docker-images.ps1 = build-docker-images.ps1
+		cleanup-docker-solution.ps1 = cleanup-docker-solution.ps1
+		cleanup-local-solution.ps1 = cleanup-local-solution.ps1
+		publish-docker-images.ps1 = publish-docker-images.ps1
+		setup-docker-solution.ps1 = setup-docker-solution.ps1
+		setup-k8s.ps1 = setup-k8s.ps1
+		setup-local-dev.ps1 = setup-local-dev.ps1
+		docker-compose.yml = docker-compose.yml
+		docker-compose-local.yml = docker-compose-local.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{327048CC-60AA-4FEA-AE32-21E3E3C4243F}"
+	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
+		.env = .env
+		.gitignore = .gitignore
+		global.json = global.json
+		Directory.Packages.props = Directory.Packages.props
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

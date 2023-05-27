@@ -8,7 +8,7 @@
     }
   },
   "Consul": {
-    "Token": "f3475432-6b47-f94d-03d2-590d17bf343a",
+    "Token": "182d1b9d-f7b6-73c2-1508-7cc836409c40",
     "Discovery": {
       "ServiceName": "health-checks-dashboard",
       "Scheme": "https",
