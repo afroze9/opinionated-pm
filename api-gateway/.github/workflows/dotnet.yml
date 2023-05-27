@@ -52,7 +52,7 @@ jobs:
           dotnet tool install --global dotnet-coverage
 
       - name: Restore dependencies
-        run: dotnet restore ./src/ProjectManagement.ApiGateway/
+        run: dotnet restore ./src/Nexus.ApiGateway/
 
       - name: Build and analyze
         env:
@@ -61,8 +61,8 @@ jobs:
         shell: pwsh
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"afroze9_dotnet-projectmanagement-api-gateway" /o:"afroze9-main" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.cs.vscoveragexml.reportsPaths=coverage.xml
-          dotnet build ./src/ProjectManagement.ApiGateway/ -c Release --no-restore
-          dotnet-coverage collect 'dotnet test ./tests/ProjectManagement.ApiGateway.UnitTests/ -s ./tests/ProjectManagement.ApiGateway.UnitTests/.runsettings' -f xml  -o 'coverage.xml'
+          dotnet build ./src/Nexus.ApiGateway/ -c Release --no-restore
+          dotnet-coverage collect 'dotnet test ./tests/Nexus.ApiGateway.UnitTests/ -s ./tests/Nexus.ApiGateway.UnitTests/.runsettings' -f xml  -o 'coverage.xml'
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   deploy:
@@ -85,6 +85,6 @@ jobs:
       - name: Build and push Docker images
         uses: docker/build-push-action@v4.0.0
         with:
-          file: src/ProjectManagement.ApiGateway/Dockerfile
+          file: src/Nexus.ApiGateway/Dockerfile
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/dpm-api-gateway:latest, ${{ secrets.DOCKERHUB_USERNAME }}/dpm-api-gateway:${{ github.run_number }}
           push: true

@@ -50,25 +50,25 @@ Pop-Location
 
 echo ""
 echo "Setting up ACL for api-gateway"
-Push-Location ".\api-gateway\src\ProjectManagement.ApiGateway\Consul\"
+Push-Location ".\api-gateway\src\Nexus.ApiGateway\Consul\"
 &".\setup-consul.ps1" "api_gateway_token"
 Pop-Location
 
 echo ""
 echo "Setting up ACL for company-api"
-Push-Location ".\company-api\src\ProjectManagement.Company.Api\Consul"
+Push-Location ".\company-api\src\Nexus.Company.Api\Consul"
 &".\setup-consul.ps1" "company_api_token"
 Pop-Location
 
 echo ""
 echo "Setting up ACL for project-api"
-Push-Location ".\project-api\src\ProjectManagement.Project.Api\Consul"
+Push-Location ".\project-api\src\Nexus.Project.Api\Consul"
 &".\setup-consul.ps1" "project_api_token"
 Pop-Location
 
 echo ""
 echo "Setting up ACL for health-checks-dashboard"
-Push-Location ".\health-checks-dashboard\src\ProjectManagement.HealthChecksDashboard\Consul"
+Push-Location ".\health-checks-dashboard\src\Nexus.HealthChecksDashboard\Consul"
 &".\setup-consul.ps1" "health_checks_dashboard_token"
 Pop-Location
 
