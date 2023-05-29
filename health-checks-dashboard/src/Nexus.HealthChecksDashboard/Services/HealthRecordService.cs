@@ -4,19 +4,20 @@ using Newtonsoft.Json;
 using Nexus.HealthChecksDashboard.Abstractions;
 using Nexus.HealthChecksDashboard.Configuration;
 using Nexus.HealthChecksDashboard.Converters;
+using Nexus.HealthChecksDashboard.Data;
 using Nexus.HealthChecksDashboard.Entities;
 using Nexus.HealthChecksDashboard.Models;
 
-namespace Nexus.HealthChecksDashboard.Data;
+namespace Nexus.HealthChecksDashboard.Services;
 
 public class HealthRecordService : IHealthRecordService
 {
-    private readonly IApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly HealthCheckOptions _healthCheckOptions;
     private readonly JsonSerializerSettings _jsonSerializerSettings;
 
     public HealthRecordService(
-        IApplicationDbContext context,
+        ApplicationDbContext context,
         IOptionsSnapshot<HealthCheckOptions> healthCheckOptions)
     {
         _context = context;

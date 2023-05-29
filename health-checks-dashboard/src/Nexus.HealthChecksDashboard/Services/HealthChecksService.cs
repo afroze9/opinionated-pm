@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Nexus.HealthChecksDashboard.Abstractions;
 using Nexus.HealthChecksDashboard.Configuration;
+using Nexus.HealthChecksDashboard.Data;
 using Nexus.HealthChecksDashboard.Entities;
 
 namespace Nexus.HealthChecksDashboard.Services;
@@ -9,14 +10,14 @@ public class HealthChecksService : IHealthChecksService
 {
     private readonly HttpClient _httpClient;
     private readonly ILogger<HealthChecksService> _logger;
-    private readonly IApplicationDbContext _context;
+    private readonly ApplicationDbContext _context;
     private readonly HealthCheckOptions _options;
 
     public HealthChecksService(
         IHttpClientFactory httpClient,
         ILogger<HealthChecksService> logger,
         IOptionsSnapshot<HealthCheckOptions> settings,
-        IApplicationDbContext context)
+        ApplicationDbContext context)
     {
         _httpClient = httpClient.CreateClient("healthchecks");
         _logger = logger;

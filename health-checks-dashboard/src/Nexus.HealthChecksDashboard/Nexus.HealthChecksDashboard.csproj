@@ -26,4 +26,8 @@
     <PackageReference Include="Winton.Extensions.Configuration.Consul" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
+  </ItemGroup>
+
 </Project>

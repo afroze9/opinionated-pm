@@ -1,10 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Nexus.HealthChecksDashboard.Abstractions;
 using Nexus.HealthChecksDashboard.Entities;
 
 namespace Nexus.HealthChecksDashboard.Data;
 
-public class ApplicationDbContext : DbContext, IApplicationDbContext
+public class ApplicationDbContext : DbContext
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
         : base(options)
