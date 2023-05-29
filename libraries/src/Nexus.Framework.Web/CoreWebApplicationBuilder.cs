@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Protocols;
 using Nexus.Configuration;
 using Nexus.Logging;
 using Serilog;
@@ -9,20 +11,32 @@ namespace Microsoft.Extensions.DependencyInjection;
 
 public static class CoreWebApplicationBuilder
 {
-    public static WebApplication BuildAndConfigure(string[] args,
-        Action<IServiceCollection, IConfiguration> registerServices,
-        Action<WebApplication> configure)
+    private static WebApplication BuildDefaultApp(
+        string[] args,
+        Action<ConfigurationManager, IWebHostEnvironment>? preConfiguration,
+        Action<IServiceCollection, IConfiguration, IWebHostEnvironment>? registerServices)
     {
         WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
+        
+        // Configuration
+        preConfiguration?.Invoke(builder.Configuration, builder.Environment);
         builder.Configuration.AddCoreConfiguration();
+        
+        // Logging
         builder.Logging.AddCoreLogging(builder.Configuration);
+        
+        // Core Services
         builder.Services.AddWebFramework(builder.Configuration);
 
         // Register app specific services
-        registerServices(builder.Services, builder.Configuration);
+        registerServices?.Invoke(builder.Services, builder.Configuration, builder.Environment);
 
-        WebApplication app = builder.Build();
+        return builder.Build();
+    }
 
+    private static void ConfigureDefaultMiddleware(this WebApplication app)
+    {
+        // This is default middleware order
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -33,20 +47,25 @@ public static class CoreWebApplicationBuilder
         app.UseCors("AllowAll");
         app.UseAuthentication();
         app.UseAuthorization();
-
-        // Run app specific configuration
-        configure(app);
-
-        return app;
     }
 
-    public static void BuildConfigureAndRun(string[] args,
-        Action<IServiceCollection, IConfiguration> registerServices,
-        Action<WebApplication> configure)
+    public static void BuildConfigureAndRun(
+        string[] args,
+        bool configureDefaultMiddleware,
+        Action<ConfigurationManager, IWebHostEnvironment>? preConfiguration,
+        Action<IServiceCollection, IConfiguration, IWebHostEnvironment>? registerServices,
+        Action<WebApplication>? configureMiddleware)
     {
         try
         {
-            WebApplication app = BuildAndConfigure(args, registerServices, configure);
+            WebApplication app = BuildDefaultApp(args, preConfiguration, registerServices);
+            if (configureDefaultMiddleware)
+            {
+                app.ConfigureDefaultMiddleware();
+            }
+
+            configureMiddleware?.Invoke(app);
+
             app.Run();
         }
         finally

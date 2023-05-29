@@ -25,6 +25,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\..\..\libraries\src\Nexus.Configuration\Nexus.Configuration.csproj" />
+        <ProjectReference Include="..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
     </ItemGroup>
 
 </Project>

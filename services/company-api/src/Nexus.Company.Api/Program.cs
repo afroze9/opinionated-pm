@@ -9,9 +9,12 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        CoreWebApplicationBuilder.BuildConfigureAndRun(args,
-            (services, configuration) => { services.RegisterDependencies(configuration); },
-            app =>
+        CoreWebApplicationBuilder.BuildConfigureAndRun(
+            args,
+            configureDefaultMiddleware: true,
+            preConfiguration: null,
+            registerServices: (services, configuration, _) => { services.RegisterDependencies(configuration); },
+            configureMiddleware: app =>
             {
                 // DB Migration
                 using IServiceScope scope = app.Services.CreateScope();

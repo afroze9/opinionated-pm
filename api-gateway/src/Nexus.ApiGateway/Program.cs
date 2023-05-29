@@ -1,4 +1,5 @@
 ﻿using Nexus.ApiGateway.Extensions;
+using Ocelot.DependencyInjection;
 
 namespace Nexus.ApiGateway;
 
@@ -7,15 +8,29 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
-        builder.Configuration.AddApplicationConfiguration(builder.Environment);
-        builder.Services.RegisterDependencies(builder.Configuration);
+        CoreWebApplicationBuilder.BuildConfigureAndRun(
+            args,
+            configureDefaultMiddleware: false,
+            preConfiguration: PreConfiguration,
+            registerServices: RegisterServices,
+            configureMiddleware: ConfigureMiddleware);
+    }
 
-        WebApplication app = builder.Build();
+    private static void ConfigureMiddleware(WebApplication app)
+    {
         app.UseCors("AllowAll");
         app.UseAuthentication();
         app.UseRouting();
         app.UseCustomOcelot().Wait();
-        app.Run();
+    }
+
+    private static void PreConfiguration(ConfigurationManager configurationManager, IWebHostEnvironment environment)
+    {
+        configurationManager.AddOcelot("Ocelot", environment);
+    }
+    
+    private static void RegisterServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
+    {
+        services.RegisterDependencies();
     }
 }
