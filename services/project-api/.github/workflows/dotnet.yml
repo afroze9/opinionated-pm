@@ -86,5 +86,5 @@ jobs:
         uses: docker/build-push-action@v4.0.0
         with:
           file: src/Nexus.Project.Api/Dockerfile
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/dpm-project-api:latest, ${{ secrets.DOCKERHUB_USERNAME }}/dpm-project-api:${{ github.run_number }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/nexus-project-api:latest, ${{ secrets.DOCKERHUB_USERNAME }}/nexus-project-api:${{ github.run_number }}
           push: true

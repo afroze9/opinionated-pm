@@ -8,28 +8,20 @@ echo "Building version $version for repository $repo"
 
 echo ""
 echo "Building Frontend App"
-docker build -t dpm-frontend-app:latest -t dpm-frontend-app:$version -t "$repo/dpm-frontend-app:latest" -t "$repo/dpm-frontend-app:$version" .\frontend-app\
+docker build -t nexus-frontend-app:latest -t nexus-frontend-app:$version -t "$repo/nexus-frontend-app:latest" -t "$repo/nexus-frontend-app:$version" .\frontend-app\
 
 echo ""
 echo "Building API Gateway"
-Push-Location ".\api-gateway\"
-docker build -t dpm-api-gateway:latest -t dpm-api-gateway:$version -t "$repo/dpm-api-gateway:latest" -t "$repo/dpm-api-gateway:$version" -f "src\Nexus.ApiGateway\Dockerfile" .
-Pop-Location
+docker build -t nexus-api-gateway:latest -t nexus-api-gateway:$version -t "$repo/nexus-api-gateway:latest" -t "$repo/nexus-api-gateway:$version" -f .\api-gateway\src\Nexus.ApiGateway\Dockerfile .
 
 echo ""
 echo "Building Company API"
-Push-Location ".\company-api\"
-docker build -t dpm-company-api:latest -t dpm-company-api:$version -t "$repo/dpm-company-api:latest" -t "$repo/dpm-company-api:$version" -f "src\Nexus.Company.Api\Dockerfile" .
-Pop-Location
+docker build -t nexus-company-api:latest -t nexus-company-api:$version -t "$repo/nexus-company-api:latest" -t "$repo/nexus-company-api:$version" -f .\services\company-api\src\Nexus.Company.Api\Dockerfile .
 
 echo ""
 echo "Building Project API"
-Push-Location ".\project-api\"
-docker build -t dpm-project-api:latest -t dpm-project-api:$version -t "$repo/dpm-project-api:latest" -t "$repo/dpm-project-api:$version" -f "src\Nexus.Project.Api\Dockerfile" .
-Pop-Location
+docker build -t nexus-project-api:latest -t nexus-project-api:$version -t "$repo/nexus-project-api:latest" -t "$repo/nexus-project-api:$version" -f .\services\project-api\src\Nexus.Project.Api\Dockerfile .
 
 echo ""
 echo "Building Health Checks Dashboard"
-Push-Location ".\health-checks-dashboard\"
-docker build -t dpm-health-checks-dashboard:latest -t dpm-health-checks-dashboard:$version -t "$repo/dpm-health-checks-dashboard:latest" -t "$repo/dpm-health-checks-dashboard:$version" -f "src\Nexus.HealthChecksDashboard\Dockerfile" .
-Pop-Location
+docker build -t nexus-health-checks-dashboard:latest -t nexus-health-checks-dashboard:$version -t "$repo/nexus-health-checks-dashboard:latest" -t "$repo/nexus-health-checks-dashboard:$version" -f .\health-checks-dashboard\src\Nexus.HealthChecksDashboard\Dockerfile .

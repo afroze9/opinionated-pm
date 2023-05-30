@@ -13,7 +13,7 @@ Ensure the following settings exist in appsettings.json / Environment variables 
 }
 ```
 
-## Service Registration
+## Usage
 
 While registering services, call:
 

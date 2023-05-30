@@ -5,10 +5,25 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj", "src/Nexus.HealthChecksDashboard/"]
-RUN dotnet restore "src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj"
+
+COPY ["libraries/src/Nexus.Auth/Nexus.Auth.csproj", "libraries/src/Nexus.Auth/"]
+COPY ["libraries/src/Nexus.Configuration/Nexus.Configuration.csproj", "libraries/src/Nexus.Configuration/"]
+COPY ["libraries/src/Nexus.Core/Nexus.Core.csproj", "libraries/src/Nexus.Core/"]
+COPY ["libraries/src/Nexus.Logging/Nexus.Logging.csproj", "libraries/src/Nexus.Logging/"]
+COPY ["libraries/src/Nexus.Persistence/Nexus.Persistence.csproj", "libraries/src/Nexus.Persistence/"]
+COPY ["libraries/src/Nexus.Framework.Web/Nexus.Framework.Web.csproj", "libraries/src/Nexus.Framework.Web/"]
+COPY ["libraries/src/Nexus.Management/Nexus.Management.csproj", "libraries/src/Nexus.Management/"]
+COPY ["libraries/src/Nexus.Telemetry/Nexus.Telemetry.csproj", "libraries/src/Nexus.Telemetry/"]
+COPY ["Directory.Packages.props", "Directory.Packages.props"]
+
+COPY ["health-checks-dashboard/src/Nexus.HealthChecksDashboard/nuget.config", "health-checks-dashboard/src/Nexus.HealthChecksDashboard/"]
+COPY ["health-checks-dashboard/src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj", "health-checks-dashboard/src/Nexus.HealthChecksDashboard/"]
+
+RUN dotnet restore "health-checks-dashboard/src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj"
+
 COPY . .
-WORKDIR "/src/src/Nexus.HealthChecksDashboard"
+
+WORKDIR "/src/health-checks-dashboard/src/Nexus.HealthChecksDashboard"
 RUN dotnet build "Nexus.HealthChecksDashboard.csproj" -c Release -o /app/build
 
 FROM build AS publish

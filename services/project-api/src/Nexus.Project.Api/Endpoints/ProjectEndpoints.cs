@@ -41,7 +41,7 @@ public static class ProjectEndpoints
             .WithTags("Project");
     }
 
-    internal static async Task<IResult> GetAllProjects(UnitOfWork unitOfWork, int companyId)
+    internal static async Task<IResult> GetAllProjects(UnitOfWork unitOfWork, int? companyId)
     {
         List<Project> projects = await unitOfWork.Projects.GetAllByCompanyIdAsync(companyId, true);
         return projects.Count == 0 ? Results.NotFound() : Results.Ok(projects);

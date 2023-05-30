@@ -65,13 +65,13 @@ Pop-Location
 
 echo ""
 echo "Setting up ACL for company-api"
-Push-Location ".\company-api\src\Nexus.Company.Api\Consul"
+Push-Location ".\services\company-api\src\Nexus.Company.Api\Consul"
 &".\setup-consul-docker.ps1" "company_api_token"
 Pop-Location
 
 echo ""
 echo "Setting up ACL for project-api"
-Push-Location ".\project-api\src\Nexus.Project.Api\Consul"
+Push-Location ".\services\project-api\src\Nexus.Project.Api\Consul"
 &".\setup-consul-docker.ps1" "project_api_token"
 Pop-Location
 

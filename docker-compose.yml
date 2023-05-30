@@ -35,7 +35,7 @@ services:
 
   api-gateway:
     container_name: api-gateway
-    image: dpm-api-gateway:latest
+    image: nexus-api-gateway:latest
     restart: always
     ports:
       - ${API_GATEWAY_PORT_EXTERNAL}:443
@@ -61,7 +61,7 @@ services:
       - api-gateway
 
   company-api:
-    image: dpm-company-api:latest
+    image: nexus-company-api:latest
     depends_on:
       - company-db
     restart: always
@@ -92,7 +92,7 @@ services:
       - health-checks
 
   project-api:
-    image: dpm-project-api:latest
+    image: nexus-project-api:latest
     depends_on:
       - project-db
     restart: always
@@ -122,7 +122,7 @@ services:
 
   frontend-app:
     container_name: frontend-app
-    image: dpm-frontend-app:latest
+    image: nexus-frontend-app:latest
     ports:
       - 3000:3000
     networks:
@@ -130,7 +130,7 @@ services:
 
   health-checks-dashboard:
     container_name: health-checks-dashboard
-    image: dpm-health-checks-dashboard:latest
+    image: nexus-health-checks-dashboard:latest
     environment:
       - ConsulKV:Url=http://consul-server1:8500
       - ConsulKV:Token=${HEALTH_CHECKS_DASHBOARD_TOKEN}

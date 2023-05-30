@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Protocols;
 using Nexus.Configuration;
 using Nexus.Logging;
 using Serilog;
