@@ -3,6 +3,8 @@ Health checks are a mechanism used to monitor the health and availability of com
 
 Health checks typically involve periodically sending requests to the component being monitored and evaluating the response. Based on the response, the health check can determine whether the component is healthy or experiencing any problems. This information is crucial for system administrators, developers, and operators to understand the overall health of the system and take appropriate actions if necessary.
 
+![Overview](nexus-hc.png)
+
 # Steeltoe Health Checks
 Steeltoe is a set of open-source libraries for .NET that provides various capabilities for building cloud-native applications. One of the features offered by Steeltoe is health checks, which enables you to implement and expose health check endpoints in your .NET applications.
 By leveraging Steeltoe's health checks, you can easily add monitoring capabilities to your microservices and gather insights into their health and availability.

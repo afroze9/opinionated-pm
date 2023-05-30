@@ -1,6 +1,9 @@
 # Nexus Template
 
-![Overview](docs/nexus-01-overview.png)
+## Getting Started
+Read the guide under [Nexus.Framework.Web](libraries/src/Nexus.Framework.Web/README.md)
+
+![Overview](docs/nexus-overview.png)
 
 ## Components
 * [API Gateway](api-gateway/README.md)
@@ -94,7 +97,7 @@ Create a simple microservices based application with the following components:
       * [x] Trainings
           * [x] Docker
       * [x] Development
-      * [ ] Documentation
+      * [x] Documentation
       * [x] Component Integration
       * [ ] Presentation / Demo
       * [x] Move ACL for each microservice to its own service directory

@@ -1,5 +1,8 @@
 ﻿# How to Use
 
+# Overview
+![Overview](nexus-auth.png)
+
 ## Configuration
 
 Ensure the following settings exist in appsettings.json / Environment variables / Consul KV:

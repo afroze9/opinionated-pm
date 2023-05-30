@@ -4,6 +4,8 @@ This document will guide you through the process of installing and configuring C
 # What is Service Discovery?
 Service discovery is an essential aspect of modern distributed systems. It refers to the ability of services to automatically discover and communicate with other services in the same infrastructure. In a microservices architecture, where services are often dynamic and can be deployed or scaled independently, service discovery enables seamless interaction and coordination between services.
 
+![Overview](nexus-service-discovery.png)
+
 # Why Use Consul for Service Discovery?
 Consul is a widely adopted service discovery tool that provides a robust solution for service registration, discovery, and health monitoring. It offers several features that make it a popular choice:
 

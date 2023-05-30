@@ -1,6 +1,4 @@
-﻿using Nexus.Telemetry;
-
-namespace Nexus.Framework.Web.Configuration;
+﻿namespace Nexus.Framework.Web.Configuration;
 
 public class FrameworkSettings
 {
@@ -46,6 +44,11 @@ public class ManagementSettings
 }
 
 public class DiscoverySettings
+{
+    public bool Enable { get; set; }
+}
+
+public class TelemetrySettings
 {
     public bool Enable { get; set; }
 }

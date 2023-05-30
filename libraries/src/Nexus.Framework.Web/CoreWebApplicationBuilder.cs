@@ -6,6 +6,7 @@ using Nexus.Configuration;
 using Nexus.Logging;
 using Serilog;
 
+// ReSharper disable once CheckNamespace
 namespace Microsoft.Extensions.DependencyInjection;
 
 public static class CoreWebApplicationBuilder
