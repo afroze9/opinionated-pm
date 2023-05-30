@@ -1,6 +1,5 @@
 # Nexus Template
 
-## Solution Structure
 ![Overview](docs/nexus-01-overview.png)
 
 ## Components
@@ -19,7 +18,6 @@
 * [Persistence](libraries/src/Nexus.Persistence/README.md)
 * [Tracing](libraries/src/Nexus.Telemetry/README.md)
 * [Framework](libraries/src/Nexus.Framework.Web/README.md)
-
 
 ## Project Scope
 Create a simple microservices based application with the following components:
