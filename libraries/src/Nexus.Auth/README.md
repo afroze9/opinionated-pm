@@ -35,3 +35,4 @@ Below will add `search:company` and `print:company`policies for `company` resouc
 List<string> actions = new List<string>() { "search", "print" };
 services.AddCoreAuth(configuration, "company", actions);
 ```
+
