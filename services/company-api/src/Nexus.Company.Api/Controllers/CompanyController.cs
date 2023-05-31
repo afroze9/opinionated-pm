@@ -1,4 +1,6 @@
-﻿using System.Net.Mime;
+﻿using System.Diagnostics;
+using System.Diagnostics.Metrics;
+using System.Net.Mime;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
@@ -7,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Model;
+using Nexus.CompanyAPI.Telemetry;
 
 namespace Nexus.CompanyAPI.Controllers;
 
@@ -18,15 +21,20 @@ public class CompanyController : ControllerBase
     private readonly ICompanyService _companyService;
     private readonly IValidator<CompanyUpdateRequestModel> _companyUpdateRequestModelvalidator;
     private readonly IMapper _mapper;
+    private readonly ActivitySource _activitySource;
+    private readonly Counter<long> _getAllCompaniesCounter;
 
     public CompanyController(ICompanyService companyService, IMapper mapper,
         IValidator<CompanyRequestModel> companyRequestModelvalidator,
-        IValidator<CompanyUpdateRequestModel> companyUpdateRequestModelvalidator)
+        IValidator<CompanyUpdateRequestModel> companyUpdateRequestModelvalidator,
+        ICompanyInstrumentation companyInstrumentation)
     {
         _companyService = companyService;
         _mapper = mapper;
         _companyRequestModelvalidator = companyRequestModelvalidator;
         _companyUpdateRequestModelvalidator = companyUpdateRequestModelvalidator;
+        _activitySource = companyInstrumentation.ActivitySource;
+        _getAllCompaniesCounter = companyInstrumentation.GetAllCompaniesCounter;
     }
 
     /// <summary>
@@ -40,6 +48,7 @@ public class CompanyController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
     public async Task<ActionResult<List<CompanySummaryResponseModel>>> GetAll()
     {
+        using Activity? activity = _activitySource.StartActivity("get all companies");
         List<CompanySummaryDto> companies = await _companyService.GetAllAsync();
 
         if (companies.Count == 0)
@@ -48,6 +57,7 @@ public class CompanyController : ControllerBase
         }
 
         List<CompanySummaryResponseModel> mappedCompanies = _mapper.Map<List<CompanySummaryResponseModel>>(companies);
+        _getAllCompaniesCounter.Add(1);
         return Ok(mappedCompanies);
     }
 

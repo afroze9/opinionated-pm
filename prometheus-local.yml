@@ -12,3 +12,10 @@ scrape_configs:
     scheme: https
     tls_config:
       insecure_skip_verify: true
+      
+  - job_name: 'project-api'
+    static_configs:
+      - targets: ['host.docker.internal:5041']
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true

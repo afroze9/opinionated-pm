@@ -48,7 +48,9 @@ public static class DependencyInjectionExtensions
             .WithMetrics(builder =>
             {
                 builder
+                    .AddRuntimeInstrumentation()
                     .AddAspNetCoreInstrumentation()
+                    .AddHttpClientInstrumentation()
                     .AddPrometheusExporter();
             });
     }

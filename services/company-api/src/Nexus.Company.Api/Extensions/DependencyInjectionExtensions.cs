@@ -4,6 +4,8 @@ using Nexus.CompanyAPI.Data;
 using Nexus.CompanyAPI.Data.Repositories;
 using Nexus.CompanyAPI.Mapping;
 using Nexus.CompanyAPI.Services;
+using Nexus.CompanyAPI.Telemetry;
+using OpenTelemetry.Resources;
 using Steeltoe.Common.Http.Discovery;
 
 namespace Nexus.CompanyAPI.Extensions;
@@ -14,6 +16,19 @@ public static class DependencyInjectionExtensions
     public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         // Internal Services
+        services.AddSingleton<ICompanyInstrumentation, CompanyInstrumentation>();
+        
+        // Custom Meter for Metrics
+        services.AddOpenTelemetry()
+            .ConfigureResource(c =>
+            {
+                c.AddService("company-api");
+            })
+            .WithMetrics(builder =>
+            {
+                builder.AddMeter(CompanyInstrumentation.MeterName);
+            });
+        
         services.AddScoped<ICompanyService, CompanyService>();
         services.AddScoped<ITagService, TagService>();
         services

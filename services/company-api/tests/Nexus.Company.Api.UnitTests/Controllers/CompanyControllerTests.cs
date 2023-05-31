@@ -9,6 +9,7 @@ using Nexus.CompanyAPI.Controllers;
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Mapping;
 using Nexus.CompanyAPI.Model;
+using Nexus.CompanyAPI.Telemetry;
 
 namespace Nexus.CompanyAPI.UnitTests.Controllers;
 
@@ -19,6 +20,7 @@ public class CompanyControllerTests
     private readonly Mock<IValidator<CompanyRequestModel>> _companyRequestModelValidatorMock = new ();
     private readonly Mock<ICompanyService> _companyServiceMock = new ();
     private readonly Mock<IValidator<CompanyUpdateRequestModel>> _companyUpdateRequestModelValidatorMock = new ();
+    private readonly Mock<ICompanyInstrumentation> _companyInstrumentationMock = new ();
 
     private readonly IMapper _mapper;
 
@@ -26,8 +28,11 @@ public class CompanyControllerTests
     {
         MapperConfiguration mockMapper = new (cfg => { cfg.AddProfile(new CompanyProfile()); });
         _mapper = mockMapper.CreateMapper();
-        _companyController = new CompanyController(_companyServiceMock.Object, _mapper,
-            _companyRequestModelValidatorMock.Object, _companyUpdateRequestModelValidatorMock.Object);
+        _companyController = new CompanyController(
+            _companyServiceMock.Object, _mapper,
+            _companyRequestModelValidatorMock.Object,
+            _companyUpdateRequestModelValidatorMock.Object,
+            _companyInstrumentationMock.Object);
     }
 
     [Fact]
