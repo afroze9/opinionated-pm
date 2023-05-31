@@ -31,7 +31,7 @@
     }
   },
   "Consul": {
-    "Token": "cc66fb00-428e-9056-760d-d2aafa9a25f5",
+    "Token": "741fd97b-aef8-de65-51fd-2ff9c7baab26",
     "Discovery": {
       "ServiceName": "company-api",
       "Scheme": "https",

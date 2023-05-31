@@ -47,6 +47,9 @@ public static class CoreWebApplicationBuilder
         app.UseCors("AllowAll");
         app.UseAuthentication();
         app.UseAuthorization();
+        
+        // TODO: find a way to call this from Tracing Library
+        app.UseOpenTelemetryPrometheusScrapingEndpoint();
     }
 
     public static void BuildConfigureAndRun(

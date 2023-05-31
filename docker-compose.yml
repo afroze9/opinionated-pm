@@ -169,6 +169,10 @@ services:
       - 9090:9090
     networks:
       - tracing
+    volumes:
+      - ./prometheus.yml:./prometheus.yml
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
 
   es-setup:
     image: docker.elastic.co/elasticsearch/elasticsearch:${STACK_VERSION}

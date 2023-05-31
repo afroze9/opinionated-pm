@@ -49,7 +49,7 @@ public static class DependencyInjectionExtensions
             {
                 builder
                     .AddAspNetCoreInstrumentation()
-                    .AddOtlpExporter(options => { options.Endpoint = new Uri(telemetrySettings.Endpoint); });
+                    .AddPrometheusExporter();
             });
     }
 }
