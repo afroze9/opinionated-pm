@@ -6,7 +6,7 @@ public class FrameworkSettings
 
     public ApiDocumentationSettings? Swagger { get; set; }
 
-    public FilterSettings? Filters { get; set; }
+    public ApiControllerSettings? ApiControllers { get; set; }
     
     public TelemetrySettings? Telemetry { get; set; }
 
@@ -31,6 +31,13 @@ public class ApiDocumentationSettings
     public string? Title { get; set; }
 
     public string? Description { get; set; }
+}
+
+public class ApiControllerSettings
+{
+    public bool Enable { get; set; }
+    
+    public FilterSettings? Filters { get; set; }
 }
 
 public class FilterSettings

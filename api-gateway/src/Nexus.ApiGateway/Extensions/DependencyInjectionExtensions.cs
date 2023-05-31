@@ -11,8 +11,6 @@ public static class DependencyInjectionExtensions
 {
     public static void RegisterDependencies(this IServiceCollection services)
     {
-        //services.AddGateway();
-        
         // Internal Services
         services
             .AddOcelot()

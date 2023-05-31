@@ -21,7 +21,7 @@
     }
   },
   "Consul": {
-    "Token": "1460e101-71f2-70cb-3fd8-75f519f9171b",
+    "Token": "d147583c-4c6e-2260-48f3-b667d86f6da5",
     "Discovery": {
       "ServiceName": "api-gateway",
       "Scheme": "https",
@@ -32,10 +32,10 @@
     }
   },
   "TelemetrySettings": {
-    "Endpoint": "http://jaeger:4317",
+    "Endpoint": "http://localhost:4317",
     "ServiceName": "api-gateway",
     "ServiceVersion": "v1",
-    "EnableAlwaysOnSampler": false,
+    "EnableAlwaysOnSampler": true,
     "SampleProbability": 0.2,
     "EnableConsoleExporter": false
   },

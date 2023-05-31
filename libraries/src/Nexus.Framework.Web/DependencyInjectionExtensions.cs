@@ -68,13 +68,16 @@ public static class DependencyInjectionExtensions
             services.AddApiDocumentation(settings.Swagger);
         }
 
-        services.AddControllers(options =>
+        if (settings.ApiControllers is { Enable: true })
         {
-            if (settings.Filters is { EnableActionLogging: true })
+            services.AddControllers(options =>
             {
-                options.Filters.Add<LoggingFilter>();
-            }
-        });
+                if (settings.ApiControllers.Filters is { EnableActionLogging: true })
+                {
+                    options.Filters.Add<LoggingFilter>();
+                }
+            });
+        }
         
         if (settings.Telemetry is { Enable: true })
         {

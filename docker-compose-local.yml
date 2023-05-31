@@ -35,6 +35,8 @@ services:
 
   jaeger:
     image: jaegertracing/all-in-one:latest
+    depends_on:
+      - prometheus
     ports:
       - 13133:13177
       - 16686:16686
@@ -42,6 +44,14 @@ services:
     environment:
       - COLLECTOR_OTLP_ENABLED=true
       - LOG_LEVEL=debug
+      - METRICS_STORAGE_TYPE=prometheus
+    networks:
+      - tracing
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
     networks:
       - tracing
 
