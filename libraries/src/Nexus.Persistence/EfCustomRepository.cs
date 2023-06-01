@@ -14,6 +14,11 @@ public class EfCustomRepository<T> : ICustomRepository<T>
         DbSet = context.Set<T>();
     }
 
+    public Task<List<T>> AllAsync(CancellationToken cancellationToken = default)
+    {
+        return DbSet.ToListAsync(cancellationToken);
+    }
+
     public T? GetById(int id)
     {
         return DbSet.Find(id);
