@@ -1,10 +1,24 @@
 {
+  "AllowedHosts": "*",
+  "Auth0Settings": {
+    "Authority": "https://teamly.us.auth0.com",
+    "Audience": "projectmanagement"
+  },
+  "Postgres": {
+    "Client": {
+      "Host": "localhost",
+      "Port": 5438,
+      "Username": "developer",
+      "Password": "dev123",
+      "Database": "project_management_people"
+    }
+  },
   "SerilogSettings": {
     "ElasticSearchSettings": {
       "Uri": "https://localhost:9200",
       "Username": "elastic",
       "Password": "dev123",
-      "IndexFormat": "logs-project-api-{0:yyyy.MM}"
+      "IndexFormat": "logs-people-api-{0:yyyy.MM}"
     }
   },
   "Serilog": {
@@ -17,9 +31,9 @@
     }
   },
   "Consul": {
-    "Token": "3739592f-4af6-8419-2b6f-55760d2aa2c9",
+    "Token": "c90c03b5-38f6-f750-8829-18a60a7a5dcb",
     "Discovery": {
-      "ServiceName": "health-checks-dashboard",
+      "ServiceName": "people-api",
       "Scheme": "https",
       "Retry": {
         "Enabled": true,
@@ -29,7 +43,7 @@
   },
   "TelemetrySettings": {
     "Endpoint": "http://localhost:4317",
-    "ServiceName": "api-gateway",
+    "ServiceName": "people-api",
     "ServiceVersion": "v1",
     "EnableAlwaysOnSampler": false,
     "SampleProbability": 0.2,
@@ -49,26 +63,5 @@
         }
       }
     }
-  },
-  "HealthCheck": {
-    "IntervalInSeconds": 3,
-    "Clients": [
-      {
-        "Name": "Company API",
-        "Url": "http://localhost:5031/actuator/health"
-      },
-      {
-        "Name": "Project API",
-        "Url": "http://localhost:5041/actuator/health"
-      },
-      {
-        "Name": "People",
-        "Url": "https://localhost:5061/actuator/health"
-      },
-      {
-        "Name": "API Gateway",
-        "Url": "http://localhost:7068/actuator/health"
-      }
-    ]
   }
 }

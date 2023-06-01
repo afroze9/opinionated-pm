@@ -67,6 +67,12 @@ Push-Location ".\services\project-api\src\Nexus.Project.Api\Consul"
 Pop-Location
 
 echo ""
+echo "Setting up ACL for people-api"
+Push-Location ".\services\people-api\src\People.Api\Consul"
+&".\setup-consul.ps1" "people_api_token"
+Pop-Location
+
+echo ""
 echo "Setting up ACL for health-checks-dashboard"
 Push-Location ".\health-checks-dashboard\src\Nexus.HealthChecksDashboard\Consul"
 &".\setup-consul.ps1" "health_checks_dashboard_token"
