@@ -11,14 +11,6 @@ public static class DependencyInjectionExtensions
 {
     public static void RegisterDependencies(this IServiceCollection services)
     {
-        // Internal Services
-        services
-            .AddOcelot()
-            .AddConsul();
 
-        // The order matters here
-        // Github Issue: https://github.com/ThreeMammals/Ocelot/issues/913
-        services.RemoveAll<IScopesAuthorizer>();
-        services.TryAddSingleton<IScopesAuthorizer, DelimitedScopesAuthorizer>();
     }
 }

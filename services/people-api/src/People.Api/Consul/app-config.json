@@ -31,7 +31,7 @@
     }
   },
   "Consul": {
-    "Token": "c90c03b5-38f6-f750-8829-18a60a7a5dcb",
+    "Token": "4f67d4a8-606f-6133-84f4-5c69fe53a1bc",
     "Discovery": {
       "ServiceName": "people-api",
       "Scheme": "https",

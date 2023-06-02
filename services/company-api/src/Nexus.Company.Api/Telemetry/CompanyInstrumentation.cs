@@ -10,12 +10,10 @@ public class CompanyInstrumentation : ICompanyInstrumentation, IDisposable
     internal const string MeterName = "CompanyApi.Company";
     public CompanyInstrumentation()
     {
-        
         string? version = typeof(CompanyInstrumentation).Assembly.GetName().Version?.ToString();
         ActivitySource = new ActivitySource(ActivitySourceName, version);
         _meter = new Meter(MeterName, version);
-        GetAllCompaniesCounter =
-            _meter.CreateCounter<long>("company.api.getall", "The number of calls to GetAllCompanies endpoint");
+        GetAllCompaniesCounter = _meter.CreateCounter<long>("company.api.getall", "The number of calls to GetAllCompanies endpoint");
     }
     
     public ActivitySource ActivitySource { get; }

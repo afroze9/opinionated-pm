@@ -21,7 +21,7 @@
     }
   },
   "Consul": {
-    "Token": "6aad4c55-0891-b564-6cf0-11e54954353a",
+    "Token": "026c2cde-c9f0-6c5a-e441-8b263a4fdb86",
     "Discovery": {
       "ServiceName": "api-gateway",
       "Scheme": "https",

@@ -2,7 +2,7 @@
 
 public class HealthCheckOptions
 {
-    public HealthCheckClient[] Clients { get; set; }
+    public HealthCheckClient[]? Clients { get; set; }
 
     public int IntervalInSeconds { get; set; }
 }

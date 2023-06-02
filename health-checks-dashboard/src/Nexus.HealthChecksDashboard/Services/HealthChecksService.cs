@@ -27,6 +27,11 @@ public class HealthChecksService : IHealthChecksService
 
     public async Task CheckHealthAsync()
     {
+        if (_options.Clients == null || _options.Clients.Length == 0)
+        {
+            return;
+        }
+        
         foreach (HealthCheckClient client in _options.Clients)
         {
             _logger.LogInformation("Checking health for {Name}...", client.Name);

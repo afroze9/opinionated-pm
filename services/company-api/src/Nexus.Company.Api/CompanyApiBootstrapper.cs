@@ -1,25 +1,31 @@
 ﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Data;
 using Nexus.CompanyAPI.Data.Repositories;
 using Nexus.CompanyAPI.Mapping;
 using Nexus.CompanyAPI.Services;
 using Nexus.CompanyAPI.Telemetry;
+using Nexus.Framework.Web;
 using OpenTelemetry.Resources;
 using Steeltoe.Common.Http.Discovery;
 
-namespace Nexus.CompanyAPI.Extensions;
+namespace Nexus.CompanyAPI;
 
-[ExcludeFromCodeCoverage]
-public static class DependencyInjectionExtensions
+public class CompanyApiBootstrapper : Bootstrapper
 {
-    public static void RegisterDependencies(this IServiceCollection services, IConfiguration configuration)
+    public CompanyApiBootstrapper(string[] args) : base(args)
     {
-        // Internal Services
-        services.AddSingleton<ICompanyInstrumentation, CompanyInstrumentation>();
-        
+    }
+
+    protected override void AddServices()
+    {
+        base.AddServices();
+
         // Custom Meter for Metrics
-        services.AddOpenTelemetry()
+        AppBuilder.Services.AddSingleton<ICompanyInstrumentation, CompanyInstrumentation>();
+        
+        AppBuilder.Services.AddOpenTelemetry()
             .ConfigureResource(c =>
             {
                 c.AddService("company-api");
@@ -29,9 +35,11 @@ public static class DependencyInjectionExtensions
                 builder.AddMeter(CompanyInstrumentation.MeterName);
             });
         
-        services.AddScoped<ICompanyService, CompanyService>();
-        services.AddScoped<ITagService, TagService>();
-        services
+        // Internal Services
+        AppBuilder.Services.AddScoped<ICompanyService, CompanyService>();
+        AppBuilder.Services.AddScoped<ITagService, TagService>();
+        
+        AppBuilder.Services
             .AddHttpClient("projects")
             .AddServiceDiscovery()
             .ConfigureHttpClient((serviceProvider, options) =>
@@ -64,13 +72,24 @@ public static class DependencyInjectionExtensions
             .AddTypedClient<IProjectService, ProjectService>();
 
         // Libraries
-        services.AddAutoMapper(typeof(CompanyProfile));
-        services.AddValidatorsFromAssemblyContaining(typeof(Program));
+        AppBuilder.Services.AddAutoMapper(typeof(CompanyProfile));
+        AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
         // Persistence
-        services.AddCorePersistence<ApplicationDbContext>(configuration);
-        services.AddScoped<CompanyRepository>();
-        services.AddScoped<TagRepository>();
-        services.AddScoped<UnitOfWork>();
+        AppBuilder.Services.AddCorePersistence<ApplicationDbContext>(AppBuilder.Configuration);
+        AppBuilder.Services.AddScoped<CompanyRepository>();
+        AppBuilder.Services.AddScoped<TagRepository>();
+        AppBuilder.Services.AddScoped<UnitOfWork>();
+    }
+
+    protected override void ConfigureMiddleware()
+    {
+        base.ConfigureMiddleware();
+        
+        using IServiceScope scope = App.Services.CreateScope();
+        ApplicationDbContext db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        db.Database.Migrate();
+
+        App.MapControllers();
     }
 }

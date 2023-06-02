@@ -1,27 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Nexus.CompanyAPI.Data;
-using Nexus.CompanyAPI.Extensions;
-
-namespace Nexus.CompanyAPI;
+﻿namespace Nexus.CompanyAPI;
 
 [ExcludeFromCodeCoverage]
 public class Program
 {
     public static void Main(string[] args)
     {
-        CoreWebApplicationBuilder.BuildConfigureAndRun(
-            args,
-            configureDefaultMiddleware: true,
-            preConfiguration: null,
-            registerServices: (services, configuration, _) => { services.RegisterDependencies(configuration); },
-            configureMiddleware: app =>
-            {
-                // DB Migration
-                using IServiceScope scope = app.Services.CreateScope();
-                ApplicationDbContext db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-                db.Database.Migrate();
-
-                app.MapControllers();
-            });
+        CompanyApiBootstrapper bootstrapper = new (args);
+        bootstrapper.BootstrapAndRun();
     }
 }
