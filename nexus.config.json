@@ -1,0 +1,22 @@
+{
+  "ProjectName": "ProjectManagement",
+  "Framework": {
+    "ApiGateway": {
+      "ServiceName": "api-gateway",
+      "ConsulConfigDirectory": "api-gateway/src/Nexus.ApiGateway/Consul",
+      "OcelotDirectory": "api-gateway/src/Nexus.ApiGateway/Ocelot",
+      "AppSettingsConfigPath": "api-gateway/src/Nexus.ApiGateway/appsettings.json"
+    },
+    "HealthChecksDashboard": {
+      "ConsulConfigDirectory": "health-checks-dashboard/src/Nexus.HealthChecksDashboard/Consul"
+    }
+  },
+  "Services": [
+    {
+      "Name": "company-api"
+    },
+    {
+      "Name": "project-api"
+    }
+  ]
+}

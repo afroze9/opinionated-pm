@@ -1,4 +1,9 @@
-param($tokenResult)
+param(
+    [string]$tokenResult,
+    [string]$subnetIp
+)
+
+echo $subnetIp
 
 function Restart-ContainerAndWait {
     param(

@@ -91,6 +91,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{327048
 		global.json = global.json
 		Directory.Packages.props = Directory.Packages.props
 		prometheus-local.yml = prometheus-local.yml
+		nexus.config.json = nexus.config.json
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "people-api", "people-api", "{991105F4-1E48-4E1A-81C6-6439C0534795}"
