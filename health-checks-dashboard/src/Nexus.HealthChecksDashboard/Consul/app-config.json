@@ -55,11 +55,13 @@
     "Clients": [
       {
         "Name": "Company API",
-        "Url": "http://localhost:5031/actuator/health"
+        "ServiceName": "company-api",
+        "Url": "https://localhost:5031/actuator/health"
       },
       {
         "Name": "Project API",
-        "Url": "http://localhost:5041/actuator/health"
+        "ServiceName": "project-api",
+        "Url": "https://localhost:5041/actuator/health"
       },
       {
         "Name": "People",
@@ -67,6 +69,7 @@
       },
       {
         "Name": "API Gateway",
+        "ServiceName": "api-gateway",
         "Url": "http://localhost:7068/actuator/health"
       }
     ]

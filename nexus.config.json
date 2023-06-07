@@ -5,18 +5,28 @@
       "ServiceName": "api-gateway",
       "ConsulConfigDirectory": "api-gateway/src/Nexus.ApiGateway/Consul",
       "OcelotDirectory": "api-gateway/src/Nexus.ApiGateway/Ocelot",
-      "AppSettingsConfigPath": "api-gateway/src/Nexus.ApiGateway/appsettings.json"
+      "AppSettingsConfigPath": "api-gateway/src/Nexus.ApiGateway/appsettings.json",
+      "Port": 7068
     },
     "HealthChecksDashboard": {
-      "ConsulConfigDirectory": "health-checks-dashboard/src/Nexus.HealthChecksDashboard/Consul"
+      "ServiceName": "health-checks-dashboard",
+      "ConsulConfigDirectory": "health-checks-dashboard/src/Nexus.HealthChecksDashboard/Consul",
+      "AppSettingsConfigPath": "health-checks-dashboard/src/Nexus.HealthChecksDashboard/appsettings.json",
+      "Port": 5051
     }
   },
   "Services": [
     {
-      "Name": "company-api"
+      "ServiceName": "company-api",
+      "ConsulConfigDirectory": "services/company-api/src/Nexus.Company.Api/Consul",
+      "AppSettingsConfigPath": "services/company-api/src/Nexus.Company.Api/appsettings.json",
+      "Port": 5031
     },
     {
-      "Name": "project-api"
+      "ServiceName": "project-api",
+      "ConsulConfigDirectory": "services/project-api/src/Nexus.Project.Api/Consul",
+      "AppSettingsConfigPath": "services/project-api/src/Nexus.Project.Api/appsettings.json",
+      "Port": 5041
     }
   ]
 }

@@ -318,7 +318,7 @@ networks:
     driver: bridge
   econsul:
     external:
-      name: consul-external
+      name: consul_external
 
 volumes:
   company-db:

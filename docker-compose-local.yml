@@ -234,7 +234,7 @@ networks:
   rabbitmq:
     driver: bridge
   econsul:
-      name: consul-external
+      name: consul_external
 
 volumes:
   company-db:

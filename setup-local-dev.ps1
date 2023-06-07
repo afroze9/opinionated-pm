@@ -268,7 +268,7 @@ $api_gateway_port = Get-EnvValue "API_GATEWAY_PORT_EXTERNAL"
 $company_api_port = Get-EnvValue "COMPANY_API_PORT_EXTERNAL"
 $project_api_port = Get-EnvValue "PROJECT_API_PORT_EXTERNAL"
 $health_checks_dashboard_port = Get-EnvValue "HEALTH_CHECKS_DASHBOARD_PORT_EXTERNAL"
-$networkName = "consul-external"
+$networkName = "consul_external"
 
 # Dev Certs
 Setup-DevCerts $devCertPassword

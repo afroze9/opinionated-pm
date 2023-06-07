@@ -39,7 +39,7 @@ echo "Building Docker Images"
 
 echo ""
 echo "Checking Docker Networks"
-$networkName = "consul-external"
+$networkName = "consul_external"
 $networkList = docker network ls --filter name=$networkName --format "{{.Name}}"
 if ($networkList -contains $networkName) {
     Write-Host "The '$networkName' network already exists."
