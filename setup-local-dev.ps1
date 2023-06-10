@@ -315,12 +315,6 @@ Push-Location ".\services\project-api\src\Nexus.Project.Api\Consul"
 &".\setup-consul.ps1" "project_api_token"
 Pop-Location
 
-Write-Host ""
-Write-Host "Setting up ACL for people-api"
-Push-Location ".\services\people-api\src\People.Api\Consul"
-&".\setup-consul.ps1" "people_api_token"
-Pop-Location
-
 # Updating Global Configs
 Write-Host ""
 Write-Host "Copying tokens to .env file"

@@ -38,22 +38,6 @@ services:
     networks:
       - project-db
 
-  people-db:
-    container_name: people-db
-    image: postgres:latest
-    restart: always
-    environment:
-      - POSTGRES_USER=developer
-      - POSTGRES_PASSWORD=dev123
-      - POSTGRES_DB=project_management_people
-      - PGPORT=${PEOPLE_DB_PORT}
-    ports:
-      - ${PEOPLE_DB_PORT}:${PEOPLE_DB_PORT}
-    volumes:
-      - people-db:/var/lib/postgresql/data
-    networks:
-      - people-db
-
   jaeger:
     image: jaegertracing/all-in-one:latest
     depends_on:
@@ -234,8 +218,6 @@ networks:
     driver: bridge
   project-db:
     driver: bridge
-  people-db:
-    driver: bridge
   tracing:
     driver: bridge
   logs:
@@ -253,8 +235,6 @@ volumes:
   company-db:
     driver: local
   project-db:
-    driver: local
-  people-db:
     driver: local
   certs:
     driver: local
