@@ -64,13 +64,9 @@
         "Url": "https://localhost:5041/actuator/health"
       },
       {
-        "Name": "People",
-        "Url": "https://localhost:5061/actuator/health"
-      },
-      {
         "Name": "API Gateway",
         "ServiceName": "api-gateway",
-        "Url": "http://localhost:7068/actuator/health"
+        "Url": "https://localhost:7068/actuator/health"
       }
     ]
   }
