@@ -1,5 +1,5 @@
 {
-  "ProjectName": "ProjectManagement",
+  "ProjectName": "Nexus",
   "Framework": {
     "ApiGateway": {
       "ServiceName": "api-gateway",
@@ -19,13 +19,15 @@
       "ServiceName": "company-api",
       "ProjectName": "Nexus.Company.Api",
       "RootNamespace": "Nexus.CompanyAPI",
-      "Port": 5031
+      "Port": 5031,
+      "DbPort": 5438
     },
     {
       "ServiceName": "project-api",
       "ProjectName": "Nexus.Project.Api",
       "RootNamespace": "Nexus.ProjectAPI",
-      "Port": 5041
+      "Port": 5041,
+      "DbPort": 5439
     }
   ]
 }
