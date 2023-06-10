@@ -3,29 +3,28 @@
   "Framework": {
     "ApiGateway": {
       "ServiceName": "api-gateway",
-      "ConsulConfigDirectory": "api-gateway/src/Nexus.ApiGateway/Consul",
-      "OcelotDirectory": "api-gateway/src/Nexus.ApiGateway/Ocelot",
-      "AppSettingsConfigPath": "api-gateway/src/Nexus.ApiGateway/appsettings.json",
+      "ProjectName": "Nexus.ApiGateway",
+      "RootNamespace": "Nexus.ApiGateway",
       "Port": 7068
     },
     "HealthChecksDashboard": {
       "ServiceName": "health-checks-dashboard",
-      "ConsulConfigDirectory": "health-checks-dashboard/src/Nexus.HealthChecksDashboard/Consul",
-      "AppSettingsConfigPath": "health-checks-dashboard/src/Nexus.HealthChecksDashboard/appsettings.json",
+      "ProjectName": "Nexus.HealthChecksDashboard",
+      "RootNamespace": "Nexus.HealthChecksDashboard",
       "Port": 5051
     }
   },
   "Services": [
     {
       "ServiceName": "company-api",
-      "ConsulConfigDirectory": "services/company-api/src/Nexus.Company.Api/Consul",
-      "AppSettingsConfigPath": "services/company-api/src/Nexus.Company.Api/appsettings.json",
+      "ProjectName": "Nexus.Company.Api",
+      "RootNamespace": "Nexus.CompanyAPI",
       "Port": 5031
     },
     {
       "ServiceName": "project-api",
-      "ConsulConfigDirectory": "services/project-api/src/Nexus.Project.Api/Consul",
-      "AppSettingsConfigPath": "services/project-api/src/Nexus.Project.Api/appsettings.json",
+      "ProjectName": "Nexus.Project.Api",
+      "RootNamespace": "Nexus.ProjectAPI",
       "Port": 5041
     }
   ]
