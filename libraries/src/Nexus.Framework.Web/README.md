@@ -1,4 +1,50 @@
-# How to Use
+# Framework Details
+
+## Application Bootstrapper
+Currently, Nexus provides a default bootstrapper implementation for Web Applications (MVC APIs).
+The default bootstrapper does the following:
+* Sets up Configuration using appsettings.json, environment variables, and Consul KV
+* Sets up Logging using Serilog and ElasticSearch
+* Enables Swagger endpoints
+* Enables Telemetry using Prometheus/Jaeger/Grafana
+* Enables Service Discovery using Consul Discovery Server
+* Enables Management/Actuator endnpoints similar to Spring Boot
+* Adds custom Action Filters to time requests
+
+You can check out the configuration [here](#configuration).
+
+## Usage
+To use the default Bootstrapper, run the following from `Program.cs`:
+```csharp
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Bootstrapper bootstrapper = new (args);
+        bootstrapper.BootstrapAndRun();
+    }
+}
+```
+
+To customize the bootstrap process, create a new bootstrapper for your service, extend the provided Boostrapper, and
+override the required functions:
+
+```csharp
+public class CompanyApiBootstrapper : Bootstrapper
+{
+    public CompanyApiBootstrapper(string[] args) : base(args)
+    {
+    }
+}
+```
+
+The following can be customized:
+* Configuration: Override this to setup custom configuration, e.g. add custom configuration providers/files etc.
+* Logging: Override this to use custom logging providers/sinks
+* Services: Override this to add application specific services to the Dependency Injection container. The best practice 
+is to call `base.AddServices()` from the override to ensure all Framework Services are registered as well
+* Middleware: Override this to use application specific Middleware and Middleware Order. You can check out the default
+middleware order [here](#default-middleware-configuration)
 
 ## Configuration
 
@@ -33,45 +79,9 @@ Ensure the following settings exist in appsettings.json / Environment variables 
 }
 ```
 
-## Usage
-
-```csharp
-public static void Main(string[] args)
-{
-    CoreWebApplicationBuilder.BuildConfigureAndRun(
-        args,
-        configureDefaultMiddleware: false,
-        preConfiguration: PreConfiguration,
-        registerServices: RegisterServices,
-        configureMiddleware: ConfigureMiddleware);
-}
-
-private static void ConfigureMiddleware(WebApplication app)
-{
-    app.UseCors("AllowAll");
-    app.UseAuthentication();
-    app.UseRouting();
-    app.UseCustomOcelot().Wait();
-}
-
-private static void PreConfiguration(ConfigurationManager configurationManager, IWebHostEnvironment environment)
-{
-    configurationManager.AddOcelot("Ocelot", environment);
-}
-
-private static void RegisterServices(IServiceCollection services, IConfiguration configuration, IWebHostEnvironment webHostEnvironment)
-{
-    services
-        .AddOcelot()
-        .AddConsul();
-    
-    services.RemoveAll<IScopesAuthorizer>();
-    services.TryAddSingleton<IScopesAuthorizer, DelimitedScopesAuthorizer>();
-}
-```
-
-### ConfigureDefaultMiddleware
-This flag enables/disables the configuration of default middleware. This step is done after the WebApplication has been built and before it is run.
+## Default Middleware configuration
+This flag enables/disables the configuration of default middleware. This step is done after the WebApplication has
+been built and before it is run.
 
 By default it configures this middleware pipeline (good for controller based APIs):
 ```csharp
@@ -86,31 +96,3 @@ app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 ```
-
-### PreConfiguration
-This action adds configuration while the app is being built. You can use it to add custom configurations.
-In the example above, we are using it to combine `ocelot.global.json`, `ocelot.company.api.json`, and `ocelot.project.api.json` into `ocelot.json` and adding it to the configuration pipeline.
-
-### RegisterServices
-This action is used to add application specific services.
-
-### ConfigureMiddleware
-This action is used to configure custom middleware pipeline
-
-The order of operations:
-* WebApplicationBuilder is created
-* `preConfiguration` is invoked if passed an action
-* CoreConfiguration is added from `Nexus.Configuration`
-* CoreLogging is added from `Nexus.Logging`
-* CoreServices are added if enabled:
-  * Swagger Documentation
-  * Action Filters (LoggingFilter as of now)
-  * CoreTelemetry from `Nexus.Telemetry`
-  * CoreActuators from `Nexus.Management`
-  * Discovery Client for Consul
-  * CoreAuth from `Nexus.Auth`
-* `registerServices` is invoked if passed an action
-* WebApplication is built
-* Default Middleware is configured if `configureDefaultMiddleware` is enabled
-* `configureMiddleware` is invoked if passed an action
-* WebApplication is run

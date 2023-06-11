@@ -59,7 +59,7 @@ nexus init "HelloWorld"
 ```powershell
 nexus add service "people"
 ```
-A detailed guide on how to add new services can be found [here]()
+A detailed guide on how to add new services can be found [here](docs/add-service.md)
 
 4. Run the supporting services:
 ```powershell

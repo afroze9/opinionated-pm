@@ -3,7 +3,12 @@
 From the root of the application, run the following command:
 
 ```powershell
-nexus add service "service_name"
+nexus add service "servicename"
+```
+
+e.g.
+```powershell
+nexus add service "company"
 ```
 
 ## Entities
@@ -164,8 +169,12 @@ public class CompanyProfile : Profile
 }
 ```
 
-## Customizing Bootstrapper
-Read the guide on setting up the framework [here](../libraries/src/Nexus.Framework.Web/README.md)
+## Telemetry/Instrumentation
+Instrumentation is useful to generate application metrics useful for your application. e.g. How many times a day do 
+users search for a particular term. To do this, create a custom meter and increment it in your application. An example
+for this can be found in the Company Api in the `CompanyInstrumentation` class in the `Telemetry` folder. Its use can
+be reviewed in the `CompanyController`.
 
-## Custom Telemetry
-TODO
+## Customizing Bootstrapper / Dependency Injection
+Ensure your services are registered in the DI container by reading the guide on  setting up the framework
+[here](../libraries/src/Nexus.Framework.Web/README.md)
