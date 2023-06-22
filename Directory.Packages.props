@@ -1,5 +1,8 @@
 <Project>
   <PropertyGroup>
+    <NexusLibraryVersion>0.2.0</NexusLibraryVersion>
+  </PropertyGroup>
+  <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
@@ -26,14 +29,14 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageVersion Include="Nexus.Auth" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Common" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Configuration" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Framework.Web" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Logs" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Management" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Persistence" Version="0.1.4" />
-    <PackageVersion Include="Nexus.Telemetry" Version="0.1.4-preview.1" />
+    <PackageVersion Include="Nexus.Auth" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Common" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Configuration" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Framework.Web" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Logs" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Management" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Persistence" Version="$(NexusLibraryVersion)" />
+    <PackageVersion Include="Nexus.Telemetry" Version="$(NexusLibraryVersion)" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageVersion Include="Npgsql" Version="7.0.4" />
