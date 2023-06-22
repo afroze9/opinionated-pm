@@ -1,4 +1,4 @@
-﻿namespace Nexus.Core.Contracts;
+﻿namespace Nexus.Common.Contracts;
 
 public class HttpResponseModel<T>
 {

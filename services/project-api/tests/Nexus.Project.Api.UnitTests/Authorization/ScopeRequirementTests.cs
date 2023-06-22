@@ -6,7 +6,7 @@ namespace Nexus.ProjectAPI.UnitTests.Authorization;
 public class ScopeRequirementTests
 {
     [Fact]
-    public async Task TestScopeRequirement()
+    public void TestScopeRequirement()
     {
         // Arrange
         string scope = "test";

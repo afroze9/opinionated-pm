@@ -30,7 +30,7 @@ public class HealthRecordService : IHealthRecordService
 
     public async Task<HealthRecordModel[]> GetHealthRecordsAsync(CancellationToken cancellationToken = default)
     {
-        if (_healthCheckOptions.Clients.Length == 0)
+        if (_healthCheckOptions.Clients == null || _healthCheckOptions.Clients.Length == 0)
         {
             return Array.Empty<HealthRecordModel>();
         }

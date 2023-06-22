@@ -4,7 +4,7 @@ namespace Nexus.HealthChecksDashboard.Models;
 
 public class HealthRecordModel
 {
-    public string ClientName { get; set; }
+    public string ClientName { get; set; } = string.Empty;
 
     public HealthCheckResponse? Response { get; set; }
 

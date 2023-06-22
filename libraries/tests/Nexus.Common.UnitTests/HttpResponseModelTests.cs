@@ -1,4 +1,4 @@
-﻿namespace Nexus.Core.UnitTests;
+﻿namespace Nexus.Common.UnitTests;
 
 public class HttpResponseModelTests
 {

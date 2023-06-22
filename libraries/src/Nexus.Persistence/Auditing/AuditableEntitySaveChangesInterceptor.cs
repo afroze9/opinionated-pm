@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Diagnostics;
-using Nexus.Core;
+using Nexus.Common;
 
 namespace Nexus.Persistence.Auditing;
 

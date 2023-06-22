@@ -4,7 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
-        <RootNamespace>Nexus.Core.UnitTests</RootNamespace>
+        <RootNamespace>Nexus.Common.UnitTests</RootNamespace>
 
         <IsPackable>false</IsPackable>
     </PropertyGroup>
@@ -27,7 +27,7 @@
 
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Nexus.Core\Nexus.Core.csproj" />
+        <ProjectReference Include="..\..\src\Nexus.Common\Nexus.Common.csproj" />
     </ItemGroup>
 
 </Project>

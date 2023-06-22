@@ -1,4 +1,4 @@
-﻿using Nexus.Core;
+﻿using Nexus.Common;
 
 namespace Nexus.ProjectAPI.Entities;
 

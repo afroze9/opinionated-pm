@@ -1,6 +1,6 @@
-﻿using Nexus.Core.Abstractions.Common;
+﻿using Nexus.Common.Abstractions.Common;
 
-namespace Nexus.Core;
+namespace Nexus.Common;
 
 public abstract class EntityBase : IEntity
 {

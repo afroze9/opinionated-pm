@@ -39,7 +39,7 @@
     <ItemGroup>
         <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Auth\Nexus.Auth.csproj" />
         <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Configuration\Nexus.Configuration.csproj" />
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Core\Nexus.Core.csproj" />
+        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Common\Nexus.Common.csproj" />
         <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Logging\Nexus.Logging.csproj" />
         <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Persistence\Nexus.Persistence.csproj" />
         <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
@@ -49,5 +49,5 @@
     <ItemGroup>
         <Folder Include="Data\Migrations\" />
     </ItemGroup>
-    
+
 </Project>

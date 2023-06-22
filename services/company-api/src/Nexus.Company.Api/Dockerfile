@@ -8,7 +8,7 @@ WORKDIR /src
 
 COPY ["libraries/src/Nexus.Auth/Nexus.Auth.csproj", "libraries/src/Nexus.Auth/"]
 COPY ["libraries/src/Nexus.Configuration/Nexus.Configuration.csproj", "libraries/src/Nexus.Configuration/"]
-COPY ["libraries/src/Nexus.Core/Nexus.Core.csproj", "libraries/src/Nexus.Core/"]
+COPY ["libraries/src/Nexus.Common/Nexus.Common.csproj", "libraries/src/Nexus.Common/"]
 COPY ["libraries/src/Nexus.Logging/Nexus.Logging.csproj", "libraries/src/Nexus.Logging/"]
 COPY ["libraries/src/Nexus.Persistence/Nexus.Persistence.csproj", "libraries/src/Nexus.Persistence/"]
 COPY ["libraries/src/Nexus.Framework.Web/Nexus.Framework.Web.csproj", "libraries/src/Nexus.Framework.Web/"]
