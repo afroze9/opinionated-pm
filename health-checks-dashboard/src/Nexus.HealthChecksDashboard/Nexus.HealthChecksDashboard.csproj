@@ -12,11 +12,8 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+    <PackageReference Include="Nexus.Framework.Web" />
     <PackageReference Include="Polly.Extensions.Http" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
   </ItemGroup>
 
 </Project>

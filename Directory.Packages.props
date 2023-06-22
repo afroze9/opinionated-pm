@@ -1,77 +1,78 @@
 <Project>
-    <PropertyGroup>
-        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageVersion Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="7.0.0-rc2.7" />
-        <PackageVersion Include="AspNetCore.HealthChecks.UI" Version="7.0.0-rc2.7" />
-        <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
-        <PackageVersion Include="AutoMapper" Version="12.0.1" />
-        <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
-        <PackageVersion Include="FluentValidation" Version="11.5.2" />
-        <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageVersion>
-        <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
-        <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-        <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
-        <PackageVersion Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-        <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
-        <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-        <PackageVersion Include="Nexus.Auth" Version="0.1.4" />
-        <PackageVersion Include="Nexus.Common" Version="0.1.4" />
-        <PackageVersion Include="Nexus.Configuration" Version="0.1.4" />
-        <PackageVersion Include="Nexus.Logs" Version="0.1.4" />
-        <PackageVersion Include="Nexus.Management" Version="0.1.4" />
-        <PackageVersion Include="Nexus.Persistence" Version="0.1.4" />
-        <PackageVersion Include="Nexus.Telemetry" Version="0.1.4-preview.1" />
-        <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
-        <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
-        <PackageVersion Include="Npgsql" Version="7.0.4" />
-        <PackageVersion Include="Ocelot.Provider.Consul" Version="19.0.2" />
-        <PackageVersion Include="Ocelot" Version="19.0.2" />
-        <PackageVersion Include="OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta2" />
-        <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.4.0" />
-        <PackageVersion Include="OpenTelemetry.Exporter.Jaeger" Version="1.4.0" />
-        <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0" />
-        <PackageVersion Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.5.0-rc.1" />
-        <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0" />
-        <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.14" />
-        <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.6" />
-        <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.14" />
-        <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.1.0-rc.2" />
-        <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
-        <PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
-        <PackageVersion Include="Serilog.Enrichers.Environment" Version="2.2.0" />
-        <PackageVersion Include="Serilog.Enrichers.Thread" Version="3.1.0" />
-        <PackageVersion Include="Serilog.Formatting.Elasticsearch" Version="9.0.1" />
-        <PackageVersion Include="Serilog.Settings.Configuration" Version="7.0.0" />
-        <PackageVersion Include="Serilog.Sinks.Console" Version="4.1.0" />
-        <PackageVersion Include="Serilog.Sinks.Elasticsearch" Version="9.0.1" />
-        <PackageVersion Include="Serilog.Sinks.File" Version="5.0.0" />
-        <PackageVersion Include="Serilog" Version="2.12.0" />
-        <PackageVersion Include="Steeltoe.Connector.ConnectorCore" Version="3.2.3" />
-        <PackageVersion Include="Steeltoe.Connector.EFCore" Version="3.2.3" />
-        <PackageVersion Include="Steeltoe.Discovery.Consul" Version="3.2.3" />
-        <PackageVersion Include="Steeltoe.Management.EndpointCore" Version="3.2.3" />
-        <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
-        <PackageVersion Include="Winton.Extensions.Configuration.Consul" Version="3.3.0" />
-        <PackageVersion Include="AutoFixture" Version="4.18.0" />
-        <PackageVersion Include="coverlet.collector" Version="6.0.0">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageVersion>
-        <PackageVersion Include="FluentAssertions" Version="6.11.0" />
-        <PackageVersion Include="Moq" Version="4.18.4" />
-        <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
-        <PackageVersion Include="xunit" Version="2.4.2" />
-    </ItemGroup>
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageVersion Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="7.0.0-rc2.7" />
+    <PackageVersion Include="AspNetCore.HealthChecks.UI" Version="7.0.0-rc2.7" />
+    <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageVersion Include="AutoMapper" Version="12.0.1" />
+    <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
+    <PackageVersion Include="FluentValidation" Version="11.5.2" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.AspNetCore.OpenApi" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageVersion>
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageVersion Include="Nexus.Auth" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Common" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Configuration" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Framework.Web" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Logs" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Management" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Persistence" Version="0.1.4" />
+    <PackageVersion Include="Nexus.Telemetry" Version="0.1.4-preview.1" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
+    <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
+    <PackageVersion Include="Npgsql" Version="7.0.4" />
+    <PackageVersion Include="Ocelot.Provider.Consul" Version="19.0.2" />
+    <PackageVersion Include="Ocelot" Version="19.0.2" />
+    <PackageVersion Include="OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta2" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Console" Version="1.4.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Jaeger" Version="1.4.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.4.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.Prometheus.AspNetCore" Version="1.5.0-rc.1" />
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.4.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.0.0-rc9.14" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta.6" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.14" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.1.0-rc.2" />
+    <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
+    <PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
+    <PackageVersion Include="Serilog.Enrichers.Environment" Version="2.2.0" />
+    <PackageVersion Include="Serilog.Enrichers.Thread" Version="3.1.0" />
+    <PackageVersion Include="Serilog.Formatting.Elasticsearch" Version="9.0.1" />
+    <PackageVersion Include="Serilog.Settings.Configuration" Version="7.0.0" />
+    <PackageVersion Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageVersion Include="Serilog.Sinks.Elasticsearch" Version="9.0.1" />
+    <PackageVersion Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageVersion Include="Serilog" Version="2.12.0" />
+    <PackageVersion Include="Steeltoe.Connector.ConnectorCore" Version="3.2.3" />
+    <PackageVersion Include="Steeltoe.Connector.EFCore" Version="3.2.3" />
+    <PackageVersion Include="Steeltoe.Discovery.Consul" Version="3.2.3" />
+    <PackageVersion Include="Steeltoe.Management.EndpointCore" Version="3.2.3" />
+    <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageVersion Include="Winton.Extensions.Configuration.Consul" Version="3.3.0" />
+    <PackageVersion Include="AutoFixture" Version="4.18.0" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageVersion>
+    <PackageVersion Include="FluentAssertions" Version="6.11.0" />
+    <PackageVersion Include="Moq" Version="4.18.4" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
+    <PackageVersion Include="xunit" Version="2.4.2" />
+  </ItemGroup>
 </Project>

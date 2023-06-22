@@ -11,12 +11,9 @@
 
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+        <PackageReference Include="Nexus.Framework.Web" />
         <PackageReference Include="Ocelot" />
         <PackageReference Include="Ocelot.Provider.Consul" />
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
-    </ItemGroup>
-
+    
 </Project>

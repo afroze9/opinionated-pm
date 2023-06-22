@@ -17,15 +17,12 @@
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
         <PackageReference Include="FluentValidation" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="Nexus.Framework.Web" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />
         <PackageReference Include="Polly.Extensions.Http" />
     </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
-    </ItemGroup>
-
+    
     <ItemGroup>
         <Folder Include="Data\Migrations\" />
     </ItemGroup>
