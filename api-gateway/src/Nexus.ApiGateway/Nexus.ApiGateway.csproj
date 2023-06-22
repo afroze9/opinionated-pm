@@ -13,19 +13,9 @@
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
         <PackageReference Include="Ocelot" />
         <PackageReference Include="Ocelot.Provider.Consul" />
-        <PackageReference Include="Winton.Extensions.Configuration.Consul" />
-        <PackageReference Include="Steeltoe.Discovery.Consul" />
-        <PackageReference Include="Steeltoe.Management.EndpointCore" />
-        <PackageReference Include="OpenTelemetry.Exporter.Console" />
-        <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
-        <PackageReference Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" />
-        <PackageReference Include="OpenTelemetry.Extensions.Hosting" />
-        <PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
-        <PackageReference Include="OpenTelemetry.Instrumentation.Http" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\..\libraries\src\Nexus.Configuration\Nexus.Configuration.csproj" />
         <ProjectReference Include="..\..\..\libraries\src\Nexus.Framework.Web\Nexus.Framework.Web.csproj" />
     </ItemGroup>
 

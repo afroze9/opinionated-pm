@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Nexus.Configuration;
-using Nexus.Logging;
+using Nexus.Logs;
 using Serilog;
 
 namespace Nexus.Framework.Web;

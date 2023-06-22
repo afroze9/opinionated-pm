@@ -1,4 +1,4 @@
-﻿namespace Nexus.Logging;
+﻿namespace Nexus.Logs;
 
 /// <summary>
 ///     Represents the Serilog settings for logging to Elasticsearch.

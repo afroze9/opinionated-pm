@@ -1,6 +1,6 @@
 # Overview
 
-![Overview](nexus-logging.png)
+![Overview](nexus-logs.png)
 
 # How to Use
 

@@ -11,7 +11,20 @@
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
     </PropertyGroup>
-
+    
+    <PropertyGroup>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <Version>0.1.4-preview.1</Version>
+        <Title>Nexus.Telemetry</Title>
+        <Authors>afroze9</Authors>
+        <PackageProjectUrl>https://github.com/afroze9/nexus</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/afroze9/nexus</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
+        <PackageReadmeFile>README.md</PackageReadmeFile>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <DebugType>embedded</DebugType>
+    </PropertyGroup>
+    
     <ItemGroup>
         <PackageReference Include="OpenTelemetry.Exporter.Console" />
         <PackageReference Include="OpenTelemetry.Exporter.Jaeger" />
@@ -28,4 +41,8 @@
         <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     </ItemGroup>
 
+    <ItemGroup>
+        <None Include="README.md" Pack="true" PackagePath="\" />
+        <None Include="LICENSE.txt" Pack="true" PackagePath="\" />
+    </ItemGroup>
 </Project>

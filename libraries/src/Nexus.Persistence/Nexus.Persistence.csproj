@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <LangVersion>10</LangVersion>
         <TargetFramework>net7.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -11,25 +10,26 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    </PropertyGroup>
+    
+    <PropertyGroup>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-        <Version>0.1.1</Version>
-        <Title>Nexus.Common</Title>
+        <Version>0.1.4</Version>
+        <Title>Nexus.Persistence</Title>
         <Authors>afroze9</Authors>
         <PackageProjectUrl>https://github.com/afroze9/nexus</PackageProjectUrl>
         <RepositoryUrl>https://github.com/afroze9/nexus</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <PackageReadmeFile>README.md</PackageReadmeFile>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <DebugType>embedded</DebugType>   
     </PropertyGroup>
 
     <ItemGroup>
         <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Nexus.Common" />
         <PackageReference Include="Steeltoe.Connector.ConnectorCore" />
         <PackageReference Include="Steeltoe.Connector.EFCore" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <ProjectReference Include="..\Nexus.Common\Nexus.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>

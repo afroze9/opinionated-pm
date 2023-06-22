@@ -14,7 +14,7 @@ Read the guide under [Nexus.Framework.Web](../libraries/src/Nexus.Framework.Web/
 * [Auth](../libraries/src/Nexus.Auth/README.md)
 * [Configuration](../libraries/src/Nexus.Configuration/README.md)
 * [Core](../libraries/src/Nexus.Common/README.md)
-* [Logging](../libraries/src/Nexus.Logging/README.md)
+* [Logging](../libraries/src/Nexus.Logs/README.md)
 * [Management](../libraries/src/Nexus.Management/README.md)
 * [Persistence](../libraries/src/Nexus.Persistence/README.md)
 * [Tracing](../libraries/src/Nexus.Telemetry/README.md)

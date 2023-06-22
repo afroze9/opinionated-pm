@@ -5,7 +5,7 @@ using Serilog.Core;
 using Serilog.Formatting.Elasticsearch;
 using Serilog.Sinks.Elasticsearch;
 
-namespace Nexus.Logging;
+namespace Nexus.Logs;
 
 public static class LoggingExtensions
 {
