@@ -1,6 +1,6 @@
 <Project>
   <PropertyGroup>
-    <NexusLibraryVersion>0.2.0</NexusLibraryVersion>
+    <NexusLibraryVersion>0.3.0</NexusLibraryVersion>
   </PropertyGroup>
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
