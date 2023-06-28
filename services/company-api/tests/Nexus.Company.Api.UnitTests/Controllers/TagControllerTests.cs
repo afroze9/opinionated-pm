@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Controllers;
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Entities;
+using Nexus.CompanyAPI.Exceptions;
 using Nexus.CompanyAPI.Model;
 
 namespace Nexus.CompanyAPI.UnitTests.Controllers;
@@ -93,14 +96,19 @@ public class TagControllerTests
                 Errors = { new ValidationFailure("Name", "The Name field is required.") },
             });
 
+        _tagServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>()))
+            .ReturnsAsync(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
+            {
+                new ValidationFailure("Name", "The Name field is required."),
+            })));
+
         // Act
         IActionResult result = await _sut.Create(name);
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        List<string> actual = Assert.IsType<List<string>>(badRequestResult.Value);
-        Assert.Single(actual);
-        Assert.Equal("The Name field is required.", actual.First());
+        var actual = Assert.IsType<ValidationException>(badRequestResult.Value);
+        Assert.Single(actual.Errors);
     }
 
     [Fact]
@@ -113,15 +121,20 @@ public class TagControllerTests
         _tagRequestModelValidatorMock
             .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(validationResult);
+        
+        _tagServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>()))
+            .ReturnsAsync(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
+            {
+                new ValidationFailure("Name", "The Name field is required."),
+            })));
 
         // Act
         IActionResult result = await _sut.Create(name);
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        List<string> actual = Assert.IsType<List<string>>(badRequestResult.Value);
-        Assert.Single(actual);
-        Assert.Equal(validationResult.Errors.First().ErrorMessage, actual.First());
+        var actual = Assert.IsType<ValidationException>(badRequestResult.Value);
+        Assert.Single(actual.Errors);
     }
 
     [Fact]
@@ -148,8 +161,8 @@ public class TagControllerTests
         IActionResult result = await _sut.Create(name);
 
         // Assert
-        OkObjectResult okResult = Assert.IsType<OkObjectResult>(result);
-        TagResponseModel actual = Assert.IsType<TagResponseModel>(okResult.Value);
+        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+        TagResponseModel actual = Assert.IsType<TagResponseModel>(createdAtActionResult.Value);
         Assert.Equal(tagResponseModel.Name, actual.Name);
     }
 
@@ -159,13 +172,15 @@ public class TagControllerTests
     {
         // Arrange
         string name = null!;
+        _tagServiceMock.Setup(x => x.DeleteAsync(It.IsAny<string>()))
+            .ReturnsAsync(new Result<bool>(new CompanyExistsWithTagNameException(name)));
 
         // Act
         IActionResult result = await _sut.Delete(name);
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.Equal("Tag could not be deleted", badRequestResult.Value);
+        badRequestResult.Value.Should().BeOfType<CompanyExistsWithTagNameException>();
     }
 
     [Fact]
@@ -181,22 +196,6 @@ public class TagControllerTests
 
         // Assert
         Assert.IsType<NoContentResult>(result);
-    }
-
-    [Fact]
-    public async Task Delete_ReturnsBadRequest_WhenTagCouldNotBeDeleted()
-    {
-        // Arrange
-        string name = "tag";
-        _tagServiceMock.Setup(x => x.DeleteAsync(It.IsAny<string>()))
-            .ReturnsAsync(false);
-
-        // Act
-        IActionResult result = await _sut.Delete(name);
-
-        // Assert
-        BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        Assert.Equal("Tag could not be deleted", badRequestResult.Value);
     }
 
     [Fact]
@@ -251,23 +250,25 @@ public class TagControllerTests
         // Arrange
         int id = 1;
         string name = "tag";
-        ValidationResult validationResult = new ();
-        Company updatedCompany = null!;
+        ValidationResult validationResult = new (new List<ValidationFailure>()
+        {
+            new ("Name", $"Unable to find company with the id {id}"),
+        });
 
         _tagRequestModelValidatorMock
             .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync(validationResult);
 
         _companyServiceMock.Setup(x => x.AddTagAsync(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(updatedCompany);
+            .ReturnsAsync(new Result<Company>(new ValidationException(new List<ValidationFailure>())));
 
         // Act
         IActionResult result = await _sut.AddCompanyTag(id, name);
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        string actual = Assert.IsType<string>(badRequestResult.Value);
-        Assert.Equal($"Unable to find company with the id {id}", actual);
+        List<string> actual = Assert.IsType<List<string>>(badRequestResult.Value);
+        Assert.NotEmpty(actual);
     }
 
     [Fact]
@@ -309,18 +310,16 @@ public class TagControllerTests
         // Arrange
         int id = 1;
         string name = "tag";
-        Company updatedCompany = null!;
 
         _companyServiceMock.Setup(x => x.DeleteTagAsync(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(updatedCompany);
+            .ReturnsAsync(new Result<Company>(new CompanyNotFoundException(id)));
 
         // Act
         IActionResult result = await _sut.DeleteCompanyTag(id, name);
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        string actual = Assert.IsType<string>(badRequestResult.Value);
-        Assert.Equal($"Unable to find company with the id {id}", actual);
+        Assert.IsType<CompanyNotFoundException>(badRequestResult.Value);
     }
 
     [Fact]

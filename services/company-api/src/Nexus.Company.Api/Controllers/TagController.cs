@@ -100,6 +100,7 @@ public class TagController : ControllerBase
             {
                 return error switch
                 {
+                    ValidationException => BadRequest(error),
                     AnotherTagExistsWithSameNameException => BadRequest(error),
                     _ => StatusCode(500, error),
                 };

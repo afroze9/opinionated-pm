@@ -185,7 +185,7 @@ public class CompanyControllerTests
         // Arrange
         string name = "New Company";
         Company company = new (name);
-        CompanyRequestModel model = new CompanyRequestModel
+        CompanyRequestModel model = new()
         {
             Name = name,
         };
@@ -196,7 +196,7 @@ public class CompanyControllerTests
                 new ("Property", "Error message"),
             }));
 
-        List<ValidationFailure> validationErrors = new List<ValidationFailure>
+        List<ValidationFailure> validationErrors = new()
         {
             new ("Property", "Error message"),
         };

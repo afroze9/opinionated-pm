@@ -1,4 +1,6 @@
-﻿using LanguageExt.Common;
+﻿using FluentValidation;
+using FluentValidation.Results;
+using LanguageExt.Common;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Data;
 using Nexus.CompanyAPI.Entities;
@@ -12,14 +14,16 @@ namespace Nexus.CompanyAPI.Services;
 public class TagService : ITagService
 {
     private readonly UnitOfWork _unitOfWork;
+    private readonly IValidator<Tag> _tagValidator;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="TagService" /> class.
     /// </summary>
     /// <param name="unitOfWork">The UnitOfWork object containing the repositories.</param>
-    public TagService(UnitOfWork unitOfWork)
+    public TagService(UnitOfWork unitOfWork, IValidator<Tag> tagValidator)
     {
         _unitOfWork = unitOfWork;
+        _tagValidator = tagValidator;
     }
 
     /// <summary>
@@ -29,6 +33,13 @@ public class TagService : ITagService
     /// <returns>The created tag.</returns>
     public async Task<Result<Tag>> CreateAsync(string name)
     {
+        ValidationResult? validationResult = await _tagValidator.ValidateAsync(new Tag((name)));
+
+        if (!validationResult.IsValid)
+        {
+            return new Result<Tag>(new ValidationException(validationResult.Errors));
+        }
+        
         if (await _unitOfWork.Tags.ExistsWithNameAsync(name))
         {
             return new Result<Tag>(new AnotherTagExistsWithSameNameException(name));
