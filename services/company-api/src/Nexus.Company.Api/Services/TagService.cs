@@ -76,8 +76,15 @@ public class TagService : ITagService
         return await _unitOfWork.Tags.AllAsync();
     }
 
-    public Task<Result<Tag>> GetByIdAsync(int id)
+    public async Task<Result<Tag>> GetByIdAsync(int id)
     {
-        throw new NotImplementedException();
+        Tag? tag = await _unitOfWork.Tags.GetByIdAsync(id);
+
+        if (tag == null)
+        {
+            return new Result<Tag>(new TagNotFoundException(id));
+        }
+
+        return tag;
     }
 }
