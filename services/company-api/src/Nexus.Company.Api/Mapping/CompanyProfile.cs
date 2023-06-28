@@ -15,8 +15,10 @@ public class CompanyProfile : Profile
         CreateMap<CompanySummaryDto, Company>();
         CreateMap<CompanyDto, CompanyResponseModel>();
 
-        CreateMap<CompanyRequestModel, CompanySummaryDto>()
+        CreateMap<CompanyRequestModel, Company>()
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(x => new TagDto { Name = x })));
+
+        CreateMap<Company, CompanyResponseModel>();
 
         CreateMap<CompanySummaryDto, CompanyResponseModel>()
             .ForMember(dest => dest.Tags, opt => opt.MapFrom(src => src.Tags.Select(x => x.Name)));

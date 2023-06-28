@@ -1,16 +1,19 @@
-﻿using AutoMapper;
+﻿using System.Diagnostics;
+using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
+using LanguageExt.Common;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Controllers;
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Entities;
+using Nexus.CompanyAPI.Exceptions;
 using Nexus.CompanyAPI.Mapping;
 using Nexus.CompanyAPI.Model;
-using Nexus.CompanyAPI.Telemetry;
 
 namespace Nexus.CompanyAPI.UnitTests.Controllers;
 
@@ -19,20 +22,22 @@ public class CompanyControllerTests
 {
     private readonly CompanyController _companyController;
     private readonly Mock<IValidator<CompanyRequestModel>> _companyRequestModelValidatorMock = new ();
+    private readonly Mock<IValidator<Company>> _companyValidatorMock = new ();
     private readonly Mock<ICompanyService> _companyServiceMock = new ();
     private readonly Mock<IValidator<CompanyUpdateRequestModel>> _companyUpdateRequestModelValidatorMock = new ();
-    private readonly Mock<ICompanyInstrumentation> _companyInstrumentationMock = new ();
 
     private readonly IMapper _mapper;
+    private readonly ActivitySource _activitySource;
 
     public CompanyControllerTests()
     {
         MapperConfiguration mockMapper = new (cfg => { cfg.AddProfile(new CompanyProfile()); });
+
         _mapper = mockMapper.CreateMapper();
         _companyController = new CompanyController(
             _companyServiceMock.Object, _mapper,
             _companyUpdateRequestModelValidatorMock.Object,
-            _companyInstrumentationMock.Object);
+            new TestCompanyInstrumentation());
     }
 
     [Fact]
@@ -57,6 +62,8 @@ public class CompanyControllerTests
             _mapper.Map<List<CompanySummaryResponseModel>>(companies);
 
         _companyServiceMock.Setup(x => x.GetAllAsync()).ReturnsAsync(companies);
+
+
 
         // Act
         ActionResult<List<CompanySummaryResponseModel>> result = await _companyController.GetAll();
@@ -114,9 +121,8 @@ public class CompanyControllerTests
     public async Task GetById_WhenCompanyNotFound_ReturnsNotFound()
     {
         // Arrange
-        int id = 1;
-        CompanyDto? companyDto = null;
-        _companyServiceMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(companyDto!);
+        const int id = 1;
+        _companyServiceMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(new Result<CompanyDto>(new CompanyNotFoundException(id)));
 
         // Act
         IActionResult result = await _companyController.GetById(id);
@@ -177,17 +183,25 @@ public class CompanyControllerTests
     public async Task Create_WhenModelStateIsInvalid_ReturnsBadRequest()
     {
         // Arrange
-        CompanyRequestModel model = new ()
+        string name = "New Company";
+        Company company = new (name);
+        CompanyRequestModel model = new CompanyRequestModel
         {
-            Name = "New Company",
+            Name = name,
         };
-
-        _companyRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None)).ReturnsAsync(
+        
+        _companyValidatorMock.Setup(x => x.ValidateAsync(company, CancellationToken.None)).ReturnsAsync(
             new ValidationResult(new List<ValidationFailure>
             {
                 new ("Property", "Error message"),
             }));
 
+        List<ValidationFailure> validationErrors = new List<ValidationFailure>
+        {
+            new ("Property", "Error message"),
+        };
+        _companyServiceMock.Setup(x => x.CreateAsync(It.IsAny<Company>())).ReturnsAsync(new Result<Company>(new ValidationException(validationErrors)));
+        
         // Act
         IActionResult result = await _companyController.Create(model);
 
@@ -195,7 +209,7 @@ public class CompanyControllerTests
         result.Should().BeOfType<BadRequestObjectResult>();
         BadRequestObjectResult? badRequestResult = result as BadRequestObjectResult;
         badRequestResult.Should().NotBeNull();
-        badRequestResult!.Value.Should().BeOfType<List<string>>();
+        badRequestResult!.Value.Should().BeOfType<ValidationException>();
     }
 
     [Fact]
@@ -268,18 +282,18 @@ public class CompanyControllerTests
             Name = "Updated Company",
         };
 
-        Company updatedCompanyDto = null!;
-         _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None))
+        _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None))
              .ReturnsAsync(new ValidationResult());
 
-        _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name)).ReturnsAsync(updatedCompanyDto!);
+         _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name))
+             .ReturnsAsync(new Result<Company>(new ValidationException(new List<ValidationFailure>())));
 
         // Act
         IActionResult result = await _companyController.Update(id, model);
 
         // Assert
         result.Should().BeOfType<BadRequestObjectResult>();
-        (result! as BadRequestObjectResult)!.Value.Should().Be($"Unable to find company with the id {id}");
+        (result! as BadRequestObjectResult)!.Value.Should().BeOfType<ValidationException>();
     }
 
     [Fact]
