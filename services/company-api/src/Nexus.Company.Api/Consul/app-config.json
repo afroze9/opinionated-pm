@@ -1,4 +1,4 @@
-{
+﻿{
   "AllowedHosts": "*",
   "Auth0Settings": {
     "Authority": "https://teamly.us.auth0.com",
@@ -38,7 +38,8 @@
       "Retry": {
         "Enabled": true,
         "MaxAttempts": 5
-      }
+      },
+      "Tags": [ "nexus-service" ]
     }
   },
   "TelemetrySettings": {

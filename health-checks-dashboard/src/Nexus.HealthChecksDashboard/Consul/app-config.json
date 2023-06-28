@@ -1,4 +1,4 @@
-{
+﻿{
   "SerilogSettings": {
     "ElasticSearchSettings": {
       "Uri": "https://localhost:9200",
@@ -24,7 +24,8 @@
       "Retry": {
         "Enabled": true,
         "MaxAttempts": 5
-      }
+      },
+      "Tags": [ "nexus-framework-service" ]
     }
   },
   "TelemetrySettings": {
