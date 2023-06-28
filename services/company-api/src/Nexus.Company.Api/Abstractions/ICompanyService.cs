@@ -1,4 +1,6 @@
-﻿using Nexus.CompanyAPI.DTO;
+﻿using LanguageExt.Common;
+using Nexus.CompanyAPI.DTO;
+using Nexus.CompanyAPI.Entities;
 
 namespace Nexus.CompanyAPI.Abstractions;
 
@@ -19,12 +21,12 @@ public interface ICompanyService
     /// <summary>
     ///     Creates a new company asynchronously.
     /// </summary>
-    /// <param name="companySummary">A company summary DTO containing the information of the new company to be created.</param>
+    /// <param name="company">The new company to be created.</param>
     /// <returns>
     ///     A task representing the asynchronous operation. The result of the task contains the company summary DTO of the
     ///     newly created company.
     /// </returns>
-    Task<CompanySummaryDto> CreateAsync(CompanySummaryDto companySummary);
+    Task<Result<Company>> CreateAsync(Company company);
 
     /// <summary>
     ///     Retrieves a company by its ID asynchronously.
@@ -34,7 +36,7 @@ public interface ICompanyService
     ///     A task representing the asynchronous operation. The result of the task contains the company DTO if found,
     ///     otherwise null.
     /// </returns>
-    Task<CompanyDto?> GetByIdAsync(int id);
+    Task<Result<CompanyDto>> GetByIdAsync(int id);
 
     /// <summary>
     ///     Updates the name of a company asynchronously.
@@ -45,7 +47,7 @@ public interface ICompanyService
     ///     A task representing the asynchronous operation. The result of the task contains the updated company summary
     ///     DTO if successful, otherwise null.
     /// </returns>
-    Task<CompanySummaryDto?> UpdateNameAsync(int id, string name);
+    Task<Result<Company>> UpdateNameAsync(int id, string name);
 
     /// <summary>
     ///     Adds a tag to a company asynchronously.
@@ -56,7 +58,7 @@ public interface ICompanyService
     ///     A task representing the asynchronous operation. The result of the task contains the updated company summary
     ///     DTO if successful, otherwise null.
     /// </returns>
-    Task<CompanySummaryDto?> AddTagAsync(int id, string tagName);
+    Task<Result<Company>> AddTagAsync(int id, string tagName);
 
     /// <summary>
     ///     Deletes a tag from a company asynchronously.
@@ -67,12 +69,12 @@ public interface ICompanyService
     ///     A task representing the asynchronous operation. The result of the task contains the updated company summary
     ///     DTO if successful, otherwise null.
     /// </returns>
-    Task<CompanySummaryDto?> DeleteTagAsync(int id, string tagName);
+    Task<Result<Company>> DeleteTagAsync(int id, string tagName);
 
     /// <summary>
     ///     Deletes a company by its ID asynchronously.
     /// </summary>
     /// <param name="id">The ID of the company to delete.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task DeleteAsync(int id);
+    Task<Result<bool>> DeleteAsync(int id);
 }

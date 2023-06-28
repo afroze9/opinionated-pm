@@ -24,6 +24,7 @@ public class ProjectService : IProjectService
     /// </summary>
     /// <param name="client">The HTTP client.</param>
     /// <param name="mapper">The mapper.</param>
+    /// <param name="logger">The logger.</param>
     public ProjectService(HttpClient client, IMapper mapper, ILogger<ProjectService> logger)
     {
         _client = client;

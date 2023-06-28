@@ -4,7 +4,7 @@ using Nexus.Persistence;
 
 namespace Nexus.CompanyAPI.Data.Repositories;
 
-public class TagRepository : EfCustomRepository<Tag>
+public class TagRepository : EfNexusRepository<Tag>
 {
     public TagRepository(ApplicationDbContext context) : base(context)
     {
@@ -15,7 +15,7 @@ public class TagRepository : EfCustomRepository<Tag>
         return await DbSet.AnyAsync(x => x.Name == name, cancellationToken);
     }
 
-    public async Task<Tag?> GetByName(string name)
+    public async Task<Tag?> GetByNameAsync(string name)
     {
         return await DbSet.FirstOrDefaultAsync(x => x.Name == name);
     }

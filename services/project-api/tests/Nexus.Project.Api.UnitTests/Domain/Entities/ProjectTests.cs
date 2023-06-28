@@ -67,8 +67,9 @@ public class ProjectTests
     public void AddTodoItem_ShouldAddNewItemToTodoItemsList_AndRegisterEvent()
     {
         // Arrange
-        TodoItem todoItem = new TodoItem { Title = "Test Todo Item" };
-        Project project = new Project("Test Project", Priority.High, null);
+        TodoItem todoItem = new()
+            { Title = "Test Todo Item" };
+        Project project = new ("Test Project", Priority.High, null);
 
         // Act
         project.AddTodoItem(todoItem);
@@ -110,13 +111,15 @@ public class ProjectTests
     public void ProjectStatus_WhenAllTodosComplete_ShouldReturnCompleted()
     {
         // Arrange
-        TodoItem todoItem1 = new TodoItem { Title = "Test Todo Item 1" };
+        TodoItem todoItem1 = new()
+            { Title = "Test Todo Item 1" };
         todoItem1.MarkComplete();
 
-        TodoItem todoItem2 = new TodoItem { Title = "Test Todo Item 2" };
+        TodoItem todoItem2 = new()
+            { Title = "Test Todo Item 2" };
         todoItem2.MarkComplete();
 
-        Project project = new Project("Test Project", Priority.High, null);
+        Project project = new ("Test Project", Priority.High, null);
         project.AddTodoItem(todoItem1);
         project.AddTodoItem(todoItem2);
 
@@ -131,12 +134,14 @@ public class ProjectTests
     public void ProjectStatus_WhenSomeTodosComplete_ShouldReturnInProgress()
     {
         // Arrange
-        TodoItem todoItem1 = new TodoItem { Title = "Test Todo Item 1" };
+        TodoItem todoItem1 = new()
+            { Title = "Test Todo Item 1" };
         todoItem1.MarkComplete();
 
-        TodoItem todoItem2 = new TodoItem { Title = "Test Todo Item 2" };
+        TodoItem todoItem2 = new()
+            { Title = "Test Todo Item 2" };
 
-        Project project = new Project("Test Project", Priority.High, null);
+        Project project = new ("Test Project", Priority.High, null);
         project.AddTodoItem(todoItem1);
         project.AddTodoItem(todoItem2);
 
@@ -151,10 +156,12 @@ public class ProjectTests
     public void ProjectStatus_WhenNoTodosComplete_ShouldReturnNotStarted()
     {
         // Arrange
-        TodoItem todoItem1 = new TodoItem { Title = "Test Todo Item 1" };
-        TodoItem todoItem2 = new TodoItem { Title = "Test Todo Item 2" };
+        TodoItem todoItem1 = new()
+            { Title = "Test Todo Item 1" };
+        TodoItem todoItem2 = new()
+            { Title = "Test Todo Item 2" };
 
-        Project project = new Project("Test Project", Priority.High, null);
+        Project project = new ("Test Project", Priority.High, null);
         project.AddTodoItem(todoItem1);
         project.AddTodoItem(todoItem2);
 

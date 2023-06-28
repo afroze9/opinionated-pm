@@ -10,7 +10,7 @@ public class TodoItemTests
     {
         // Arrange
         DateTime date = DateTime.UtcNow;
-        TodoItem todoItem = new TodoItem
+        TodoItem todoItem = new()
         {
             Id = 1,
             Title = "Test Title",

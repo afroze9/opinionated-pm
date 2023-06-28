@@ -33,7 +33,7 @@ public class ProjectServiceTests
     {
         // Arrange
         int companyId = 1;
-        List<ProjectResponseModel> expectedProjects = new List<ProjectResponseModel>
+        List<ProjectResponseModel> expectedProjects = new()
         {
             new ()
             {

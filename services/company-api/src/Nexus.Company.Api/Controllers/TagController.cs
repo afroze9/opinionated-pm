@@ -1,9 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Net.Mime;
+using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
+using LanguageExt.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.DTO;
+using Nexus.CompanyAPI.Entities;
+using Nexus.CompanyAPI.Exceptions;
 using Nexus.CompanyAPI.Model;
 
 namespace Nexus.CompanyAPI.Controllers;
@@ -38,8 +43,7 @@ public class TagController : ControllerBase
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
     public async Task<ActionResult<List<TagResponseModel>>> GetAll()
     {
-        List<TagDto> tags = await _tagService.GetAllAsync();
-
+        List<Tag> tags = await _tagService.GetAllAsync();
         if (tags.Count == 0)
         {
             return NotFound();
@@ -50,6 +54,32 @@ public class TagController : ControllerBase
     }
 
     /// <summary>
+    ///     Gets a tag by id.
+    /// </summary>
+    /// <param name="id">Tag id.</param>
+    /// <returns>Tag by the given id.</returns>
+    [HttpGet("[controller]/{id}")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TagRequestModel))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(TagNotFoundException))]
+    public async Task<IActionResult> GetById(int id)
+    {
+        Result<Tag> result = await _tagService.GetByIdAsync(id);
+
+        return result.Match<IActionResult>(company => Ok(_mapper.Map<TagRequestModel>(company)),
+            error =>
+            {
+                if (error is TagNotFoundException)
+                {
+                    return NotFound();
+                }
+
+                return StatusCode(500, error);
+            });
+    }
+    
+    /// <summary>
     ///     Creates a tag.
     /// </summary>
     /// <param name="name">Tag name.</param>
@@ -57,20 +87,23 @@ public class TagController : ControllerBase
     [HttpPost("[controller]")]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<string>))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(TagResponseModel))]
-    public async Task<ActionResult<TagResponseModel>> Create([FromQuery] string name)
+    public async Task<IActionResult> Create([FromQuery] string name)
     {
-        ValidationResult validationResult =
-            await _tagRequestModelValidator.ValidateAsync(new TagRequestModel { Name = name });
+        Result<Tag> result = await _tagService.CreateAsync(name);
 
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage).ToList());
-        }
-
-        TagDto createdTag = await _tagService.CreateAsync(name);
-
-        TagResponseModel response = _mapper.Map<TagResponseModel>(createdTag);
-        return Ok(response);
+        return result.Match<IActionResult>(createdTag =>
+            {
+                TagResponseModel response = _mapper.Map<TagResponseModel>(createdTag);
+                return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
+            },
+            error =>
+            {
+                return error switch
+                {
+                    AnotherTagExistsWithSameNameException => BadRequest(error),
+                    _ => StatusCode(500, error),
+                };
+            });
     }
 
     /// <summary>
@@ -82,14 +115,18 @@ public class TagController : ControllerBase
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete([FromQuery] string name)
     {
-        bool result = await _tagService.DeleteAsync(name);
+        Result<bool> result = await _tagService.DeleteAsync(name);
 
-        if (!result)
-        {
-            return BadRequest("Tag could not be deleted");
-        }
-
-        return NoContent();
+        return result.Match<IActionResult>(
+            _ => NoContent(),
+            error =>
+            {
+                return error switch
+                {
+                    CompanyExistsWithTagNameException => BadRequest(error),
+                    _ => StatusCode(500, error),
+                };
+            });
     }
 
     /// <summary>
@@ -101,7 +138,7 @@ public class TagController : ControllerBase
     [HttpPost("company/{id}/tag")]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<string>))]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompanyResponseModel))]
-    public async Task<ActionResult<CompanyResponseModel>> AddCompanyTag(int id, [FromQuery] string tagName)
+    public async Task<IActionResult> AddCompanyTag(int id, [FromQuery] string tagName)
     {
         ValidationResult validationResult =
             await _tagRequestModelValidator.ValidateAsync(new TagRequestModel { Name = tagName });
@@ -111,15 +148,18 @@ public class TagController : ControllerBase
             return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
-        CompanySummaryDto? updatedCompany = await _companyService.AddTagAsync(id, tagName);
+        Result<Company> result = await _companyService.AddTagAsync(id, tagName);
 
-        if (updatedCompany == null)
-        {
-            return BadRequest($"Unable to find company with the id {id}");
-        }
+        return result.Match<IActionResult>(updatedCompany => Ok(_mapper.Map<CompanyResponseModel>(updatedCompany)),
+            error =>
+            {
+                if (error is CompanyNotFoundException)
+                {
+                    return BadRequest(error);
+                }
 
-        CompanyResponseModel response = _mapper.Map<CompanyResponseModel>(updatedCompany);
-        return Ok(response);
+                return StatusCode(500, error);
+            });
     }
 
     /// <summary>
@@ -130,15 +170,19 @@ public class TagController : ControllerBase
     [HttpDelete("company/{id}/tag")]
     [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<string>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    public async Task<ActionResult<CompanyResponseModel>> DeleteCompanyTag(int id, [FromQuery] string tagName)
+    public async Task<IActionResult> DeleteCompanyTag(int id, [FromQuery] string tagName)
     {
-        CompanySummaryDto? updatedCompany = await _companyService.DeleteTagAsync(id, tagName);
+        Result<Company> result = await _companyService.DeleteTagAsync(id, tagName);
 
-        if (updatedCompany == null)
-        {
-            return BadRequest($"Unable to find company with the id {id}");
-        }
-
-        return NoContent();
+        return result.Match<IActionResult>(
+            _ => NoContent(),
+            error =>
+            {
+                return error switch
+                {
+                    CompanyNotFoundException => BadRequest(error),
+                    _ => StatusCode(500, error),
+                };
+            });
     }
 }

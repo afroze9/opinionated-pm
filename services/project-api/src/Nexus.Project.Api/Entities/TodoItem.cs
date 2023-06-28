@@ -2,7 +2,7 @@
 
 namespace Nexus.ProjectAPI.Entities;
 
-public class TodoItem : AuditableEntityBase
+public class TodoItem : AuditableNexusEntityBase
 {
     required public string Title { get; set; }
 

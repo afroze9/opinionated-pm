@@ -17,6 +17,7 @@
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" />
         <PackageReference Include="FluentValidation" />
         <PackageReference Include="FluentValidation.DependencyInjectionExtensions" />
+        <PackageReference Include="LanguageExt.Core" />
         <PackageReference Include="Nexus.Framework.Web" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />

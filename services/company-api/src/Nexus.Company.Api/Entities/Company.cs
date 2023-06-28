@@ -5,7 +5,7 @@ namespace Nexus.CompanyAPI.Entities;
 /// <summary>
 ///     Represents a Company entity in the system.
 /// </summary>
-public class Company : AuditableEntityBase
+public class Company : AuditableNexusEntityBase
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Company" /> class.

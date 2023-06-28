@@ -29,7 +29,7 @@ public static class TodoEndpoints
     internal static async Task<IResult> UpdateTodo(int id, UnitOfWork unitOfWork,
         TodoItemAssignmentUpdateModel req)
     {
-        TodoItem? itemToUpdate = unitOfWork.Todos.GetById(id);
+        TodoItem? itemToUpdate = await unitOfWork.Todos.GetByIdAsync(id);
 
         if (itemToUpdate == null)
         {

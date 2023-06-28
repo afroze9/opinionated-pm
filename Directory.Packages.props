@@ -1,17 +1,24 @@
 <Project>
+  <!-- Variables -->
   <PropertyGroup>
-    <NexusLibraryVersion>0.3.0</NexusLibraryVersion>
+    <NexusLibraryVersion>0.4.0</NexusLibraryVersion>
   </PropertyGroup>
+  <!-- Package Management Properties-->
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
+  <!-- Packages -->
   <ItemGroup>
     <PackageVersion Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="7.0.0-rc2.7" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI" Version="7.0.0-rc2.7" />
     <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageVersion Include="AutoFixture" Version="4.18.0" />
     <PackageVersion Include="AutoMapper" Version="12.0.1" />
+    <PackageVersion Include="coverlet.collector" Version="6.0.0" />
+    <PackageVersion Include="FluentAssertions" Version="6.11.0" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.5.2" />
     <PackageVersion Include="FluentValidation" Version="11.5.2" />
+    <PackageVersion Include="LanguageExt.Core" Version="4.4.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="7.0.5" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="7.0.5" />
@@ -29,6 +36,7 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageVersion Include="Moq" Version="4.18.4" />
     <PackageVersion Include="Nexus.Auth" Version="$(NexusLibraryVersion)" />
     <PackageVersion Include="Nexus.Common" Version="$(NexusLibraryVersion)" />
     <PackageVersion Include="Nexus.Configuration" Version="$(NexusLibraryVersion)" />
@@ -68,13 +76,6 @@
     <PackageVersion Include="Steeltoe.Management.EndpointCore" Version="3.2.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageVersion Include="Winton.Extensions.Configuration.Consul" Version="3.3.0" />
-    <PackageVersion Include="AutoFixture" Version="4.18.0" />
-    <PackageVersion Include="coverlet.collector" Version="6.0.0">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageVersion>
-    <PackageVersion Include="FluentAssertions" Version="6.11.0" />
-    <PackageVersion Include="Moq" Version="4.18.4" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.4.5" />
     <PackageVersion Include="xunit" Version="2.4.2" />
   </ItemGroup>

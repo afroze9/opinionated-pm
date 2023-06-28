@@ -4,7 +4,7 @@ using Nexus.ProjectAPI.Entities;
 
 namespace Nexus.ProjectAPI.Data.Repositories;
 
-public class ProjectRepository : EfCustomRepository<Project>
+public class ProjectRepository : EfNexusRepository<Project>
 {
     public ProjectRepository(ApplicationDbContext context) : base(context)
     {

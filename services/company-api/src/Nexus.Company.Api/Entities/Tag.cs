@@ -5,7 +5,7 @@ namespace Nexus.CompanyAPI.Entities;
 /// <summary>
 ///     Represents a tag that can be associated with one or more companies.
 /// </summary>
-public class Tag : AuditableEntityBase
+public class Tag : AuditableNexusEntityBase
 {
     /// <summary>
     ///     Initializes a new instance of the <see cref="Tag" /> class with the specified name.

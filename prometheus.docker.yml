@@ -1,0 +1,22 @@
+global:
+  scrape_interval: 15s
+
+scrape_configs:
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['prometheus:9090']
+
+  - job_name: 'company-api'
+    static_configs:
+      - targets: ['company-api:5031']
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+
+  - job_name: 'project-api'
+    static_configs:
+      - targets: ['project-api:5041']
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+

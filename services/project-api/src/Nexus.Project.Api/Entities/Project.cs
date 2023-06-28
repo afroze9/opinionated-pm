@@ -2,7 +2,7 @@
 
 namespace Nexus.ProjectAPI.Entities;
 
-public class Project : AuditableEntityBase
+public class Project : AuditableNexusEntityBase
 {
     private readonly List<TodoItem> _todoItems = new ();
 

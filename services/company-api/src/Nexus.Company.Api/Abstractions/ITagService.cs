@@ -1,4 +1,5 @@
-﻿using Nexus.CompanyAPI.DTO;
+﻿using LanguageExt.Common;
+using Nexus.CompanyAPI.Entities;
 
 namespace Nexus.CompanyAPI.Abstractions;
 
@@ -12,7 +13,7 @@ public interface ITagService
     /// </summary>
     /// <param name="name">The name of the new tag.</param>
     /// <returns>A task representing the asynchronous operation that returns the created tag DTO.</returns>
-    Task<TagDto> CreateAsync(string name);
+    Task<Result<Tag>> CreateAsync(string name);
 
     /// <summary>
     ///     Deletes the tag with the specified name.
@@ -22,11 +23,13 @@ public interface ITagService
     ///     A task representing the asynchronous operation that returns a boolean indicating whether the deletion was
     ///     successful.
     /// </returns>
-    Task<bool> DeleteAsync(string name);
+    Task<Result<bool>> DeleteAsync(string name);
 
     /// <summary>
     ///     Retrieves all tags.
     /// </summary>
     /// <returns>A task representing the asynchronous operation that returns a list of tag DTOs.</returns>
-    Task<List<TagDto>> GetAllAsync();
+    Task<List<Tag>> GetAllAsync();
+
+    Task<Result<Tag>> GetByIdAsync(int id);
 }

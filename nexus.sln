@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api-gateway", "api-gateway", "{2B26CA81-F803-4EBD-B93A-6AEF7A4BEDB1}"
+	ProjectSection(SolutionItems) = preProject
+		api-gateway\README.md = api-gateway\README.md
+		api-gateway\.gitignore = api-gateway\.gitignore
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{57A592AE-C1D6-442F-9248-E946C8BC755C}"
 EndProject
@@ -14,6 +18,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.ApiGateway.UnitTests", "api-gateway\tests\Nexus.ApiGateway.UnitTests\Nexus.ApiGateway.UnitTests.csproj", "{7224556E-82C0-41EF-B89D-4089F1F3A94C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "health-checks-dashboard", "health-checks-dashboard", "{0CFCFAEC-7350-4CED-8BBA-EFB178E4AC35}"
+	ProjectSection(SolutionItems) = preProject
+		health-checks-dashboard\.git = health-checks-dashboard\.git
+		health-checks-dashboard\README.md = health-checks-dashboard\README.md
+		health-checks-dashboard\.gitignore = health-checks-dashboard\.gitignore
+		health-checks-dashboard\nexus-hc.png = health-checks-dashboard\nexus-hc.png
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A7EAEA89-9122-4330-A838-D461F048D5FA}"
 EndProject
@@ -52,8 +62,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A137
 		setup-docker-solution.ps1 = setup-docker-solution.ps1
 		setup-k8s.ps1 = setup-k8s.ps1
 		setup-local-dev.ps1 = setup-local-dev.ps1
-		docker-compose.yml = docker-compose.yml
-		docker-compose-local.yml = docker-compose-local.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{327048CC-60AA-4FEA-AE32-21E3E3C4243F}"
@@ -64,8 +72,76 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{327048
 		.gitignore = .gitignore
 		global.json = global.json
 		Directory.Packages.props = Directory.Packages.props
-		prometheus-local.yml = prometheus-local.yml
+		prometheus.local.yml = prometheus.local.yml
 		nexus.config.json = nexus.config.json
+		docker-compose.yml = docker-compose.yml
+		docker-compose-local.yml = docker-compose-local.yml
+		prometheus.docker.yml = prometheus.docker.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devcerts", "devcerts", "{A8046F0D-0FA5-47C9-8E1F-2E74D220779C}"
+	ProjectSection(SolutionItems) = preProject
+		devcerts\aspnetapp.pfx = devcerts\aspnetapp.pfx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "discovery-server", "discovery-server", "{C862DE6E-48D5-4F48-9F39-74175E9C69D1}"
+	ProjectSection(SolutionItems) = preProject
+		discovery-server\README.md = discovery-server\README.md
+		discovery-server\.gitignore = discovery-server\.gitignore
+		discovery-server\nexus-service-discovery.png = discovery-server\nexus-service-discovery.png
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{BAF59CCA-D41A-4851-84AB-4A7B5E93F45E}"
+	ProjectSection(SolutionItems) = preProject
+		discovery-server\config\config.hcl = discovery-server\config\config.hcl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{2BFF59C6-D8BE-4D18-8B0F-7CFD7E09A183}"
+	ProjectSection(SolutionItems) = preProject
+		discovery-server\docker\consul-acl.json = discovery-server\docker\consul-acl.json
+		discovery-server\docker\README.md = discovery-server\docker\README.md
+		discovery-server\docker\server1.json = discovery-server\docker\server1.json
+		discovery-server\docker\server2.json = discovery-server\docker\server2.json
+		discovery-server\docker\server3.json = discovery-server\docker\server3.json
+		discovery-server\docker\setup-consul.ps1 = discovery-server\docker\setup-consul.ps1
+		discovery-server\docker\docker-compose.yml = discovery-server\docker\docker-compose.yml
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{750AF967-D784-488E-848F-449AAA0CA0C5}"
+	ProjectSection(SolutionItems) = preProject
+		discovery-server\k8s\values.yaml = discovery-server\k8s\values.yaml
+		discovery-server\k8s\setup-consul.ps1 = discovery-server\k8s\setup-consul.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C361B747-5C97-4F92-986E-7E19CA9F7E97}"
+	ProjectSection(SolutionItems) = preProject
+		docs\scope.md = docs\scope.md
+		docs\nexus.drawio = docs\nexus.drawio
+		docs\add-service.md = docs\add-service.md
+		docs\known-issues.md = docs\known-issues.md
+		docs\nexus-overview.png = docs\nexus-overview.png
+		docs\nexus-libraries.drawio = docs\nexus-libraries.drawio
+		docs\architecture-overview.md = docs\architecture-overview.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "certs", "certs", "{9B35BFE4-F51F-46A9-A090-977A1FD8900E}"
+	ProjectSection(SolutionItems) = preProject
+		discovery-server\docker\certs\consul-agent-ca.pem = discovery-server\docker\certs\consul-agent-ca.pem
+		discovery-server\docker\certs\consul-agent-ca-key.pem = discovery-server\docker\certs\consul-agent-ca-key.pem
+		discovery-server\docker\certs\dc1-server-consul-0.pem = discovery-server\docker\certs\dc1-server-consul-0.pem
+		discovery-server\docker\certs\dc1-server-consul-0-key.pem = discovery-server\docker\certs\dc1-server-consul-0-key.pem
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{89BCCC92-22B3-4FAB-8528-5E646B40FA6B}"
+	ProjectSection(SolutionItems) = preProject
+		discovery-server\k8s\config\config.hcl = discovery-server\k8s\config\config.hcl
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{D3415C99-83CD-40EB-9C63-526681EB0FE2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{42F4658A-DEA3-4EEE-AC8D-C77E012B11E1}"
+	ProjectSection(SolutionItems) = preProject
+		api-gateway\.github\workflows\dotnet.yml = api-gateway\.github\workflows\dotnet.yml
 	EndProjectSection
 EndProject
 Global
@@ -128,5 +204,12 @@ Global
 		{A680F488-DA3E-4E50-969D-63C5071B8809} = {0935D250-A38E-44D3-A473-6427B790720C}
 		{0D52296F-5039-4571-AB44-3D16FCCB3A26} = {53217576-1143-4245-BE10-CFA93F02A591}
 		{5FECAAB2-7A03-4145-81A2-0FBA398CD2EA} = {0D52296F-5039-4571-AB44-3D16FCCB3A26}
+		{BAF59CCA-D41A-4851-84AB-4A7B5E93F45E} = {C862DE6E-48D5-4F48-9F39-74175E9C69D1}
+		{2BFF59C6-D8BE-4D18-8B0F-7CFD7E09A183} = {C862DE6E-48D5-4F48-9F39-74175E9C69D1}
+		{750AF967-D784-488E-848F-449AAA0CA0C5} = {C862DE6E-48D5-4F48-9F39-74175E9C69D1}
+		{9B35BFE4-F51F-46A9-A090-977A1FD8900E} = {2BFF59C6-D8BE-4D18-8B0F-7CFD7E09A183}
+		{89BCCC92-22B3-4FAB-8528-5E646B40FA6B} = {750AF967-D784-488E-848F-449AAA0CA0C5}
+		{D3415C99-83CD-40EB-9C63-526681EB0FE2} = {2B26CA81-F803-4EBD-B93A-6AEF7A4BEDB1}
+		{42F4658A-DEA3-4EEE-AC8D-C77E012B11E1} = {D3415C99-83CD-40EB-9C63-526681EB0FE2}
 	EndGlobalSection
 EndGlobal

@@ -7,6 +7,7 @@ using Moq;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Controllers;
 using Nexus.CompanyAPI.DTO;
+using Nexus.CompanyAPI.Entities;
 using Nexus.CompanyAPI.Mapping;
 using Nexus.CompanyAPI.Model;
 using Nexus.CompanyAPI.Telemetry;
@@ -30,7 +31,6 @@ public class CompanyControllerTests
         _mapper = mockMapper.CreateMapper();
         _companyController = new CompanyController(
             _companyServiceMock.Object, _mapper,
-            _companyRequestModelValidatorMock.Object,
             _companyUpdateRequestModelValidatorMock.Object,
             _companyInstrumentationMock.Object);
     }
@@ -101,11 +101,11 @@ public class CompanyControllerTests
         _companyServiceMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(companyDto);
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.GetById(id);
+        IActionResult result = await _companyController.GetById(id);
 
         // Assert
-        result.Result.Should().BeOfType<OkObjectResult>();
-        CompanyResponseModel? resultCompany = (result.Result as OkObjectResult)!.Value as CompanyResponseModel;
+        result.Should().BeOfType<OkObjectResult>();
+        CompanyResponseModel? resultCompany = (result as OkObjectResult)!.Value as CompanyResponseModel;
         resultCompany.Should().NotBeNull();
         resultCompany.Should().BeEquivalentTo(expectedResponseModel);
     }
@@ -116,13 +116,13 @@ public class CompanyControllerTests
         // Arrange
         int id = 1;
         CompanyDto? companyDto = null;
-        _companyServiceMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(companyDto);
+        _companyServiceMock.Setup(x => x.GetByIdAsync(id)).ReturnsAsync(companyDto!);
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.GetById(id);
+        IActionResult result = await _companyController.GetById(id);
 
         // Assert
-        result.Result.Should().BeOfType<NotFoundResult>();
+        result.Should().BeOfType<NotFoundResult>();
     }
 
     [Fact]
@@ -144,10 +144,9 @@ public class CompanyControllerTests
             Name = model.Name,
         };
 
-        CompanySummaryDto createdCompanySummaryDto = new ()
+        Company createdCompanySummaryDto = new (model.Name)
         {
-            Id = 1,
-            Name = model.Name,
+             Id = 1,
         };
 
         MapperConfiguration config = new (cfg => { cfg.AddProfile<CompanyProfile>(); });
@@ -156,17 +155,17 @@ public class CompanyControllerTests
         Mock<IMapper> mapperMock = new ();
         mapperMock.Setup(x => x.Map<CompanySummaryDto>(model)).Returns(companySummaryDto);
 
-        _companyServiceMock.Setup(x => x.CreateAsync(It.IsAny<CompanySummaryDto>()))
+        _companyServiceMock.Setup(x => x.CreateAsync(It.IsAny<Company>()))
             .ReturnsAsync(createdCompanySummaryDto);
 
         CompanyResponseModel expectedResponseModel = mapper.Map<CompanyResponseModel>(createdCompanySummaryDto);
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.Create(model);
+        IActionResult result = await _companyController.Create(model);
 
         // Assert
-        result.Result.Should().BeOfType<CreatedAtActionResult>();
-        CreatedAtActionResult? createdResult = result.Result as CreatedAtActionResult;
+        result.Should().BeOfType<CreatedAtActionResult>();
+        CreatedAtActionResult? createdResult = result as CreatedAtActionResult;
         createdResult.Should().NotBeNull();
         createdResult!.ActionName.Should().Be(nameof(CompanyController.GetById));
         createdResult.RouteValues.Should().ContainKey("id").And.ContainValue(createdCompanySummaryDto.Id);
@@ -190,11 +189,11 @@ public class CompanyControllerTests
             }));
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.Create(model);
+        IActionResult result = await _companyController.Create(model);
 
         // Assert
-        result.Result.Should().BeOfType<BadRequestObjectResult>();
-        BadRequestObjectResult? badRequestResult = result.Result as BadRequestObjectResult;
+        result.Should().BeOfType<BadRequestObjectResult>();
+        BadRequestObjectResult? badRequestResult = result as BadRequestObjectResult;
         badRequestResult.Should().NotBeNull();
         badRequestResult!.Value.Should().BeOfType<List<string>>();
     }
@@ -214,21 +213,20 @@ public class CompanyControllerTests
         _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None))
             .ReturnsAsync(validationResult);
 
-        CompanySummaryDto updatedCompanyDto = new ()
+        Company updatedCompanyDto = new (model.Name)
         {
             Id = id,
-            Name = model.Name,
         };
 
         _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name)).ReturnsAsync(updatedCompanyDto);
         CompanyResponseModel expectedResponseModel = _mapper.Map<CompanyResponseModel>(updatedCompanyDto);
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.Update(id, model);
+        IActionResult result = await _companyController.Update(id, model);
 
         // Assert
-        result.Result.Should().BeOfType<OkObjectResult>();
-        OkObjectResult? okResult = result.Result as OkObjectResult;
+        result.Should().BeOfType<OkObjectResult>();
+        OkObjectResult? okResult = result as OkObjectResult;
         okResult.Should().NotBeNull();
         CompanyResponseModel? responseModel = okResult!.Value as CompanyResponseModel;
         responseModel.Should().BeEquivalentTo(expectedResponseModel);
@@ -252,11 +250,11 @@ public class CompanyControllerTests
             }));
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.Update(id, model);
+        IActionResult result = await _companyController.Update(id, model);
 
         // Assert
-        result.Result.Should().BeOfType<BadRequestObjectResult>();
-        ((BadRequestObjectResult) result!.Result!).Value.Should().BeOfType<List<string>>();
+        result.Should().BeOfType<BadRequestObjectResult>();
+        ((BadRequestObjectResult) result!).Value.Should().BeOfType<List<string>>();
     }
 
     [Fact]
@@ -270,18 +268,18 @@ public class CompanyControllerTests
             Name = "Updated Company",
         };
 
-        CompanySummaryDto? updatedCompanyDto = null;
-        _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None))
-            .ReturnsAsync(new ValidationResult());
+        Company updatedCompanyDto = null!;
+         _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None))
+             .ReturnsAsync(new ValidationResult());
 
-        _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name)).ReturnsAsync(updatedCompanyDto);
+        _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name)).ReturnsAsync(updatedCompanyDto!);
 
         // Act
-        ActionResult<CompanyResponseModel> result = await _companyController.Update(id, model);
+        IActionResult result = await _companyController.Update(id, model);
 
         // Assert
-        result.Result.Should().BeOfType<BadRequestObjectResult>();
-        (result!.Result! as BadRequestObjectResult)!.Value.Should().Be($"Unable to find company with the id {id}");
+        result.Should().BeOfType<BadRequestObjectResult>();
+        (result! as BadRequestObjectResult)!.Value.Should().Be($"Unable to find company with the id {id}");
     }
 
     [Fact]
@@ -289,7 +287,7 @@ public class CompanyControllerTests
     {
         // Arrange
         int id = 1;
-        _companyServiceMock.Setup(x => x.DeleteAsync(id)).Returns(Task.CompletedTask);
+        _companyServiceMock.Setup(x => x.DeleteAsync(id)).ReturnsAsync(true);
 
         // Act
         IActionResult result = await _companyController.Delete(id);
