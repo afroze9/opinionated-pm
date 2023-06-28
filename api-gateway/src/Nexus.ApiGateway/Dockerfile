@@ -7,19 +7,21 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
-
 COPY ["api-gateway/src/Nexus.ApiGateway/nuget.config", "api-gateway/src/Nexus.ApiGateway/"]
 COPY ["api-gateway/src/Nexus.ApiGateway/Nexus.ApiGateway.csproj", "api-gateway/src/Nexus.ApiGateway/"]
 
-RUN dotnet restore "api-gateway/src/Nexus.ApiGateway/Nexus.ApiGateway.csproj"
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet restore "api-gateway/src/Nexus.ApiGateway/Nexus.ApiGateway.csproj"
 
 COPY . .
 
 WORKDIR "/src/api-gateway/src/Nexus.ApiGateway"
-RUN dotnet build "Nexus.ApiGateway.csproj" -c Release -o /app/build
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet build "Nexus.ApiGateway.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Nexus.ApiGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet publish "Nexus.ApiGateway.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

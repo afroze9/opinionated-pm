@@ -10,15 +10,18 @@ COPY ["Directory.Packages.props", "Directory.Packages.props"]
 COPY ["services/company-api/src/Nexus.Company.Api/nuget.config", "services/company-api/src/Nexus.Company.Api/"]
 COPY ["services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj", "services/company-api/src/Nexus.Company.Api/"]
 
-RUN dotnet restore "services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj"
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet restore "services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj"
 
 COPY . .
 
 WORKDIR "/src/services/company-api/src/Nexus.Company.Api"
-RUN dotnet build "Nexus.Company.Api.csproj" -c Release -o /app/build
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet build "Nexus.Company.Api.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Nexus.Company.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
+    dotnet publish "Nexus.Company.Api.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
