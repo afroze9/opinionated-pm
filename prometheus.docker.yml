@@ -8,14 +8,14 @@ scrape_configs:
 
   - job_name: 'company-api'
     static_configs:
-      - targets: ['company-api:5031']
+      - targets: ['company-api']
     scheme: https
     tls_config:
       insecure_skip_verify: true
 
   - job_name: 'project-api'
     static_configs:
-      - targets: ['project-api:5041']
+      - targets: ['project-api']
     scheme: https
     tls_config:
       insecure_skip_verify: true
