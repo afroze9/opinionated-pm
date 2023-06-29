@@ -39,7 +39,9 @@
         "Enabled": true,
         "MaxAttempts": 5
       },
-      "Tags": [ "nexus-service" ]
+      "Tags": [
+        "nexus-service-type=rest-api"
+      ]
     }
   },
   "TelemetrySettings": {

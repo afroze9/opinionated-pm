@@ -4,7 +4,6 @@ using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;
 using LanguageExt.Common;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Nexus.CompanyAPI.Abstractions;

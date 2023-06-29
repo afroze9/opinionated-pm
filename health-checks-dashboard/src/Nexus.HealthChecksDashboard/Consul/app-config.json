@@ -25,7 +25,9 @@
         "Enabled": true,
         "MaxAttempts": 5
       },
-      "Tags": [ "nexus-framework-service" ]
+      "Tags": [
+        "nexus-service-type=framework"
+      ]
     }
   },
   "TelemetrySettings": {
@@ -56,18 +58,15 @@
     "Clients": [
       {
         "Name": "Company API",
-        "ServiceName": "company-api",
-        "Url": "https://localhost:5031/actuator/health"
+        "ServiceName": "company-api"
       },
       {
         "Name": "Project API",
-        "ServiceName": "project-api",
-        "Url": "https://localhost:5041/actuator/health"
+        "ServiceName": "project-api"
       },
       {
         "Name": "API Gateway",
-        "ServiceName": "api-gateway",
-        "Url": "https://localhost:7068/actuator/health"
+        "ServiceName": "api-gateway"
       }
     ]
   }

@@ -6,7 +6,7 @@
 
 <PageTitle>Index</PageTitle>
 
-@if (_records == null)
+@if (_serviceRecords == null)
 {
     <p>
         <em>Loading...</em>
@@ -17,25 +17,49 @@ else
     <table class="table">
         <thead>
         <tr>
-            <th>Client Name</th>
-            <th>Status</th>
-            <th>Database</th>
-            <th>Liveness</th>
-            <th>Readiness</th>
-            <th>Last Check</th>
+            <th style="width: 5%"></th>
+            <th style="width: 30%">Client Name / Instance</th>
+            <th style="width: 10%">Status</th>
+            <th style="width: 10%">Database</th>
+            <th style="width: 10%">Liveness</th>
+            <th style="width: 15%">Readiness</th>
+            <th style="width: 20%">Last Check</th>
         </tr>
         </thead>
         <tbody>
-        @foreach (HealthRecordModel record in _records)
+        @foreach (ServiceHealthRecordModel serviceRecord in _serviceRecords)
         {
             <tr>
-                <td>@record.ClientName</td>
-                <td>@record.Response?.Status</td>
-                <td>@record.Response?.Database?.Status</td>
-                <td>@record.Response?.Liveness?.LivenessState</td>
-                <td>@record.Response?.Readiness?.ReadinessState</td>
-                <td>@record.CreatedAt</td>
+                <td>
+                    @if (serviceRecord.InstanceHealthRecords.Count > 0)
+                    {
+                        <button @onclick="(() => ToggleInstances(serviceRecord))">
+                            @GetButtonContent(serviceRecord)
+                        </button>
+                    }
+                </td>
+                <td>@serviceRecord.ClientName</td>
+                <td>@serviceRecord.Status</td>
+                <td>@serviceRecord.Database</td>
+                <td>@serviceRecord.Liveness</td>
+                <td>@serviceRecord.Readiness</td>
+                <td>@serviceRecord.CreatedAt</td>
             </tr>
+            @if (serviceRecord.InstanceHealthRecords.Count > 0)
+            {
+                @foreach (InstanceHealthRecordModel instance in serviceRecord.InstanceHealthRecords)
+                {
+                    <tr style="display: @(serviceRecord.Expanded ? "table-row" : "none")">
+                        <td></td>
+                        <td>@instance.InstanceNumber</td>
+                        <td>@instance.Response?.Status</td>
+                        <td>@instance.Response?.Database?.Status</td>
+                        <td>@instance.Response?.Liveness?.LivenessState</td>
+                        <td>@instance.Response?.Readiness?.ReadinessState</td>
+                        <td>@instance.CreatedAt</td>
+            </tr>
+        }
+            }
         }
         </tbody>
     </table>
@@ -44,7 +68,7 @@ else
 
 @code {
 
-    private HealthRecordModel[]? _records;
+    private ServiceHealthRecordModel[]? _serviceRecords;
 
     private Timer? _timer;
 
@@ -58,7 +82,16 @@ else
 
     private async Task UpdateHealthRecordsAsync()
     {
-        _records = await HealthRecordService.GetHealthRecordsAsync();
+        ServiceHealthRecordModel[] newServiceRecords = await HealthRecordService.GetHealthRecordsAsync();
+
+        foreach (ServiceHealthRecordModel serviceRecord in newServiceRecords)
+        {
+            serviceRecord.Expanded = _serviceRecords?.FirstOrDefault(x => x.ClientName == serviceRecord.ClientName)?.Expanded ?? false;
+        }
+        
+        //_serviceRecords = await HealthRecordService.GetHealthRecordsAsync();
+        
+        _serviceRecords = newServiceRecords;
         _lastChecked = DateTime.UtcNow;
         await InvokeAsync(StateHasChanged);
     }
@@ -66,5 +99,15 @@ else
     public void Dispose()
     {
         _timer?.Dispose();
+    }
+    
+    private void ToggleInstances(ServiceHealthRecordModel service)
+    {
+        service.Expanded = !service.Expanded;
+    }
+
+    private string GetButtonContent(ServiceHealthRecordModel serviceRecord)
+    {
+        return serviceRecord.Expanded ? "-" : "+";
     }
 }

@@ -29,7 +29,9 @@
         "Enabled": true,
         "MaxAttempts": 5
       },
-      "Tags": [ "nexus-framework-service" ]
+      "Tags": [
+        "nexus-service-type=framework"
+      ]
     }
   },
   "TelemetrySettings": {

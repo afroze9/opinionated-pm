@@ -10,5 +10,7 @@ public class ApplicationDbContext : DbContext
     {
     }
 
-    public DbSet<HealthCheckRecord> HealthCheckRecords => Set<HealthCheckRecord>();
+    public DbSet<ServiceHealthCheckRecord> HealthCheckRecords => Set<ServiceHealthCheckRecord>();
+
+    public DbSet<InstanceHealthCheckRecord> InstanceHealthCheckRecords => Set<InstanceHealthCheckRecord>();
 }

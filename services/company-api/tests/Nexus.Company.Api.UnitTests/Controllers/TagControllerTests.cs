@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Controllers;
-using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Entities;
 using Nexus.CompanyAPI.Exceptions;
 using Nexus.CompanyAPI.Model;
@@ -107,7 +106,7 @@ public class TagControllerTests
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        var actual = Assert.IsType<ValidationException>(badRequestResult.Value);
+        ValidationException? actual = Assert.IsType<ValidationException>(badRequestResult.Value);
         Assert.Single(actual.Errors);
     }
 
@@ -133,7 +132,7 @@ public class TagControllerTests
 
         // Assert
         BadRequestObjectResult badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
-        var actual = Assert.IsType<ValidationException>(badRequestResult.Value);
+        ValidationException? actual = Assert.IsType<ValidationException>(badRequestResult.Value);
         Assert.Single(actual.Errors);
     }
 
@@ -161,7 +160,7 @@ public class TagControllerTests
         IActionResult result = await _sut.Create(name);
 
         // Assert
-        var createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
+        CreatedAtActionResult? createdAtActionResult = Assert.IsType<CreatedAtActionResult>(result);
         TagResponseModel actual = Assert.IsType<TagResponseModel>(createdAtActionResult.Value);
         Assert.Equal(tagResponseModel.Name, actual.Name);
     }

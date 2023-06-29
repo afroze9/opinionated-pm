@@ -28,43 +28,51 @@ public class HealthRecordService : IHealthRecordService
         };
     }
 
-    public async Task<HealthRecordModel[]> GetHealthRecordsAsync(CancellationToken cancellationToken = default)
+    public async Task<ServiceHealthRecordModel[]> GetHealthRecordsAsync(CancellationToken cancellationToken = default)
     {
         if (_healthCheckOptions.Clients == null || _healthCheckOptions.Clients.Length == 0)
         {
-            return Array.Empty<HealthRecordModel>();
+            return Array.Empty<ServiceHealthRecordModel>();
         }
 
-        List<HealthRecordModel> healthRecords = new ();
+        List<ServiceHealthRecordModel> healthRecords = new ();
 
         foreach (HealthCheckClient client in _healthCheckOptions.Clients)
         {
-            HealthCheckRecord? clientRecord = await _context.HealthCheckRecords
+            ServiceHealthCheckRecord? serviceRecord = await _context.HealthCheckRecords
+                .Include(x => x.InstanceRecords)
                 .OrderByDescending(x => x.CreatedAt)
                 .FirstOrDefaultAsync(x => x.ClientName == client.Name, cancellationToken);
 
-            if (clientRecord != null)
+            if (serviceRecord != null)
             {
-                healthRecords.Add(new HealthRecordModel
+                ServiceHealthRecordModel? serviceHcModel = new ServiceHealthRecordModel
                 {
-                    CreatedAt = clientRecord.CreatedAt,
-                    Response = string.IsNullOrEmpty(clientRecord.Response)
-                        ? null
-                        : JsonConvert.DeserializeObject<HealthCheckResponse>(clientRecord.Response,
-                            _jsonSerializerSettings),
+                    CreatedAt = serviceRecord.CreatedAt,
                     ClientName = client.Name,
-                });
+                };
+
+                foreach (InstanceHealthCheckRecord instanceRecord in serviceRecord.InstanceRecords)
+                {
+                    serviceHcModel.InstanceHealthRecords.Add(new InstanceHealthRecordModel
+                    {
+                        CreatedAt = instanceRecord.CreatedAt,
+                        Response = string.IsNullOrEmpty(instanceRecord.Response)
+                            ? null
+                            : JsonConvert.DeserializeObject<HealthCheckResponse>(instanceRecord.Response,
+                                _jsonSerializerSettings),
+                        InstanceNumber = instanceRecord.InstanceNumber,
+                    });
+                }
+
+                healthRecords.Add(serviceHcModel);
             }
             else
             {
-                healthRecords.Add(new HealthRecordModel
+                healthRecords.Add(new ServiceHealthRecordModel
                 {
                     CreatedAt = DateTime.UtcNow,
                     ClientName = client.Name,
-                    Response = new HealthCheckResponse
-                    {
-                        Status = "DOWN",
-                    },
                 });
             }
         }

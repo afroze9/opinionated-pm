@@ -4,5 +4,5 @@ namespace Nexus.HealthChecksDashboard.Abstractions;
 
 public interface IHealthRecordService
 {
-    Task<HealthRecordModel[]> GetHealthRecordsAsync(CancellationToken cancellationToken = default);
+    Task<ServiceHealthRecordModel[]> GetHealthRecordsAsync(CancellationToken cancellationToken = default);
 }
