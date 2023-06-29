@@ -35,7 +35,6 @@ public class CompanyControllerTests
         _mapper = mockMapper.CreateMapper();
         _companyController = new CompanyController(
             _companyServiceMock.Object, _mapper,
-            _companyUpdateRequestModelValidatorMock.Object,
             new TestCompanyInstrumentation());
     }
 
@@ -252,22 +251,22 @@ public class CompanyControllerTests
         int id = 1;
         CompanyUpdateRequestModel model = new ()
         {
-            Id = id,
+            Id = 1,
             Name = "Updated Company",
         };
 
-        _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None)).ReturnsAsync(
-            new ValidationResult(new List<ValidationFailure>
-            {
-                new ("Property", "Error message"),
-            }));
+        _companyUpdateRequestModelValidatorMock.Setup(x => x.ValidateAsync(model, CancellationToken.None))
+            .ReturnsAsync(new ValidationResult());
+
+        _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name))
+            .ReturnsAsync(new Result<Company>(new ValidationException(new List<ValidationFailure>())));
 
         // Act
         IActionResult result = await _companyController.Update(id, model);
 
         // Assert
         result.Should().BeOfType<BadRequestObjectResult>();
-        ((BadRequestObjectResult) result!).Value.Should().BeOfType<List<string>>();
+        (result as BadRequestObjectResult)!.Value.Should().BeOfType<ValidationException>();
     }
 
     [Fact]
@@ -285,14 +284,14 @@ public class CompanyControllerTests
              .ReturnsAsync(new ValidationResult());
 
          _companyServiceMock.Setup(x => x.UpdateNameAsync(id, model.Name))
-             .ReturnsAsync(new Result<Company>(new ValidationException(new List<ValidationFailure>())));
+             .ReturnsAsync(new Result<Company>(new CompanyNotFoundException(id)));
 
         // Act
         IActionResult result = await _companyController.Update(id, model);
 
         // Assert
         result.Should().BeOfType<BadRequestObjectResult>();
-        (result! as BadRequestObjectResult)!.Value.Should().BeOfType<ValidationException>();
+        (result as BadRequestObjectResult)!.Value.Should().BeOfType<CompanyNotFoundException>();
     }
 
     [Fact]

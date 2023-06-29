@@ -21,18 +21,17 @@ namespace Nexus.CompanyAPI.Controllers;
 public class CompanyController : ControllerBase
 {
     private readonly ICompanyService _companyService;
-    private readonly IValidator<CompanyUpdateRequestModel> _companyUpdateRequestModelvalidator;
     private readonly IMapper _mapper;
     private readonly ActivitySource _activitySource;
     private readonly Counter<long> _getAllCompaniesCounter;
 
-    public CompanyController(ICompanyService companyService, IMapper mapper,
-        IValidator<CompanyUpdateRequestModel> companyUpdateRequestModelvalidator,
+    public CompanyController(
+        ICompanyService companyService, 
+        IMapper mapper,
         ICompanyInstrumentation companyInstrumentation)
     {
         _companyService = companyService;
         _mapper = mapper;
-        _companyUpdateRequestModelvalidator = companyUpdateRequestModelvalidator;
         _activitySource = companyInstrumentation.ActivitySource;
         _getAllCompaniesCounter = companyInstrumentation.GetAllCompaniesCounter;
     }
@@ -134,13 +133,6 @@ public class CompanyController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompanyResponseModel))]
     public async Task<IActionResult> Update(int id, [FromBody] CompanyUpdateRequestModel model)
     {
-        ValidationResult validationResult = await _companyUpdateRequestModelvalidator.ValidateAsync(model);
-
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(validationResult.Errors.Select(x => x.ErrorMessage).ToList());
-        }
-
         Result<Company> result = await _companyService.UpdateNameAsync(id, model.Name);
         return result.Match<IActionResult>(
             updatedCompany => Ok(_mapper.Map<CompanyResponseModel>(updatedCompany)),

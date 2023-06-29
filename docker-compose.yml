@@ -156,7 +156,7 @@ services:
   jaeger:
     image: jaegertracing/all-in-one:latest
     depends_on:
-      - prometheusss
+      - prometheus
     ports:
       - 13133:13177
       - 16686:16686
