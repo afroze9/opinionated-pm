@@ -34,6 +34,7 @@ public class CompanyProfile : Profile
         CreateMap<Tag, TagDto>();
         CreateMap<TagDto, Tag>();
         CreateMap<TagDto, TagResponseModel>();
+        CreateMap<Tag, TagResponseModel>();
 
         CreateMap<ProjectResponseModel, ProjectSummaryDto>()
             .ForMember(dest => dest.TaskCount, opt => opt.MapFrom(src => src.TodoItems.Count));
