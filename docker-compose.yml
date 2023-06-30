@@ -187,6 +187,9 @@ services:
     environment:
       - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-simple-json-datasource
     volumes:
+      - ./grafana-config/datasource-config/prometheus.yaml:/etc/grafana/provisioning/datasources/prometheus.yaml
+      - ./grafana-config/dashboard-config/nexus-metrics.yaml:/etc/grafana/provisioning/dashboards/nexus-metrics.yaml
+      - ./grafana-config/dashboards/nexus-metrics.json:/var/lib/grafana/dashboards/nexus-metrics.json
       - grafana:/var/lib/grafana
     networks:
       - tracing
