@@ -20,6 +20,7 @@ public class TagService : ITagService
     ///     Initializes a new instance of the <see cref="TagService" /> class.
     /// </summary>
     /// <param name="unitOfWork">The UnitOfWork object containing the repositories.</param>
+    /// <param name="tagValidator">The validator for tags</param>
     public TagService(UnitOfWork unitOfWork, IValidator<Tag> tagValidator)
     {
         _unitOfWork = unitOfWork;

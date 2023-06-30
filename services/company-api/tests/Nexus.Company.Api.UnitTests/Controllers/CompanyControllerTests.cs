@@ -24,9 +24,7 @@ public class CompanyControllerTests
     private readonly Mock<IValidator<Company>> _companyValidatorMock = new ();
     private readonly Mock<ICompanyService> _companyServiceMock = new ();
     private readonly Mock<IValidator<CompanyUpdateRequestModel>> _companyUpdateRequestModelValidatorMock = new ();
-
     private readonly IMapper _mapper;
-    private readonly ActivitySource _activitySource;
 
     public CompanyControllerTests()
     {
