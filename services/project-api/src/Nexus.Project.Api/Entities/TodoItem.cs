@@ -11,6 +11,8 @@ public class TodoItem : AuditableNexusEntityBase
     public string? AssignedToId { get; set; }
 
     public bool IsCompleted { get; private set; }
+    
+    public int ProjectId { get; set; }
 
     public void MarkComplete()
     {
