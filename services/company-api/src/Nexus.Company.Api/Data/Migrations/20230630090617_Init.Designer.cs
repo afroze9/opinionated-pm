@@ -4,15 +4,15 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Nexus.CompanyAPI.Data;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
 namespace Nexus.CompanyAPI.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230526190307_Init")]
+    [Migration("20230630090617_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,24 +20,46 @@ namespace Nexus.CompanyAPI.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.4")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("CompanyTag", b =>
                 {
-                    b.Property<int>("CompaniesId")
+                    b.Property<int>("CompanyId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TagsId")
+                    b.Property<int>("TagId")
                         .HasColumnType("integer");
 
-                    b.HasKey("CompaniesId", "TagsId");
+                    b.HasKey("CompanyId", "TagId");
 
-                    b.HasIndex("TagsId");
+                    b.HasIndex("TagId");
 
                     b.ToTable("CompanyTag");
+
+                    b.HasData(
+                        new
+                        {
+                            CompanyId = 1,
+                            TagId = 1
+                        },
+                        new
+                        {
+                            CompanyId = 1,
+                            TagId = 2
+                        },
+                        new
+                        {
+                            CompanyId = 2,
+                            TagId = 1
+                        },
+                        new
+                        {
+                            CompanyId = 2,
+                            TagId = 2
+                        });
                 });
 
             modelBuilder.Entity("Nexus.CompanyAPI.Entities.Company", b =>
@@ -70,6 +92,26 @@ namespace Nexus.CompanyAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Company", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = "",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Undev9"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = "",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "Nexus Inc."
+                        });
                 });
 
             modelBuilder.Entity("Nexus.CompanyAPI.Entities.Tag", b =>
@@ -102,19 +144,39 @@ namespace Nexus.CompanyAPI.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tag", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedBy = "",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = "",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "software"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedBy = "",
+                            CreatedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            ModifiedBy = "",
+                            ModifiedOn = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Name = "development"
+                        });
                 });
 
             modelBuilder.Entity("CompanyTag", b =>
                 {
                     b.HasOne("Nexus.CompanyAPI.Entities.Company", null)
                         .WithMany()
-                        .HasForeignKey("CompaniesId")
+                        .HasForeignKey("CompanyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Nexus.CompanyAPI.Entities.Tag", null)
                         .WithMany()
-                        .HasForeignKey("TagsId")
+                        .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

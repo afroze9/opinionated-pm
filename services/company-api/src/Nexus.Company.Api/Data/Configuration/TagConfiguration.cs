@@ -24,6 +24,9 @@ public class TagConfiguration : IEntityTypeConfiguration<Tag>
 
         builder
             .HasMany<Company>(t => t.Companies)
-            .WithMany(c => c.Tags);
+            .WithMany(c => c.Tags)
+            .UsingEntity("CompanyTag", typeof(Dictionary<string, object>),
+                right => right.HasOne(typeof(Company)).WithMany().HasForeignKey("CompanyId"),
+                left => left.HasOne(typeof(Tag)).WithMany().HasForeignKey("TagId"));
     }
 }

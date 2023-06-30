@@ -28,6 +28,9 @@ public class ApplicationDbContext : AuditableDbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        modelBuilder.Entity<Company>().HasData(_companies);
+        modelBuilder.Entity<Tag>().HasData(_tags);
+        modelBuilder.Entity("CompanyTag").HasData(_companyTags);
     }
     
     /// <summary>
@@ -39,4 +42,31 @@ public class ApplicationDbContext : AuditableDbContext
     ///     Gets the tags.
     /// </summary>
     public DbSet<Tag> Tags => Set<Tag>();
+    
+    private List<Company> _companies = new List<Company>()
+    {
+        new Company("Undev9")
+        {
+            Id = 1,
+        },
+        new Company("Nexus Inc.")
+        {
+            Id = 2,
+        },
+    };
+
+    private List<Tag> _tags = new List<Tag>()
+    {
+        new Tag("software") { Id = 1 },
+        new Tag("development") { Id = 2 },
+    };
+
+
+    private dynamic _companyTags = new[]
+    {
+        new { CompanyId = 1, TagId = 1 },
+        new { CompanyId = 1, TagId = 2 },
+        new { CompanyId = 2, TagId = 1 },
+        new { CompanyId = 2, TagId = 2 },
+    };
 }

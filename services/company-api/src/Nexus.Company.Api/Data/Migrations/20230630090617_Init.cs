@@ -4,6 +4,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Nexus.CompanyAPI.Data.Migrations
 {
     /// <inheritdoc />
@@ -50,30 +52,59 @@ namespace Nexus.CompanyAPI.Data.Migrations
                 name: "CompanyTag",
                 columns: table => new
                 {
-                    CompaniesId = table.Column<int>(type: "integer", nullable: false),
-                    TagsId = table.Column<int>(type: "integer", nullable: false)
+                    CompanyId = table.Column<int>(type: "integer", nullable: false),
+                    TagId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CompanyTag", x => new { x.CompaniesId, x.TagsId });
+                    table.PrimaryKey("PK_CompanyTag", x => new { x.CompanyId, x.TagId });
                     table.ForeignKey(
-                        name: "FK_CompanyTag_Company_CompaniesId",
-                        column: x => x.CompaniesId,
+                        name: "FK_CompanyTag_Company_CompanyId",
+                        column: x => x.CompanyId,
                         principalTable: "Company",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_CompanyTag_Tag_TagsId",
-                        column: x => x.TagsId,
+                        name: "FK_CompanyTag_Tag_TagId",
+                        column: x => x.TagId,
                         principalTable: "Tag",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CompanyTag_TagsId",
+            migrationBuilder.InsertData(
+                table: "Company",
+                columns: new[] { "Id", "CreatedBy", "CreatedOn", "ModifiedBy", "ModifiedOn", "Name" },
+                values: new object[,]
+                {
+                    { 1, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Undev9" },
+                    { 2, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nexus Inc." }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Tag",
+                columns: new[] { "Id", "CreatedBy", "CreatedOn", "ModifiedBy", "ModifiedOn", "Name" },
+                values: new object[,]
+                {
+                    { 1, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "software" },
+                    { 2, "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "", new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "development" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "CompanyTag",
-                column: "TagsId");
+                columns: new[] { "CompanyId", "TagId" },
+                values: new object[,]
+                {
+                    { 1, 1 },
+                    { 1, 2 },
+                    { 2, 1 },
+                    { 2, 2 }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CompanyTag_TagId",
+                table: "CompanyTag",
+                column: "TagId");
         }
 
         /// <inheritdoc />

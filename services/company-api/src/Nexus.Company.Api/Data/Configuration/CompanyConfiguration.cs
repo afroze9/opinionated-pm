@@ -27,6 +27,9 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
         // Configures a many-to-many relationship between the company and tag entities.
         builder
             .HasMany<Tag>(c => c.Tags)
-            .WithMany(t => t.Companies);
+            .WithMany(t => t.Companies)
+            .UsingEntity("CompanyTag", typeof(Dictionary<string, object>),
+                right => right.HasOne(typeof(Tag)).WithMany().HasForeignKey("TagId"),
+                left => left.HasOne(typeof(Company)).WithMany().HasForeignKey("CompanyId"));
     }
 }
