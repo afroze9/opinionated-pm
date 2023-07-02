@@ -55,13 +55,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Project.Api.UnitTests
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A13717A5-5107-4A86-898A-ABD223ACB0D6}"
 	ProjectSection(SolutionItems) = preProject
-		build-docker-images.ps1 = build-docker-images.ps1
-		cleanup-docker-solution.ps1 = cleanup-docker-solution.ps1
-		cleanup-local-solution.ps1 = cleanup-local-solution.ps1
-		publish-docker-images.ps1 = publish-docker-images.ps1
-		setup-docker-solution.ps1 = setup-docker-solution.ps1
 		setup-k8s.ps1 = setup-k8s.ps1
-		setup-local-dev.ps1 = setup-local-dev.ps1
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{327048CC-60AA-4FEA-AE32-21E3E3C4243F}"
@@ -103,7 +97,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docker", "docker", "{2BFF59
 		discovery-server\docker\server1.json = discovery-server\docker\server1.json
 		discovery-server\docker\server2.json = discovery-server\docker\server2.json
 		discovery-server\docker\server3.json = discovery-server\docker\server3.json
-		discovery-server\docker\setup-consul.ps1 = discovery-server\docker\setup-consul.ps1
 		discovery-server\docker\docker-compose.yml = discovery-server\docker\docker-compose.yml
 	EndProjectSection
 EndProject
