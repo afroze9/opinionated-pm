@@ -1,0 +1,12 @@
+<Project>
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <NoWarn>$(NoWarn);1591</NoWarn>
+    </PropertyGroup>
+</Project>

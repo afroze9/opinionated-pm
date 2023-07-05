@@ -3,7 +3,6 @@ using System.Diagnostics.Metrics;
 using System.Net.Mime;
 using AutoMapper;
 using FluentValidation;
-using FluentValidation.Results;
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Nexus.ProjectAPI.Entities;
 using Nexus.ProjectAPI.Models;
+using Nexus.SharedKernel.Contracts.Project;
 
 namespace Nexus.ProjectAPI.Mapping;
 
@@ -12,5 +13,9 @@ public class ProjectProfile : Profile
         CreateMap<Project, ProjectRequestModel>();
         CreateMap<ProjectRequestModel, Project>();
         CreateMap<TodoItemRequestModel, TodoItem>();
+
+        CreateMap<Project, ProjectResponseModel>();
+        CreateMap<ProjectResponseModel, Project>();
+        CreateMap<TodoItem, TodoItemResponseModel>();
     }
 }

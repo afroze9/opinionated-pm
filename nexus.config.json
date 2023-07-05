@@ -1,5 +1,5 @@
 {
-  "SolutionName": "Nexus",
+  "SolutionName": "nexus",
   "DockerRepository": "afroze9",
   "Framework": {
     "ApiGateway": {

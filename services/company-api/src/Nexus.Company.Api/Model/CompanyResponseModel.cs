@@ -1,4 +1,6 @@
-﻿namespace Nexus.CompanyAPI.Model;
+﻿using Nexus.SharedKernel.Contracts.Project;
+
+namespace Nexus.CompanyAPI.Model;
 
 [ExcludeFromCodeCoverage]
 public class CompanyResponseModel

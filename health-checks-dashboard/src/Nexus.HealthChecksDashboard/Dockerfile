@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
+COPY ["Directory.Build.props", "Directory.Build.props"]
 COPY ["health-checks-dashboard/src/Nexus.HealthChecksDashboard/nuget.config", "health-checks-dashboard/src/Nexus.HealthChecksDashboard/"]
 COPY ["health-checks-dashboard/src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj", "health-checks-dashboard/src/Nexus.HealthChecksDashboard/"]
 

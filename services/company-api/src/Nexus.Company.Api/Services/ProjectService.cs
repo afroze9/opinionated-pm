@@ -6,7 +6,7 @@ using Polly.Extensions.Http;
 using Polly.Fallback;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.DTO;
-using Nexus.CompanyAPI.Model;
+using Nexus.SharedKernel.Contracts.Project;
 
 namespace Nexus.CompanyAPI.Services;
 

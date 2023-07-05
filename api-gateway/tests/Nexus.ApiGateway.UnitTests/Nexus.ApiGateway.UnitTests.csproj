@@ -1,11 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Nexus.ApiGateway.UnitTests</RootNamespace>
-
         <IsPackable>false</IsPackable>
     </PropertyGroup>
 

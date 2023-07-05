@@ -7,6 +7,7 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
+COPY ["Directory.Build.props", "Directory.Build.props"]
 COPY ["services/company-api/src/Nexus.Company.Api/nuget.config", "services/company-api/src/Nexus.Company.Api/"]
 COPY ["services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj", "services/company-api/src/Nexus.Company.Api/"]
 

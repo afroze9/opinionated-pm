@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using AutoMapper;
+﻿using AutoMapper;
 using FluentAssertions;
 using FluentValidation;
 using FluentValidation.Results;

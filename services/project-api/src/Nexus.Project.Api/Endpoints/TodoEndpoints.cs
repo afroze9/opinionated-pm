@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Nexus.ProjectAPI.Data;
 using Nexus.ProjectAPI.Entities;
 using Nexus.ProjectAPI.Models;
+using Nexus.SharedKernel.Contracts.Project;
+// ReSharper disable MemberCanBePrivate.Global
 
 namespace Nexus.ProjectAPI.Endpoints;
 
@@ -15,19 +17,23 @@ public static class TodoEndpoints
             .WithTags("Todo");
 
         app.MapGet("api/v1/Todo/{id}", GetTodoById)
-            .Produces<ActionResult<TodoItem>>()
+            .Produces<ActionResult<TodoItemResponseModel>>()
+            .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization("read:project")
             .WithTags("Todo");
 
         app.MapPut("api/v1/Todo/{id}", UpdateTodo)
-            .Produces<ActionResult<TodoItem>>()
+            .Produces<ActionResult<TodoItemResponseModel>>()
             .Produces<IActionResult>(StatusCodes.Status400BadRequest)
             .RequireAuthorization("update:project")
             .WithTags("Todo");
     }
 
-    internal static async Task<IResult> UpdateTodo(int id, UnitOfWork unitOfWork,
-        TodoItemAssignmentUpdateModel req)
+    internal static async Task<IResult> UpdateTodo(
+        int id, 
+        UnitOfWork unitOfWork,
+        TodoItemAssignmentUpdateModel req,
+        IMapper mapper)
     {
         TodoItem? itemToUpdate = await unitOfWork.Todos.GetByIdAsync(id);
 
@@ -47,12 +53,13 @@ public static class TodoEndpoints
         unitOfWork.Todos.Update(itemToUpdate);
         unitOfWork.Commit();
 
-        return Results.Ok(itemToUpdate);
+        return Results.Ok(mapper.Map<TodoItemResponseModel>(itemToUpdate));
     }
 
-    internal static async Task<IResult> GetTodoById(int id, UnitOfWork unitOfWork)
+    internal static async Task<IResult> GetTodoById(int id, UnitOfWork unitOfWork, IMapper mapper)
     {
-        return Results.Ok(await unitOfWork.Todos.GetByIdAsync(id));
+        var todoItem = await unitOfWork.Todos.GetByIdAsync(id);
+        return todoItem == null ? Results.NotFound() : Results.Ok(mapper.Map<TodoItemResponseModel>(todoItem));
     }
 
     internal static async Task<IResult> AddTodoToProject(int id, TodoItemRequestModel req,

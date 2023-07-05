@@ -1,4 +1,4 @@
-﻿namespace Nexus.CompanyAPI.Model;
+﻿namespace Nexus.SharedKernel.Contracts.Project;
 
 [ExcludeFromCodeCoverage]
 public class TodoItemResponseModel

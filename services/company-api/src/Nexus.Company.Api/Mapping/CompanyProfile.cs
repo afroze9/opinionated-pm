@@ -2,6 +2,7 @@
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Entities;
 using Nexus.CompanyAPI.Model;
+using Nexus.SharedKernel.Contracts.Project;
 
 namespace Nexus.CompanyAPI.Mapping;
 

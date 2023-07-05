@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.Protected;
 using Nexus.CompanyAPI.DTO;
-using Nexus.CompanyAPI.Model;
 using Nexus.CompanyAPI.Services;
+using Nexus.SharedKernel.Contracts.Project;
 
 namespace Nexus.CompanyAPI.UnitTests.Services;
 
