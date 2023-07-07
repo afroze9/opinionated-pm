@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <RootNamespace>Nexus.ApiGateway</RootNamespace>
+        <NexusService>true</NexusService>
     </PropertyGroup>
     
     <ItemGroup>

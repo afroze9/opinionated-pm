@@ -1,0 +1,37 @@
+{
+  "ConsulKV": {
+    "Url": "http://localhost:8500",
+    "Token": "026c2cde-c9f0-6c5a-e441-8b263a4fdb86",
+    "Key": "api-gateway/app-config"
+  },
+  "FrameworkSettings": {
+    "Auth": {
+      "Enable": true
+    },
+    "Swagger": {
+      "Enable": false
+    },
+    "ApiControllers": {
+      "Enable": false,
+      "Filters": {
+        "EnableActionLogging": false
+      }
+    },
+    "Telemetry": {
+      "Enable": true,
+      "Endpoint": "http://localhost:4317",
+      "EnableAlwaysOnSampler": true,
+      "SampleProbability": 0.2,
+      "EnableConsoleExporter": true
+    },
+    "Management": {
+      "Enable": true
+    },
+    "Discovery": {
+      "Enable": true
+    },
+    "Logging": {
+      "Enable": true
+    }
+  }
+}
