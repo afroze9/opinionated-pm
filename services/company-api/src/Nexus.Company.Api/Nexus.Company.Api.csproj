@@ -24,5 +24,12 @@
     <ItemGroup>
       <ProjectReference Include="..\..\..\..\shared-kernel\src\Nexus.SharedKernel\Nexus.SharedKernel.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <Content Include="..\..\..\..\appsettings.Global.json">
+        <Link>appsettings.Global.json</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 
 </Project>

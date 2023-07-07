@@ -2,7 +2,6 @@
 
     <PropertyGroup>
         <RootNamespace>Nexus.ApiGateway</RootNamespace>
-        <NexusService>true</NexusService>
     </PropertyGroup>
     
     <ItemGroup>
@@ -10,6 +9,13 @@
         <PackageReference Include="Nexus.Framework.Web" />
         <PackageReference Include="Ocelot" />
         <PackageReference Include="Ocelot.Provider.Consul" />
+    </ItemGroup>
+    
+    <ItemGroup>
+      <Content Include="..\..\..\appsettings.Global.json">
+        <Link>appsettings.Global.json</Link>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
     
 </Project>

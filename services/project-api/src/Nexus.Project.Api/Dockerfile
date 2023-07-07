@@ -8,6 +8,7 @@ WORKDIR /src
 
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 COPY ["Directory.Build.props", "Directory.Build.props"]
+COPY ["appsettings.Global.json", "appsettings.Global.json"]
 COPY ["services/project-api/src/Nexus.Project.Api/nuget.config", "services/project-api/src/Nexus.Project.Api/"]
 COPY ["services/project-api/src/Nexus.Project.Api/Nexus.Project.Api.csproj", "services/project-api/src/Nexus.Project.Api/"]
 
