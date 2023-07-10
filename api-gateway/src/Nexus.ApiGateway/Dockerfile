@@ -8,13 +8,13 @@ WORKDIR /src
 
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 COPY ["Directory.Build.props", "Directory.Build.props"]
-COPY ["appsettings.Global.json", "appsettings.Global.json"]
 COPY ["api-gateway/src/Nexus.ApiGateway/nuget.config", "api-gateway/src/Nexus.ApiGateway/"]
 COPY ["api-gateway/src/Nexus.ApiGateway/Nexus.ApiGateway.csproj", "api-gateway/src/Nexus.ApiGateway/"]
 
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     dotnet restore "api-gateway/src/Nexus.ApiGateway/Nexus.ApiGateway.csproj"
 
+COPY ["appsettings.Global.json", "appsettings.Global.json"]
 COPY . .
 
 WORKDIR "/src/api-gateway/src/Nexus.ApiGateway"

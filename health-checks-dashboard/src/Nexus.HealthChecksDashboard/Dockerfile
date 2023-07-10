@@ -8,13 +8,13 @@ WORKDIR /src
 
 COPY ["Directory.Packages.props", "Directory.Packages.props"]
 COPY ["Directory.Build.props", "Directory.Build.props"]
-COPY ["appsettings.Global.json", "appsettings.Global.json"]
 COPY ["health-checks-dashboard/src/Nexus.HealthChecksDashboard/nuget.config", "health-checks-dashboard/src/Nexus.HealthChecksDashboard/"]
 COPY ["health-checks-dashboard/src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj", "health-checks-dashboard/src/Nexus.HealthChecksDashboard/"]
 
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     dotnet restore "health-checks-dashboard/src/Nexus.HealthChecksDashboard/Nexus.HealthChecksDashboard.csproj"
 
+COPY ["appsettings.Global.json", "appsettings.Global.json"]
 COPY . .
 
 WORKDIR "/src/health-checks-dashboard/src/Nexus.HealthChecksDashboard"
