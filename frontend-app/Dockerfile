@@ -5,8 +5,10 @@ RUN npm i -g pnpm
 WORKDIR /app
 
 COPY package*.json ./
+COPY pnpm-lock.yaml ./
 
-RUN pnpm install
+RUN --mount=type=cache,id=pnpm,target=/root/.pnpm-store \
+    pnpm install
 
 COPY . .
 

@@ -3,7 +3,8 @@
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
-		"dev": "vite dev",
+		"dev": "vite dev --host",
+		"prepare": "svelte-kit sync",
 		"build": "vite build",
 		"preview": "vite preview",
 		"test": "playwright test",
