@@ -14,7 +14,8 @@ public class ProjectProfile : Profile
         CreateMap<ProjectRequestModel, Project>();
         CreateMap<TodoItemRequestModel, TodoItem>();
 
-        CreateMap<Project, ProjectResponseModel>();
+        CreateMap<Project, ProjectResponseModel>()
+            .ForMember(dest => dest.Priority, opt => opt.MapFrom(src => src.Priority));
         CreateMap<ProjectResponseModel, Project>();
         CreateMap<TodoItem, TodoItemResponseModel>();
     }

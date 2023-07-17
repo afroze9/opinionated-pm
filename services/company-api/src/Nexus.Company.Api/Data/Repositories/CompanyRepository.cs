@@ -34,4 +34,11 @@ public class CompanyRepository : EfNexusRepository<Company>
     {
         return await DbSet.AnyAsync(x => x.Tags.Any(t => t.Name == tagName), cancellationToken);
     }
+
+    public async Task<Company?> GetByIdWithTagsAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await DbSet
+            .Include(x => x.Tags)
+            .FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+    }
 }

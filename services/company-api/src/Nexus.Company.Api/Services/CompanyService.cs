@@ -124,7 +124,7 @@ public class CompanyService : ICompanyService
     /// <returns>The company with the specified ID, or null if not found.</returns>
     public async Task<Result<CompanyDto>> GetByIdAsync(int id)
     {
-        Company? company = await _unitOfWork.Companies.GetByIdAsync(id);
+        Company? company = await _unitOfWork.Companies.GetByIdWithTagsAsync(id);
         
         if (company == null)
         {
