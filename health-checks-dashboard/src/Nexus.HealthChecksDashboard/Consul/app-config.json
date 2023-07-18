@@ -1,19 +1,7 @@
 ﻿{
   "SerilogSettings": {
     "ElasticSearchSettings": {
-      "Uri": "https://localhost:9200",
-      "Username": "elastic",
-      "Password": "dev123",
-      "IndexFormat": "logs-project-api-{0:yyyy.MM}"
-    }
-  },
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Verbose",
-      "Override": {
-        "Microsoft": "Warning",
-        "System": "Warning"
-      }
+      "IndexFormat": "logs-health-checks-dashboard-{0:yyyy.MM}"
     }
   },
   "Consul": {
@@ -31,27 +19,8 @@
     }
   },
   "TelemetrySettings": {
-    "Endpoint": "http://localhost:4317",
     "ServiceName": "api-gateway",
-    "ServiceVersion": "v1",
-    "EnableAlwaysOnSampler": false,
-    "SampleProbability": 0.2,
-    "EnableConsoleExporter": false
-  },
-  "management": {
-    "endpoints": {
-      "health": {
-        "showdetails": "always"
-      },
-      "enabled": true,
-      "actuator": {
-        "exposure": {
-          "include": [
-            "*"
-          ]
-        }
-      }
-    }
+    "ServiceVersion": "v1"
   },
   "HealthCheck": {
     "IntervalInSeconds": 3,
