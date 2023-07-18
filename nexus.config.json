@@ -29,6 +29,13 @@
       "RootNamespace": "Nexus.ProjectAPI",
       "Port": 5041,
       "DbPort": 5439
+    },
+    {
+      "ServiceName": "people-api",
+      "ProjectName": "Nexus.People.Api",
+      "RootNamespace": "Nexus.PeopleApi",
+      "Port": 5043,
+      "DbPort": 5441
     }
   ]
 }

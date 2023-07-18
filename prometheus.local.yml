@@ -1,21 +1,28 @@
 global:
   scrape_interval: 15s
-
 scrape_configs:
-  - job_name: 'prometheus'
-    static_configs:
-      - targets: ['localhost:9090']
-
-  - job_name: 'company-api'
-    static_configs:
-      - targets: ['host.docker.internal:5031']
-    scheme: https
-    tls_config:
-      insecure_skip_verify: true
-      
-  - job_name: 'project-api'
-    static_configs:
-      - targets: ['host.docker.internal:5041']
-    scheme: https
-    tls_config:
-      insecure_skip_verify: true
+- job_name: prometheus
+  static_configs:
+  - targets:
+    - localhost:9090
+- job_name: company-api
+  static_configs:
+  - targets:
+    - host.docker.internal:5031
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true
+- job_name: project-api
+  static_configs:
+  - targets:
+    - host.docker.internal:5041
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true
+- job_name: people-api
+  static_configs:
+  - targets:
+    - host.docker.internal:5043
+  scheme: https
+  tls_config:
+    insecure_skip_verify: true

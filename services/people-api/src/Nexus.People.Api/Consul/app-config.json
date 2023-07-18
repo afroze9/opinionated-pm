@@ -1,10 +1,24 @@
 {
+  "AllowedHosts": "*",
+  "Auth0Settings": {
+    "Authority": "https://teamly.us.auth0.com",
+    "Audience": "projectmanagement"
+  },
+  "Postgres": {
+    "Client": {
+      "Host": "localhost",
+      "Port": 5441,
+      "Username": "developer",
+      "Password": "dev123",
+      "Database": "nexus_people"
+    }
+  },
   "SerilogSettings": {
     "ElasticSearchSettings": {
       "Uri": "https://localhost:9200",
       "Username": "elastic",
       "Password": "dev123",
-      "IndexFormat": "logs-project-api-{0:yyyy.MM}"
+      "IndexFormat": "logs-people-api-{0:yyyy.MM}"
     }
   },
   "Serilog": {
@@ -17,22 +31,22 @@
     }
   },
   "Consul": {
-    "Token": "b301b49b-1806-4b2e-1706-9ac608a53d19",
+    "Token": "4f67d4a8-606f-6133-84f4-5c69fe53a1bc",
     "Discovery": {
-      "ServiceName": "health-checks-dashboard",
+      "ServiceName": "people-api",
       "Scheme": "https",
       "Retry": {
         "Enabled": true,
         "MaxAttempts": 5
       },
       "Tags": [
-        "nexus-service-type=framework"
+        "nexus-service-type=rest-api"
       ]
     }
   },
   "TelemetrySettings": {
     "Endpoint": "http://localhost:4317",
-    "ServiceName": "api-gateway",
+    "ServiceName": "people-api",
     "ServiceVersion": "v1",
     "EnableAlwaysOnSampler": false,
     "SampleProbability": 0.2,
@@ -52,26 +66,5 @@
         }
       }
     }
-  },
-  "HealthCheck": {
-    "IntervalInSeconds": 3,
-    "Clients": [
-      {
-        "Name": "Company API",
-        "ServiceName": "company-api"
-      },
-      {
-        "Name": "Project API",
-        "ServiceName": "project-api"
-      },
-      {
-        "Name": "API Gateway",
-        "ServiceName": "api-gateway"
-      },
-      {
-        "Name": "People API",
-        "ServiceName": "people-api"
-      }
-    ]
   }
 }

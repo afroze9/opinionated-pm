@@ -1,0 +1,99 @@
+﻿{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/v1/People",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/People",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "ServiceName": "people-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "read:people"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/People/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/People/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "ServiceName": "people-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "read:people"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/People",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/People",
+      "UpstreamHttpMethod": [
+        "Post"
+      ],
+      "ServiceName": "people-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "write:people"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/People/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/People/{id}",
+      "UpstreamHttpMethod": [
+        "Put"
+      ],
+      "ServiceName": "people-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "update:people"
+        ]
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/v1/People/{id}",
+      "DownstreamScheme": "https",
+      "UpstreamPathTemplate": "/api/v1/People/{id}",
+      "UpstreamHttpMethod": [
+        "Delete"
+      ],
+      "ServiceName": "people-api",
+      "LoadBalancerOptions": {
+        "Type": "LeastConnection"
+      },
+      "DangerousAcceptAnyServerCertificateValidator": true,
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": [
+          "delete:people"
+        ]
+      }
+    }
+  ]
+}
