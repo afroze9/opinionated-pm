@@ -1,9 +1,4 @@
-{
-  "AllowedHosts": "*",
-  "Auth0Settings": {
-    "Authority": "https://teamly.us.auth0.com",
-    "Audience": "projectmanagement"
-  },
+﻿{
   "Postgres": {
     "Client": {
       "Host": "localhost",
@@ -15,23 +10,11 @@
   },
   "SerilogSettings": {
     "ElasticSearchSettings": {
-      "Uri": "https://localhost:9200",
-      "Username": "elastic",
-      "Password": "dev123",
       "IndexFormat": "logs-people-api-{0:yyyy.MM}"
     }
   },
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Verbose",
-      "Override": {
-        "Microsoft": "Warning",
-        "System": "Warning"
-      }
-    }
-  },
   "Consul": {
-    "Token": "4f67d4a8-606f-6133-84f4-5c69fe53a1bc",
+    "Token": "aa1772a2-478a-5457-b228-237c7c35f861",
     "Discovery": {
       "ServiceName": "people-api",
       "Scheme": "https",
@@ -45,26 +28,7 @@
     }
   },
   "TelemetrySettings": {
-    "Endpoint": "http://localhost:4317",
     "ServiceName": "people-api",
-    "ServiceVersion": "v1",
-    "EnableAlwaysOnSampler": false,
-    "SampleProbability": 0.2,
-    "EnableConsoleExporter": false
-  },
-  "management": {
-    "endpoints": {
-      "health": {
-        "showdetails": "always"
-      },
-      "enabled": true,
-      "actuator": {
-        "exposure": {
-          "include": [
-            "*"
-          ]
-        }
-      }
-    }
+    "ServiceVersion": "v1"
   }
 }

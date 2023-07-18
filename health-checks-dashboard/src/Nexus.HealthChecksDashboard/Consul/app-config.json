@@ -1,4 +1,4 @@
-{
+﻿{
   "SerilogSettings": {
     "ElasticSearchSettings": {
       "Uri": "https://localhost:9200",
