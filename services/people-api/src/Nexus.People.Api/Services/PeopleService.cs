@@ -12,17 +12,20 @@ namespace Nexus.PeopleAPI.Services;
 
 public class PeopleService : IPeopleService
 {
+    private readonly IIdentityService _identityService;
     private readonly IMapper _mapper;
     private readonly UnitOfWork _unitOfWork;
     private readonly ILogger<PeopleService> _logger;
     private readonly IValidator<Person> _personValidator;
 
     public PeopleService(
+        IIdentityService identityService,
         IMapper mapper,
         UnitOfWork unitOfWork,
         ILogger<PeopleService> logger,
         IValidator<Person> personValidator)
     {
+        _identityService = identityService;
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _logger = logger;
@@ -37,6 +40,7 @@ public class PeopleService : IPeopleService
 
     public async Task<Result<Person>> CreateAsync(Person person)
     {
+        // Check if user already exists
         ValidationResult validationResult = await _personValidator.ValidateAsync(person);
 
         if (!validationResult.IsValid)
@@ -48,6 +52,9 @@ public class PeopleService : IPeopleService
         {
             return new Result<Person>(new AnotherPersonExistsWithSameEmailException(person.Email));
         }
+
+        // If not, create a user on identity provider
+        person.IdentityId = await _identityService.CreateUserAsync(person);
         
         try
         {

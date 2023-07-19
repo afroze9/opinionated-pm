@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageVersion Include="AspNetCore.HealthChecks.UI.InMemory.Storage" Version="7.0.0-rc2.7" />
     <PackageVersion Include="AspNetCore.HealthChecks.UI" Version="7.0.0-rc2.7" />
+    <PackageVersion Include="Auth0.ManagementApi" Version="7.22.0" />
     <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageVersion Include="AutoFixture" Version="4.18.0" />
     <PackageVersion Include="AutoMapper" Version="12.0.1" />
