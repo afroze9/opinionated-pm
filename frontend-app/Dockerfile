@@ -1,17 +1,13 @@
 FROM node:18-alpine AS base
 
-RUN npm i -g pnpm
-
+RUN npm install -g pnpm
+ 
 WORKDIR /app
-
-COPY package*.json ./
-COPY pnpm-lock.yaml ./
-
-RUN --mount=type=cache,id=pnpm,target=/root/.pnpm-store \
-    pnpm install
-
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install --frozen-lockfile
+ 
 COPY . .
-
+RUN pnpm build
+ 
 EXPOSE 3000
-
-CMD ["npm", "run", "dev"]
+CMD ["node", "build"]

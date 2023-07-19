@@ -1,23 +1,7 @@
 ﻿{
-  "Auth0Settings": {
-    "Authority": "https://teamly.us.auth0.com",
-    "Audience": "projectmanagement"
-  },
   "SerilogSettings": {
     "ElasticSearchSettings": {
-      "Uri": "https://localhost:9200",
-      "Username": "elastic",
-      "Password": "dev123",
-      "IndexFormat": "logs-company-api-{0:yyyy.MM}"
-    }
-  },
-  "Serilog": {
-    "MinimumLevel": {
-      "Default": "Verbose",
-      "Override": {
-        "Microsoft": "Warning",
-        "System": "Warning"
-      }
+      "IndexFormat": "logs-api-gateway-{0:yyyy.MM}"
     }
   },
   "Consul": {
@@ -35,26 +19,7 @@
     }
   },
   "TelemetrySettings": {
-    "Endpoint": "http://localhost:4317",
     "ServiceName": "api-gateway",
-    "ServiceVersion": "v1",
-    "EnableAlwaysOnSampler": true,
-    "SampleProbability": 0.2,
-    "EnableConsoleExporter": false
-  },
-  "management": {
-    "endpoints": {
-      "health": {
-        "showdetails": "always"
-      },
-      "enabled": true,
-      "actuator": {
-        "exposure": {
-          "include": [
-            "*"
-          ]
-        }
-      }
-    }
+    "ServiceVersion": "v1"
   }
 }

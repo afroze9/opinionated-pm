@@ -1,0 +1,34 @@
+﻿{
+  "Postgres": {
+    "Client": {
+      "Host": "localhost",
+      "Port": 5441,
+      "Username": "developer",
+      "Password": "dev123",
+      "Database": "nexus_people"
+    }
+  },
+  "SerilogSettings": {
+    "ElasticSearchSettings": {
+      "IndexFormat": "logs-people-api-{0:yyyy.MM}"
+    }
+  },
+  "Consul": {
+    "Token": "aa1772a2-478a-5457-b228-237c7c35f861",
+    "Discovery": {
+      "ServiceName": "people-api",
+      "Scheme": "https",
+      "Retry": {
+        "Enabled": true,
+        "MaxAttempts": 5
+      },
+      "Tags": [
+        "nexus-service-type=rest-api"
+      ]
+    }
+  },
+  "TelemetrySettings": {
+    "ServiceName": "people-api",
+    "ServiceVersion": "v1"
+  }
+}

@@ -1,8 +1,4 @@
 ﻿{
-  "Auth0Settings": {
-    "Authority": "https://teamly.us.auth0.com",
-    "Audience": "projectmanagement"
-  },
   "Postgres": {
     "Client": {
       "Host": "localhost",
@@ -14,14 +10,11 @@
   },
   "SerilogSettings": {
     "ElasticSearchSettings": {
-      "Uri": "https://localhost:9200",
-      "Username": "elastic",
-      "Password": "dev123",
       "IndexFormat": "logs-project-api-{0:yyyy.MM}"
     }
   },
   "Consul": {
-    "Token": "e4300e2c-4b86-2829-c09b-ce3dac404963",
+    "Token": "f1eb826c-c1b1-d252-a9f1-1f12a2b71ff3",
     "Discovery": {
       "ServiceName": "project-api",
       "Scheme": "https",
@@ -35,26 +28,7 @@
     }
   },
   "TelemetrySettings": {
-    "Endpoint": "http://localhost:4317",
     "ServiceName": "project-api",
-    "ServiceVersion": "v1",
-    "EnableAlwaysOnSampler": false,
-    "SampleProbability": 0.2,
-    "EnableConsoleExporter": false
-  },
-  "management": {
-    "endpoints": {
-      "health": {
-        "showdetails": "always"
-      },
-      "enabled": true,
-      "actuator": {
-        "exposure": {
-          "include": [
-            "*"
-          ]
-        }
-      }
-    }
+    "ServiceVersion": "v1"
   }
 }
