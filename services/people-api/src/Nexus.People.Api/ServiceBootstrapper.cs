@@ -23,6 +23,8 @@ public class ServiceBootstrapper : Bootstrapper
         base.AddServices();
         // Internal Services
         AppBuilder.Services.AddSingleton<IPeopleInstrumentation, PeopleInstrumentation>();
+        AppBuilder.Services.Configure<Auth0ManagementOptions>(AppBuilder.Configuration.GetSection("Auth0Management"));
+        AppBuilder.Services.AddMemoryCache();
         
         // Custom Meter for Metrics
         AppBuilder.Services.AddOpenTelemetry()
@@ -39,11 +41,10 @@ public class ServiceBootstrapper : Bootstrapper
             .AddHttpClient("auth0_token")
             .ConfigureHttpClient(httpClientOptions =>
             {
-                Auth0ManagementOptions options = new Auth0ManagementOptions();
-                AppBuilder.Configuration.GetSection("Auth0ManagementOptions").Bind(options);
+                Auth0ManagementOptions options = new Auth0ManagementOptions();//TODO
+                AppBuilder.Configuration.GetSection("Auth0Management").Bind(options);
 
                 httpClientOptions.BaseAddress = new Uri($"https://{options.Domain}");
-                httpClientOptions.DefaultRequestHeaders.Add("content-type", "application/x-www-form-urlencoded");
             })
             .AddTypedClient<IIdentityService, Auth0IdentityService>();
         

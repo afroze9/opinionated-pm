@@ -75,6 +75,11 @@ public class CompanyService : ICompanyService
         {
             return new Result<Company>(new ValidationException(validationResult.Errors));
         }
+        
+        if (await _unitOfWork.Companies.GetByNameAsync(company.Name) is not null)
+        {
+            return new Result<Company>(new AnotherCompanyExistsWithSameNameException(company.Name));
+        }
 
         try
         {

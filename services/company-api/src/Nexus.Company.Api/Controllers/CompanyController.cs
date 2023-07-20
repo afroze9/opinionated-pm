@@ -113,6 +113,7 @@ public class CompanyController : ControllerBase
                 return ex switch
                 {
                     ValidationException => BadRequest(ex),
+                    AnotherCompanyExistsWithSameNameException => BadRequest(ex),
                     CreateCompanyException => StatusCode(500, ex),
                     _ => StatusCode(418),
                 };

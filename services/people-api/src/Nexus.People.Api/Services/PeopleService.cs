@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using FluentValidation.Results;
 using LanguageExt.Common;
+using Microsoft.AspNetCore.Authorization;
 using Nexus.PeopleAPI.Abstractions;
 using Nexus.PeopleAPI.Data;
 using Nexus.PeopleAPI.DTO;
@@ -32,12 +33,14 @@ public class PeopleService : IPeopleService
         _personValidator = personValidator;
     }
 
+    [Authorize("read:people")]
     public async Task<List<PersonDto>> GetAllAsync()
     {
         List<Person> people = await _unitOfWork.People.AllAsync();
         return _mapper.Map<List<PersonDto>>(people);
     }
-
+    
+    [Authorize("write:people")]
     public async Task<Result<Person>> CreateAsync(Person person)
     {
         // Check if user already exists
@@ -55,7 +58,7 @@ public class PeopleService : IPeopleService
 
         // If not, create a user on identity provider
         person.IdentityId = await _identityService.CreateUserAsync(person);
-        
+
         try
         {
             _unitOfWork.BeginTransaction();
@@ -66,13 +69,14 @@ public class PeopleService : IPeopleService
         }
         catch (Exception ex)
         {
-            CreatePersonException personException = new (ex);   
+            CreatePersonException personException = new (ex);
             _logger.LogInformation(EventIds.CreatePersonTransactionError, personException, CreatePersonException.ExceptionMessage);
             _unitOfWork.Rollback();
             return new Result<Person>(personException);
         }
     }
 
+    [Authorize("read:people")]
     public async Task<Result<PersonDto>> GetByIdAsync(int id)
     {
         Person? person = await _unitOfWork.People.GetByIdAsync(id);
