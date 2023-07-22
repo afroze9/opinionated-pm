@@ -23,4 +23,9 @@ public class Person : AuditableNexusEntityBase
     {
         Name = newName;
     }
+
+    public void UpdateEmail(string newEmail)
+    {
+        Email = newEmail;
+    }
 }

@@ -2,7 +2,10 @@
 	import { page } from '$app/stores';
 	import LayoutPage from '$lib/layouts/LayoutPage.svelte';
 	import { writable } from 'svelte/store';
-	import type { CompanyResponse, CompanySummaryResponseModel } from '../../../services/CompanyApi';
+	import type {
+		CompanyResponse,
+		CompanySummaryResponseModel
+	} from '../../../services/CompanyApi';
 	import { onMount } from 'svelte';
 	import { form, field } from 'svelte-forms';
 	import { min, required } from 'svelte-forms/validators';
@@ -89,7 +92,9 @@
 							</section>
 						</div>
 						<div class="flex items-center justify-center ml-auto p-4">
-							<a href={`/project/${project.id}`} class="btn variant-filled ml-4">View</a>
+							<a href={`/project/${project.id}`} class="btn variant-filled ml-4"
+								>View</a
+							>
 						</div>
 					</div>
 				</div>

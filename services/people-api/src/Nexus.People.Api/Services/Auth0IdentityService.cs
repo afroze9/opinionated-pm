@@ -1,11 +1,13 @@
 ﻿using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
+using LanguageExt.Common;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Nexus.PeopleAPI.Abstractions;
 using Nexus.PeopleAPI.Configurations;
 using Nexus.PeopleAPI.Entities;
+using Nexus.PeopleAPI.Exceptions;
 
 namespace Nexus.PeopleAPI.Services;
 
@@ -15,30 +17,88 @@ public class Auth0IdentityService : IIdentityService
     private readonly Auth0ManagementOptions _options;
     private readonly HttpClient _client;
     private readonly IMemoryCache _cache;
+    private readonly ILogger<Auth0IdentityService> _logger;
 
-    public Auth0IdentityService(IOptions<Auth0ManagementOptions> options, HttpClient client, IMemoryCache cache)
+    public Auth0IdentityService(IOptions<Auth0ManagementOptions> options, HttpClient client, IMemoryCache cache, ILogger<Auth0IdentityService> logger)
     {
         _options = options.Value;
         _client = client;
         _cache = cache;
+        _logger = logger;
     }
     
-    public async Task<string> CreateUserAsync(Person person)
+    public async Task<Result<string>> CreateUserAsync(Person person)
     {
         string token = await GetTokenAsync();
         ManagementApiClient client = new (token, new Uri($"https://{_options.Domain}/api/v2"));
-        
-        User result = await client.Users.CreateAsync(new UserCreateRequest()
-        {
-            Connection = _options.Connection,
-            Email = person.Email,
-            FullName = person.Name,
-            Password = person.Password,
-            Blocked = false,
-            EmailVerified = false,
-        });
 
-        return result.UserId;
+        try
+        {
+            User result = await client.Users.CreateAsync(new UserCreateRequest()
+            {
+                Connection = _options.Connection,
+                Email = person.Email,
+                FullName = person.Name,
+                Password = person.Password,
+                Blocked = false,
+                EmailVerified = false,
+            });
+            return result.UserId;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error while trying to create user on IDP");
+            return new Result<string>(new IdentityServiceException("Error while trying to create user on IDP"));
+        }
+    }
+
+    public async Task<Result<bool>> DeleteUserAsync(string identityId)
+    {
+        string token = await GetTokenAsync();
+        ManagementApiClient client = new (token, new Uri($"https://{_options.Domain}/api/v2"));
+
+        try
+        {
+            await client.Users.DeleteAsync(identityId);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error while trying to delete user on IDP");
+            return new Result<bool>(new IdentityServiceException("Error while trying to delete user on IDP"));
+        }
+    }
+
+    public async Task<Result<bool>> UpdateAsync(string identityId, string? name, string? email)
+    {
+        string token = await GetTokenAsync();
+        ManagementApiClient client = new (token, new Uri($"https://{_options.Domain}/api/v2"));
+
+        try
+        {
+            UserUpdateRequest request = new ()
+            {
+                Connection = _options.Connection,
+            };
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                request.FullName = name;
+            }
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                request.Email = email;
+            }
+            
+            await client.Users.UpdateAsync(identityId, request);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "Error while trying to update user on IDP");
+            return new Result<bool>(new IdentityServiceException("Error while trying to update user on IDP"));
+        }
     }
 
     private async Task<string> GetTokenAsync()

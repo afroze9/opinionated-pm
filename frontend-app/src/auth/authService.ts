@@ -1,6 +1,6 @@
-import { Auth0Client, createAuth0Client, type PopupLoginOptions } from "@auth0/auth0-spa-js";
+import { createAuth0Client } from "@auth0/auth0-spa-js";
 import config from './auth_config';
-import { writable, get } from "svelte/store";
+import { get } from "svelte/store";
 import { auth0Client, isAuthenticated, isLoading, popupOpen, user } from "../store";
 
 async function initClient(): Promise<void> {

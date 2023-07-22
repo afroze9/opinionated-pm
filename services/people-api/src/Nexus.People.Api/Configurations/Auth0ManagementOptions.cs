@@ -2,8 +2,6 @@
 
 public class Auth0ManagementOptions
 {
-    public string Token { get; set; } = string.Empty;
-
     public string Domain { get; set; } = string.Empty;
 
     public string ClientId { get; set; } = string.Empty;

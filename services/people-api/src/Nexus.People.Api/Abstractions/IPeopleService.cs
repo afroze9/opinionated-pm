@@ -14,5 +14,7 @@ public interface IPeopleService
 
     Task<Result<Person>> UpdateNameAsync(int id, string name);
     
-    Task DeleteAsync(int id);
+    Task<Result<bool>> DeleteAsync(int id);
+
+    Task<Result<Person>> UpdateAsync(int id, string? name, string? email);
 }

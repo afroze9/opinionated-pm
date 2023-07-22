@@ -57,23 +57,22 @@ public class PeopleService : IPeopleService
         }
 
         // If not, create a user on identity provider
-        person.IdentityId = await _identityService.CreateUserAsync(person);
-
-        try
-        {
-            _unitOfWork.BeginTransaction();
-            _unitOfWork.People.Add(person);
-            _unitOfWork.Commit();
-
-            return person;
-        }
-        catch (Exception ex)
-        {
-            CreatePersonException personException = new (ex);
-            _logger.LogInformation(EventIds.CreatePersonTransactionError, personException, CreatePersonException.ExceptionMessage);
-            _unitOfWork.Rollback();
-            return new Result<Person>(personException);
-        }
+        Result<string> userCreationResult = await _identityService.CreateUserAsync(person);
+        return userCreationResult.Match<Result<Person>>(createdUserId =>
+            {
+                person.IdentityId = createdUserId;
+                _unitOfWork.BeginTransaction();
+                _unitOfWork.People.Add(person);
+                _unitOfWork.Commit();
+                return person;
+            },
+            ex =>
+            {
+                CreatePersonException personException = new (ex);
+                _logger.LogInformation(EventIds.CreatePersonTransactionError, personException, CreatePersonException.ExceptionMessage);
+                _unitOfWork.Rollback();
+                return new Result<Person>(personException);
+            });
     }
 
     [Authorize("read:people")]
@@ -111,17 +110,81 @@ public class PeopleService : IPeopleService
         return personToUpdate;
     }
 
-    public async Task DeleteAsync(int id)
+    public async Task<Result<bool>> DeleteAsync(int id)
     {
         Person? person = await _unitOfWork.People.GetByIdAsync(id);
 
         if (person == null)
         {
-            return;
+            return true;
         }
         
-        _unitOfWork.BeginTransaction();
-        _unitOfWork.People.Delete(person);
-        _unitOfWork.Commit();
+        Result<bool> userDeletionResult = await _identityService.DeleteUserAsync(person.IdentityId);
+
+        return userDeletionResult.Match(
+            success =>
+            {
+                _unitOfWork.BeginTransaction();
+                _unitOfWork.People.Delete(person);
+                _unitOfWork.Commit();
+                
+                return success;
+            }, ex =>
+            {
+                DeletePersonException personException = new (ex);
+                _logger.LogInformation(EventIds.DeletePersonTransactionError, personException, DeletePersonException.ExceptionMessage);
+                _unitOfWork.Rollback();
+                return new Result<bool>(personException);
+            });
+    }
+
+    //TODO: Check for both null/empty
+    public async Task<Result<Person>> UpdateAsync(int id, string? name, string? email)
+    {
+        Person? personToUpdate = await _unitOfWork.People.GetByIdAsync(id);
+
+        if (personToUpdate == null)
+        {
+            return new Result<Person>(new PersonNotFoundException(id));
+        }
+
+        if (!string.IsNullOrEmpty(name))
+        {
+            personToUpdate.UpdateName(name);
+        }
+
+        if (!string.IsNullOrEmpty(email))
+        {
+            if (await _unitOfWork.People.AnyOtherPeopleWithSameEmailAsync(id, email))
+            {
+                return new Result<Person>(new AnotherPersonExistsWithSameEmailException(email));
+            }
+            personToUpdate.UpdateEmail(email);
+        }
+        
+        ValidationResult? validationResult = await _personValidator.ValidateAsync(personToUpdate);
+        if (!validationResult.IsValid)
+        {
+            return new Result<Person>(new ValidationException(validationResult.Errors));
+        }
+
+        Result<bool> updateResult = await _identityService.UpdateAsync(personToUpdate.IdentityId, name, email);
+
+        return updateResult.Match<Result<Person>>(
+            _ =>
+            {
+                _unitOfWork.BeginTransaction();
+                _unitOfWork.Commit();
+                return personToUpdate;
+            },
+            ex =>
+            {
+                UpdatePersonException personException = new (ex);
+                _logger.LogInformation(EventIds.UpdatePersonTransactionError, personException,
+                    UpdatePersonException.ExceptionMessage);
+
+                _unitOfWork.Rollback();
+                return new Result<Person>(personException);
+            });
     }
 }

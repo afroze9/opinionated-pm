@@ -72,7 +72,7 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(PersonNotFoundException))]
     public async Task<IActionResult> GetById(int id)
     {
-        var result =  await _peopleService.GetByIdAsync(id);
+        Result<PersonDto> result =  await _peopleService.GetByIdAsync(id);
 
         return result.Match<IActionResult>(person => Ok(_mapper.Map<PersonResponseModel>(person)),
             error =>
@@ -132,7 +132,7 @@ public class PeopleController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PersonResponseModel))]
     public async Task<IActionResult> Update(int id, [FromBody] PersonUpdateRequestModel model)
     {
-        Result<Person> result = await _peopleService.UpdateNameAsync(id, model.Name);
+        Result<Person> result = await _peopleService.UpdateAsync(id, model.Name, model.Email);
         return result.Match<IActionResult>(
             updatedPerson => Ok(_mapper.Map<PersonResponseModel>(updatedPerson)),
             ex =>
@@ -140,7 +140,7 @@ public class PeopleController : ControllerBase
                 return ex switch
                 {
                     PersonNotFoundException => BadRequest(ex),
-                    AnotherPersonExistsWithSameEmailException => BadRequest(ex),
+                    AnotherPersonExistsWithSameEmailException => BadRequest(ex), 
                     ValidationException => BadRequest(ex),
                     _ => StatusCode(500, ex),
                 };
@@ -153,11 +153,11 @@ public class PeopleController : ControllerBase
     /// <param name="id">Person Id.</param>
     [Authorize("delete:people")]
     [HttpDelete("[controller]/{id}")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<string>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public async Task<IActionResult> Delete(int id)
     {
-        await _peopleService.DeleteAsync(id);
-        return NoContent();
+        Result<bool> result = await _peopleService.DeleteAsync(id);
+        return result.Match<IActionResult>(success => NoContent(), ex => StatusCode(500, ex));
     }
 }
