@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -20,6 +20,8 @@ namespace Nexus.PeopleAPI.Data.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     Email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    IdentityId = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     ModifiedBy = table.Column<string>(type: "text", nullable: false),
@@ -29,6 +31,12 @@ namespace Nexus.PeopleAPI.Data.Migrations
                 {
                     table.PrimaryKey("PK_Person", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Person_IdentityId",
+                table: "Person",
+                column: "IdentityId",
+                unique: true);
         }
 
         /// <inheritdoc />

@@ -1,9 +1,4 @@
 namespace Nexus.PeopleAPI.Model;
 
 [ExcludeFromCodeCoverage]
-public class PersonCreateRequestModel
-{
-    required public string Name { get; set; }
-    
-    required public string Email { get; set; }
-}
+public record PersonCreateRequestModel(string Name, string Email, string Password);

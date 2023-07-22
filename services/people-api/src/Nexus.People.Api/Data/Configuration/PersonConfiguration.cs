@@ -16,7 +16,12 @@ public class PersonConfiguration : IEntityTypeConfiguration<Person>
         builder.Property(c => c.Email)
             .HasMaxLength(255)
             .IsRequired();
+
+        builder.Property(p => p.IdentityId)
+            .IsRequired();
         
-        builder.ToTable("Person");
-     }
+        builder.ToTable("Person")
+            .HasIndex(p => p.IdentityId)
+            .IsUnique();
+    }
 }

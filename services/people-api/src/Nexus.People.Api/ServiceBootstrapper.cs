@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Nexus.Framework.Web;
 using Nexus.PeopleAPI.Abstractions;
+using Nexus.PeopleAPI.Configurations;
 using Nexus.PeopleAPI.Data;
 using Nexus.PeopleAPI.Data.Repositories;
 using Nexus.PeopleAPI.Mapping;
@@ -22,6 +23,8 @@ public class ServiceBootstrapper : Bootstrapper
         base.AddServices();
         // Internal Services
         AppBuilder.Services.AddSingleton<IPeopleInstrumentation, PeopleInstrumentation>();
+        AppBuilder.Services.Configure<Auth0ManagementOptions>(AppBuilder.Configuration.GetSection("Auth0Management"));
+        AppBuilder.Services.AddMemoryCache();
         
         // Custom Meter for Metrics
         AppBuilder.Services.AddOpenTelemetry()
@@ -33,6 +36,17 @@ public class ServiceBootstrapper : Bootstrapper
             {
                 builder.AddMeter(PeopleInstrumentation.MeterName);
             });
+        
+        AppBuilder.Services
+            .AddHttpClient("auth0_token")
+            .ConfigureHttpClient(httpClientOptions =>
+            {
+                Auth0ManagementOptions options = new Auth0ManagementOptions();//TODO
+                AppBuilder.Configuration.GetSection("Auth0Management").Bind(options);
+
+                httpClientOptions.BaseAddress = new Uri($"https://{options.Domain}");
+            })
+            .AddTypedClient<IIdentityService, Auth0IdentityService>();
         
         AppBuilder.Services.AddScoped<IPeopleService, PeopleService>();
 

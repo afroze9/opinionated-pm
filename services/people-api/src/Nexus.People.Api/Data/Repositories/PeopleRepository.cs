@@ -19,6 +19,11 @@ public class PeopleRepository : EfNexusRepository<Person>
     {
         return await DbSet.AnyAsync(x => x.Email == email, cancellationToken);
     }
+    
+    public async Task<bool> AnyOtherPeopleWithSameEmailAsync(int id, string email)
+    {
+        return await DbSet.AnyAsync(x => x.Id != id && x.Email.ToLower() == email.ToLower());
+    }
 
     public async Task<Person?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
     {

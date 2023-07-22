@@ -14,5 +14,10 @@ export const sidebarLinks: Array<Sidebarlink> = [
     label: 'Projects',
     href: '/project',
     icon: 'fa-diagram-project'
+  },
+  {
+    label: 'People',
+    href: '/people',
+    icon: 'fa-users'
   }
 ]
