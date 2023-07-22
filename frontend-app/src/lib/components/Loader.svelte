@@ -2,4 +2,4 @@
 	import { ProgressRadial } from '@skeletonlabs/skeleton';
 </script>
 
-<div class="grid h-screen place-items-center"><ProgressRadial /></div>
+<div class="grid h-full place-items-center"><ProgressRadial /></div>

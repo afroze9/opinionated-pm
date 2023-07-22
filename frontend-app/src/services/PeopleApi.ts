@@ -1,7 +1,7 @@
 ﻿import ApiHelpers, { type ErrorResponse } from "./ApiHelpers";
 import { get } from "svelte/store";
 import { auth0Client } from "../store";
-import axios from "axios";
+import axios, { Axios, AxiosError } from "axios";
 
 export type PersonResponseModel = {
     id: number;
@@ -30,6 +30,10 @@ async function getPeople(): Promise<PersonResponseModel[] | ErrorResponse> {
         const response = await axios.get<PersonResponseModel[]>(url, config);
         return response.data;
     } catch (e) {
+        let error = e as AxiosError;
+        if (error.response?.status == 404) {
+            return [];
+        }
         return {
             message: (e as any).toString()
         };
