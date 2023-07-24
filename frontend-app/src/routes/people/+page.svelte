@@ -18,6 +18,7 @@
 
 	onMount(async () => {
 		isCallingApi.set(true);
+
 		let response = await peopleApi.getPeople();
 		if (!ApiHelpers.isErrorReponse(response)) {
 			people.set(response);

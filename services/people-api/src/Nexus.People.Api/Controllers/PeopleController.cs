@@ -59,6 +59,26 @@ public class PeopleController : ControllerBase
         return Ok(mappedPeople);
     }
     
+
+    [Authorize("read:people")]
+    [HttpGet("[controller]/search")]
+    [Produces(MediaTypeNames.Application.Json)]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<PersonResponseModel>))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
+    public async Task<ActionResult<List<PersonResponseModel>>> Search([FromQuery] string name)
+    {
+        List<PersonDto> people = await _peopleService.SearchAsync(name);
+
+        if (people.Count == 0)
+        {
+            return NotFound();
+        }
+
+        List<PersonResponseModel> mappedPeople = _mapper.Map<List<PersonResponseModel>>(people);
+        _getAllPeopleCounter.Add(1);
+        return Ok(mappedPeople);
+    }
+    
     /// <summary>
     ///     Gets a person by id.
     /// </summary>

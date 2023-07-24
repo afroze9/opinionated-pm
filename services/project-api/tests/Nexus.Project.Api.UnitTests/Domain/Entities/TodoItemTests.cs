@@ -23,7 +23,7 @@ public class TodoItemTests
         };
 
         // Act
-        todoItem.MarkComplete();
+        todoItem.MarkComplete(true);
         todoItem.AssignTodoItem("New Test Assignee");
 
         // Assert
@@ -46,7 +46,7 @@ public class TodoItemTests
             { Title = "T1" };
 
         // Act
-        todoItem.MarkComplete();
+        todoItem.MarkComplete(true);
 
         // Assert
         Assert.True(todoItem.IsCompleted);

@@ -113,11 +113,11 @@ public class ProjectTests
         // Arrange
         TodoItem todoItem1 = new()
             { Title = "Test Todo Item 1" };
-        todoItem1.MarkComplete();
+        todoItem1.MarkComplete(true);
 
         TodoItem todoItem2 = new()
             { Title = "Test Todo Item 2" };
-        todoItem2.MarkComplete();
+        todoItem2.MarkComplete(true);
 
         Project project = new ("Test Project", Priority.High, null);
         project.AddTodoItem(todoItem1);
@@ -136,7 +136,7 @@ public class ProjectTests
         // Arrange
         TodoItem todoItem1 = new()
             { Title = "Test Todo Item 1" };
-        todoItem1.MarkComplete();
+        todoItem1.MarkComplete(true);
 
         TodoItem todoItem2 = new()
             { Title = "Test Todo Item 2" };

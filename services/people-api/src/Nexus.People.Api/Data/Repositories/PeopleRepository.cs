@@ -25,9 +25,9 @@ public class PeopleRepository : EfNexusRepository<Person>
         return await DbSet.AnyAsync(x => x.Id != id && x.Email.ToLower() == email.ToLower());
     }
 
-    public async Task<Person?> GetByNameAsync(string name, CancellationToken cancellationToken = default)
+    public async Task<List<Person>> GetAllByNameAsync(string name, CancellationToken cancellationToken = default)
     {
-        return await DbSet.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+        return await DbSet.Where(x => x.Name.ToLower().Contains(name.ToLower())).ToListAsync(cancellationToken);
     }
     
     public async Task<Person?> GetByEmailAsync(string email, CancellationToken cancellationToken = default)
