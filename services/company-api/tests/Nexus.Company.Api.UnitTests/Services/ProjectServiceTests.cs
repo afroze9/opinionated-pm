@@ -60,10 +60,13 @@ public class ProjectServiceTests
         
         Assert.NotNull(method);
         
+#pragma warning disable NS1000
+#pragma warning disable NS1004
         method.Invoke(_mockHandler, new object?[] { Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>() })
             .Returns(response);
+#pragma warning restore NS1004
+#pragma warning restore NS1000
         
-
         ProjectService service = new (_client, _mapper, _logger);
 
         // Act
@@ -78,16 +81,6 @@ public class ProjectServiceTests
     {
         // Arrange
         int companyId = 1;
-        Task<HttpResponseMessage> response = Task.FromResult<HttpResponseMessage>(new (HttpStatusCode.NotFound));
-
-        MethodInfo? method = _mockHandler
-            .GetType()
-            .GetMethod("SendAsync", BindingFlags.NonPublic | BindingFlags.Instance);
-        
-        Assert.NotNull(method);
-        
-        method.Invoke(_mockHandler, new object?[] { Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>() })
-            .Returns(response);
     
         ProjectService service = new (_client, _mapper, _logger);
     
