@@ -1,21 +1,21 @@
 ﻿using System.Security.Claims;
-using Moq;
 using Ocelot.Infrastructure.Claims.Parser;
 using Ocelot.Responses;
 using Nexus.ApiGateway.Authorization;
+using NSubstitute;
 
 namespace Nexus.ApiGateway.UnitTests.Authorization;
 
 [ExcludeFromCodeCoverage]
 public class DelimitedScopesAuthorizerTests
 {
-    private readonly Mock<IClaimsParser> _mockClaimsParser = new ();
+    private readonly IClaimsParser _mockClaimsParser = Substitute.For<IClaimsParser>();
 
     [Fact]
     public void Authorize_NoScopes_ReturnsOk()
     {
         // arrange
-        DelimitedScopesAuthorizer authorizer = new (_mockClaimsParser.Object);
+        DelimitedScopesAuthorizer authorizer = new (_mockClaimsParser);
         ClaimsPrincipal claims = new ();
         List<string> scopes = new ();
 
@@ -31,15 +31,14 @@ public class DelimitedScopesAuthorizerTests
     public void Authorize_NoMatchingScopes_ReturnsError()
     {
         // arrange
-        DelimitedScopesAuthorizer authorizer = new (_mockClaimsParser.Object);
+        DelimitedScopesAuthorizer authorizer = new (_mockClaimsParser);
         ClaimsPrincipal claims = new ();
         List<string> scopes = new () { "scope1", "scope2", "scope3" };
-        _mockClaimsParser.Setup(x =>
-                x.GetValuesByClaimType(It.IsAny<IEnumerable<Claim>>(),
-                    "http://schemas.microsoft.com/identity/claims/scope"))
+        _mockClaimsParser.GetValuesByClaimType(Arg.Any<IEnumerable<Claim>>(),
+                    "http://schemas.microsoft.com/identity/claims/scope")
             .Returns(new OkResponse<List<string>>(new List<string>()));
 
-        _mockClaimsParser.Setup(x => x.GetValuesByClaimType(It.IsAny<IEnumerable<Claim>>(), "scope"))
+        _mockClaimsParser.GetValuesByClaimType(Arg.Any<IEnumerable<Claim>>(), "scope")
             .Returns(new OkResponse<List<string>>(new List<string>()));
 
         // act
@@ -56,16 +55,15 @@ public class DelimitedScopesAuthorizerTests
     public void Authorize_MatchingScopes_ReturnsOk()
     {
         // arrange
-        DelimitedScopesAuthorizer authorizer = new (_mockClaimsParser.Object);
+        DelimitedScopesAuthorizer authorizer = new (_mockClaimsParser);
         ClaimsPrincipal claims = new ();
         List<string> scopes = new () { "scope1", "scope2", "scope3", "scope4 scope 5" };
 
-        _mockClaimsParser.Setup(x =>
-                x.GetValuesByClaimType(It.IsAny<IEnumerable<Claim>>(),
-                    "http://schemas.microsoft.com/identity/claims/scope"))
+        _mockClaimsParser.GetValuesByClaimType(Arg.Any<IEnumerable<Claim>>(),
+                    "http://schemas.microsoft.com/identity/claims/scope")
             .Returns(new OkResponse<List<string>>(scopes));
 
-        _mockClaimsParser.Setup(x => x.GetValuesByClaimType(It.IsAny<IEnumerable<Claim>>(), "scope"))
+        _mockClaimsParser.GetValuesByClaimType(Arg.Any<IEnumerable<Claim>>(), "scope")
             .Returns(new OkResponse<List<string>>(scopes));
 
         // act

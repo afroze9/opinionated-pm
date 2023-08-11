@@ -1,5 +1,6 @@
 ﻿using Auth0.ManagementApi;
 using Auth0.ManagementApi.Models;
+using Auth0.ManagementApi.Paging;
 using LanguageExt.Common;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -11,7 +12,6 @@ using Nexus.PeopleAPI.Exceptions;
 
 namespace Nexus.PeopleAPI.Services;
 
-// TODO: Move to framework perhaps
 public class Auth0IdentityService : IIdentityService
 {
     private readonly Auth0ManagementOptions _options;
@@ -101,6 +101,35 @@ public class Auth0IdentityService : IIdentityService
         }
     }
 
+    public async Task<Result<PaginatedList<Person>>> GetUsersRegisteredAfterDate(DateTime date, int pageNum = 0, int pageSize = 50)
+    {
+        string token = await GetTokenAsync();
+        ManagementApiClient client = new (token, new Uri($"https://{_options.Domain}/api/v2"));
+
+        IPagedList<User>? users = await client.Users.GetAllAsync(new GetUsersRequest
+        {
+            Connection = _options.Connection,
+            Query = $"created_at:[{date:yyyy-MM-dd} TO *]",
+            SearchEngine = "v2",
+        }, new PaginationInfo(pageNum, pageSize, true));
+
+        if (users == null || users.Count == 0)
+        {
+            return new Result<PaginatedList<Person>>(new Exception("Users not found"));// TODO: Cleanup
+        }
+
+        List<Person> mappedUsers = users
+            .Select(user => 
+                new Person(user.FullName, user.Email)
+                {
+                    IdentityId = user.UserId,
+                })
+            .ToList();
+
+        return new Result<PaginatedList<Person>>(new PaginatedList<Person>(mappedUsers, users.Paging.Total, pageNum,
+            pageSize));
+    }
+    
     private async Task<string> GetTokenAsync()
     {
         if (_cache.TryGetValue("auth0_management_token", out string? cachedToken))

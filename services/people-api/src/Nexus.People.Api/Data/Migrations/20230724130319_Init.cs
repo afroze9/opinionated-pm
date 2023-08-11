@@ -32,6 +32,24 @@ namespace Nexus.PeopleAPI.Data.Migrations
                     table.PrimaryKey("PK_Person", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "SyncStatus",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    JobName = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    LastSync = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreatedBy = table.Column<string>(type: "text", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ModifiedBy = table.Column<string>(type: "text", nullable: false),
+                    ModifiedOn = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SyncStatus", x => x.Id);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Person_IdentityId",
                 table: "Person",
@@ -44,6 +62,9 @@ namespace Nexus.PeopleAPI.Data.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Person");
+
+            migrationBuilder.DropTable(
+                name: "SyncStatus");
         }
     }
 }

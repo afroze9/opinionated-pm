@@ -4,29 +4,32 @@ using FluentValidation;
 using FluentValidation.Results;
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Controllers;
 using Nexus.CompanyAPI.Entities;
 using Nexus.CompanyAPI.Exceptions;
 using Nexus.CompanyAPI.Model;
+using NSubstitute;
 
 namespace Nexus.CompanyAPI.UnitTests.Controllers;
 
 [ExcludeFromCodeCoverage]
 public class TagControllerTests
 {
-    private readonly Mock<ICompanyService> _companyServiceMock = new ();
-    private readonly Mock<IMapper> _mapperMock = new ();
+    private readonly ICompanyService _companyServiceMock = Substitute.For<ICompanyService>();
+    private readonly IMapper _mapperMock = Substitute.For<IMapper>();
 
     private readonly TagController _sut;
-    private readonly Mock<IValidator<TagRequestModel>> _tagRequestModelValidatorMock = new ();
-    private readonly Mock<ITagService> _tagServiceMock = new ();
+    private readonly IValidator<TagRequestModel> _tagRequestModelValidatorMock = Substitute.For<IValidator<TagRequestModel>>();
+    private readonly ITagService _tagServiceMock = Substitute.For<ITagService>();
 
     public TagControllerTests()
     {
-        _sut = new TagController(_mapperMock.Object, _companyServiceMock.Object, _tagServiceMock.Object,
-            _tagRequestModelValidatorMock.Object);
+        _sut = new TagController(
+            _mapperMock, 
+            _companyServiceMock,
+            _tagServiceMock,
+            _tagRequestModelValidatorMock);
     }
 
     [Fact]
@@ -47,10 +50,10 @@ public class TagControllerTests
                 { Name = "Tag2" },
         };
 
-        _tagServiceMock.Setup(x => x.GetAllAsync())
-            .ReturnsAsync(tags);
+        _tagServiceMock.GetAllAsync()
+            .Returns(tags);
 
-        _mapperMock.Setup(x => x.Map<List<TagResponseModel>>(tags))
+        _mapperMock.Map<List<TagResponseModel>>(tags)
             .Returns(tagResponseModels);
 
         // Act
@@ -73,8 +76,8 @@ public class TagControllerTests
         // Arrange
         List<Tag> tags = new ();
 
-        _tagServiceMock.Setup(x => x.GetAllAsync())
-            .ReturnsAsync(tags);
+        _tagServiceMock.GetAllAsync()
+            .Returns(tags);
 
         // Act
         ActionResult<List<TagResponseModel>> result = await _sut.GetAll();
@@ -89,14 +92,14 @@ public class TagControllerTests
         // Arrange
         string name = null!;
         _tagRequestModelValidatorMock
-            .Setup(v => v.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(new ValidationResult
             {
                 Errors = { new ValidationFailure("Name", "The Name field is required.") },
             });
 
-        _tagServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>()))
-            .ReturnsAsync(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
+        _tagServiceMock.CreateAsync(Arg.Any<string>())
+            .Returns(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
             {
                 new ValidationFailure("Name", "The Name field is required."),
             })));
@@ -118,11 +121,11 @@ public class TagControllerTests
         ValidationResult validationResult = new (new[] { new ValidationFailure("Name", "error") });
 
         _tagRequestModelValidatorMock
-            .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(validationResult);
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(validationResult);
         
-        _tagServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>()))
-            .ReturnsAsync(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
+        _tagServiceMock.CreateAsync(Arg.Any<string>())
+            .Returns(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
             {
                 new ValidationFailure("Name", "The Name field is required."),
             })));
@@ -147,13 +150,13 @@ public class TagControllerTests
             { Name = name };
 
         _tagRequestModelValidatorMock
-            .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult());
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(new ValidationResult());
 
-        _tagServiceMock.Setup(x => x.CreateAsync(It.IsAny<string>()))
-            .ReturnsAsync(tag);
+        _tagServiceMock.CreateAsync(Arg.Any<string>())
+            .Returns(tag);
 
-        _mapperMock.Setup(x => x.Map<TagResponseModel>(tag))
+        _mapperMock.Map<TagResponseModel>(tag)
             .Returns(tagResponseModel);
 
         // Act
@@ -171,8 +174,8 @@ public class TagControllerTests
     {
         // Arrange
         string name = null!;
-        _tagServiceMock.Setup(x => x.DeleteAsync(It.IsAny<string>()))
-            .ReturnsAsync(new Result<bool>(new CompanyExistsWithTagNameException(name)));
+        _tagServiceMock.DeleteAsync(Arg.Any<string>())
+            .Returns(new Result<bool>(new CompanyExistsWithTagNameException(name)));
 
         // Act
         IActionResult result = await _sut.Delete(name);
@@ -187,8 +190,8 @@ public class TagControllerTests
     {
         // Arrange
         string name = "tag";
-        _tagServiceMock.Setup(x => x.DeleteAsync(It.IsAny<string>()))
-            .ReturnsAsync(true);
+        _tagServiceMock.DeleteAsync(Arg.Any<string>())
+            .Returns(true);
 
         // Act
         IActionResult result = await _sut.Delete(name);
@@ -205,8 +208,8 @@ public class TagControllerTests
         string name = null!;
 
         _tagRequestModelValidatorMock
-            .Setup(v => v.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(new ValidationResult
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(new ValidationResult
             {
                 Errors = { new ValidationFailure("Name", "The Name field is required.") },
             });
@@ -230,8 +233,8 @@ public class TagControllerTests
         ValidationResult validationResult = new (new[] { new ValidationFailure("Name", "error") });
 
         _tagRequestModelValidatorMock
-            .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(validationResult);
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(validationResult);
 
         // Act
         IActionResult result = await _sut.AddCompanyTag(id, name);
@@ -255,11 +258,11 @@ public class TagControllerTests
         });
 
         _tagRequestModelValidatorMock
-            .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(validationResult);
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(validationResult);
 
-        _companyServiceMock.Setup(x => x.AddTagAsync(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(new Result<Company>(new ValidationException(new List<ValidationFailure>())));
+        _companyServiceMock.AddTagAsync(Arg.Any<int>(), Arg.Any<string>())
+            .Returns(new Result<Company>(new ValidationException(new List<ValidationFailure>())));
 
         // Act
         IActionResult result = await _sut.AddCompanyTag(id, name);
@@ -285,13 +288,13 @@ public class TagControllerTests
             { Id = id, Name = companyName };
 
         _tagRequestModelValidatorMock
-            .Setup(x => x.ValidateAsync(It.IsAny<TagRequestModel>(), It.IsAny<CancellationToken>()))
-            .ReturnsAsync(validationResult);
+            .ValidateAsync(Arg.Any<TagRequestModel>(), Arg.Any<CancellationToken>())
+            .Returns(validationResult);
 
-        _companyServiceMock.Setup(x => x.AddTagAsync(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(companySummaryDto);
+        _companyServiceMock.AddTagAsync(Arg.Any<int>(), Arg.Any<string>())
+            .Returns(companySummaryDto);
 
-        _mapperMock.Setup(x => x.Map<CompanyResponseModel>(companySummaryDto))
+        _mapperMock.Map<CompanyResponseModel>(companySummaryDto)
             .Returns(companyResponseModel);
 
         // Act
@@ -310,8 +313,8 @@ public class TagControllerTests
         int id = 1;
         string name = "tag";
 
-        _companyServiceMock.Setup(x => x.DeleteTagAsync(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(new Result<Company>(new CompanyNotFoundException(id)));
+        _companyServiceMock.DeleteTagAsync(Arg.Any<int>(), Arg.Any<string>())
+            .Returns(new Result<Company>(new CompanyNotFoundException(id)));
 
         // Act
         IActionResult result = await _sut.DeleteCompanyTag(id, name);
@@ -333,8 +336,8 @@ public class TagControllerTests
             Id = id,
         };
 
-        _companyServiceMock.Setup(x => x.DeleteTagAsync(It.IsAny<int>(), It.IsAny<string>()))
-            .ReturnsAsync(companySummaryDto);
+        _companyServiceMock.DeleteTagAsync(Arg.Any<int>(), Arg.Any<string>())
+            .Returns(companySummaryDto);
 
         // Act
         IActionResult result = await _sut.DeleteCompanyTag(id, name);

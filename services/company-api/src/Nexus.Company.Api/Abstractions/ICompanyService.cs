@@ -16,7 +16,7 @@ public interface ICompanyService
     ///     A task representing the asynchronous operation. The result of the task contains a list of company summary
     ///     DTOs.
     /// </returns>
-    Task<List<CompanySummaryDto>> GetAllAsync();
+    Task<Result<List<CompanySummaryDto>>> GetAllAsync();
 
     /// <summary>
     ///     Creates a new company asynchronously.

@@ -38,7 +38,6 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Logging" Version="7.0.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
-    <PackageVersion Include="Moq" Version="4.18.4" />
     <PackageVersion Include="Nexus.Auth" Version="$(NexusLibraryVersion)" />
     <PackageVersion Include="Nexus.Common" Version="$(NexusLibraryVersion)" />
     <PackageVersion Include="Nexus.Configuration" Version="$(NexusLibraryVersion)" />
@@ -50,6 +49,7 @@
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.0" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="7.0.4" />
     <PackageVersion Include="Npgsql" Version="7.0.4" />
+    <PackageVersion Include="NSubstitute" Version="5.0.0" />
     <PackageVersion Include="Ocelot.Provider.Consul" Version="19.0.2" />
     <PackageVersion Include="Ocelot" Version="19.0.2" />
     <PackageVersion Include="OpenTelemetry.Contrib.Instrumentation.EntityFrameworkCore" Version="1.0.0-beta2" />
@@ -63,6 +63,7 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.0.0-rc9.14" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.1.0-rc.2" />
     <PackageVersion Include="Polly.Extensions.Http" Version="3.0.0" />
+    <PackageVersion Include="Quartz.AspNetCore" Version="3.6.3" />
     <PackageVersion Include="Serilog.AspNetCore" Version="7.0.0" />
     <PackageVersion Include="Serilog.Enrichers.Environment" Version="2.2.0" />
     <PackageVersion Include="Serilog.Enrichers.Thread" Version="3.1.0" />
