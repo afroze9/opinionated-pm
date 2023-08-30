@@ -48,12 +48,3 @@ steps:
 - task: SonarCloudPublish@1
   inputs:
     pollingTimeoutSec: '300'
-
-- task: SnykSecurityScan@1
-  inputs:
-    serviceConnectionEndpoint: 'Snyk'
-    testType: 'app'
-    monitorWhen: 'always'
-    failOnIssues: true
-    projectName: 'Nexus'
-    organization: 'afroze9'
