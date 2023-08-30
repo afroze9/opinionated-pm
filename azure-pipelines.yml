@@ -21,6 +21,14 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'nexus-framework'
+    scannerMode: 'MSBuild'
+    projectKey: 'nexus-framework.nexus'
+    projectName: 'Nexus'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
@@ -32,3 +40,11 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
+
+- task: SonarCloudAnalyze@1
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
