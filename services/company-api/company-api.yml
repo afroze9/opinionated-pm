@@ -24,6 +24,7 @@ variables:
   buildConfiguration: 'Release'
   project: 'services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj'
   testProject: 'services/company-api/tests/Nexus.Company.Api.UnitTests/Nexus.Company.Api.UnitTests.csproj'
+  testSettings: 'services/company-api/tests/Nexus.Company.Api.UnitTests/.runsettings'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -58,7 +59,7 @@ steps:
   inputs:
     command: test
     projects: $(testProject)
-    arguments: '--collect "Code Coverage"'
+    arguments: '--collect "Code Coverage" --settings $(testSettings)'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
