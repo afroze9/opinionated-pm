@@ -67,7 +67,7 @@ steps:
     projects: $(testProject)
     arguments: '--collect "XPlat code coverage" --settings $(testSettings)'
 
-- script: reportgenerator "-reports:*\*coverage.cobertura.xml" "-targetdir:codecoverage" "-reporttypes:SonarQube"
+- script: reportgenerator "-reports:**\coverage.cobertura.xml" "-targetdir:codecoverage" "-reporttypes:SonarQube"
   displayName: Report Generator
 
 - task: SonarCloudAnalyze@1
