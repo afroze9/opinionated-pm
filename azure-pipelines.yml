@@ -56,7 +56,7 @@ steps:
     publishTestResults: false
     workingDirectory: '$(Build.SourcesDirectory)'
 
-- script: reportgenerator -reports:$(Build.SourcesDirectory)/reports/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
+- script: reportgenerator -reports:$(Build.SourcesDirectory)/reports/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
   displayName: Create reports
 
 # - task: PublishCodeCoverageResults@2
