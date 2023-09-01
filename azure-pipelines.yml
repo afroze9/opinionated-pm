@@ -52,11 +52,14 @@ steps:
   inputs:
     command: 'test'
     projects: '**/tests/**/*Tests.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
-    workingDirectory: $(Build.SourcesDirectory)
+    arguments: '--configuration $(buildConfiguration) --no-build --collect:"XPlat Code Coverage" --results-directory "$(Build.SourcesDirectory)/coverage"'
 
 - script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
   displayName: 'Create Test Coverage Reports'
+
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
