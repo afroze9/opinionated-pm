@@ -39,6 +39,7 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'nexus-framework.nexus'
     projectName: 'Nexus'
+    extraProperties: 'sonar.cs.vscoveragexml.reportsPaths=$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
