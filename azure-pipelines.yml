@@ -18,11 +18,11 @@ steps:
 - task: NuGetToolInstaller@1
 
 - task: DotNetCoreCLI@2
-  displayName: Install Report Generator Tool
   inputs:
     command: custom
     custom: tool
-    arguments: install --global dotnet-coverage
+    arguments: install --tool-path . dotnet-reportgenerator-globaltool
+  displayName: Install ReportGenerator tool
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
@@ -47,11 +47,16 @@ steps:
     projects: 'nexus.sln'
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- script: dotnet-coverage collect 'dotnet test ./services/company-api/tests/Nexus.Company.Api.UnitTests/ -s ./services/company-api/tests/Nexus.Company.Api.UnitTests/.runsettings' -f xml -o 'coverage.xml' 
-  displayName: 'Run Tests'
+- task: DotNetCoreCLI@2
+  displayName: Test
+  inputs:
+    command: test
+    projects: '**/*UnitTests.csproj'
+    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
+    workingDirectory: $(Build.SourcesDirectory)
 
-# - script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
-#   displayName: 'Create Test Coverage Reports'
+- script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
+  displayName: Create reports
 
 # - task: PublishCodeCoverageResults@2
 #   inputs:
