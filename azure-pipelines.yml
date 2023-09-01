@@ -41,6 +41,7 @@ steps:
     projectName: 'Nexus'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
   inputs:
     command: 'build'
     projects: 'nexus.sln'
@@ -50,7 +51,7 @@ steps:
   displayName: 'Run Tests'
   inputs:
     command: 'test'
-    projects: '**/tests/*tests.csproj'
+    projects: '**/tests/**/*Tests.csproj'
     arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
     workingDirectory: $(Build.SourcesDirectory)
 
