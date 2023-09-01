@@ -13,23 +13,18 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  system.debug: true 
 
 steps:
 - task: NuGetToolInstaller@1
+  displayName: Install Nuget
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: custom
-    custom: tool
-    arguments: install --tool-path . dotnet-reportgenerator-globaltool
-  displayName: Install ReportGenerator tool
-
-- task: DotNetCoreCLI@2
-  displayName: 'Restore Solution'
-  inputs:
-    command: 'restore'
-    projects: 'nexus.sln'
-    feedsToUse: 'select'
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: custom
+#     custom: tool
+#     arguments: install --global dotnet-coverage
+#   displayName: Install Coverage tool
 
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud Analysis'
@@ -39,30 +34,44 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'nexus-framework.nexus'
     projectName: 'Nexus'
-    extraProperties: 'sonar.cs.vscoveragexml.reportsPaths=$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Solution'
+  inputs:
+    command: 'restore'
+    projects: $(solution)
+    feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
   inputs:
     command: 'build'
-    projects: 'nexus.sln'
+    projects: $(solution)
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
+- script: dotnet-coverage collect "dotnet test --no-build --configuration $(buildConfiguration)" -f xml -o "coverage.xml"
+
 - task: DotNetCoreCLI@2
-  displayName: Test
   inputs:
-    command: 'test'
+    command: test
     projects: '**/*UnitTests.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration) --results-directory "$(Build.SourcesDirectory)/reports" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
-    publishTestResults: false
-    workingDirectory: '$(Build.SourcesDirectory)'
+    arguments: '--collect "Code Coverage"'
 
-- script: reportgenerator -reports:$(Build.SourcesDirectory)/reports/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
-  displayName: Create reports
+# - task: DotNetCoreCLI@2
+#   displayName: Test
+#   inputs:
+#     command: 'test'
+#     projects: '**/*UnitTests.csproj'
+#     arguments: '--no-build --configuration $(buildConfiguration) --results-directory "$(Build.SourcesDirectory)/reports" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
+#     publishTestResults: false
+#     workingDirectory: '$(Build.SourcesDirectory)'
 
-- task: PublishCodeCoverageResults@2
-  inputs:
-    summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
+# - script: reportgenerator -reports:$(Build.SourcesDirectory)/reports/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
+#   displayName: Create reports
+
+# - task: PublishCodeCoverageResults@2
+#   inputs:
+#     summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
