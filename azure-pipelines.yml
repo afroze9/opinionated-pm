@@ -24,10 +24,12 @@ steps:
     custom: tool
     arguments: install --tool-path . dotnet-reportgenerator-globaltool
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
   inputs:
-    restoreSolution: '$(solution)'
+    command: 'restore'
+    projects: 'nexus.sln'
+    feedsToUse: 'select'
 
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud Analysis'
@@ -38,19 +40,17 @@ steps:
     projectKey: 'nexus-framework.nexus'
     projectName: 'Nexus'
 
-- task: VSBuild@1
-  displayName: 'Build Solution'
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'build'
+    projects: 'nexus.sln'
+    arguments: '--configuration $(buildConfiguration) --no-restore'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run Tests'
   inputs:
     command: 'test'
-    projects: '**/tests/*.tests.csproj'
+    projects: '**/tests/*tests.csproj'
     arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
     workingDirectory: $(Build.SourcesDirectory)
 
