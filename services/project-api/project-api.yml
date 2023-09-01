@@ -1,0 +1,66 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - 'services/project-api/**'
+
+pr:
+  paths:
+    include:
+      - 'services/project-api/**'
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  project: 'services/project-api/src/Nexus.Project.Api/Nexus.Project.Api.csproj'
+  testProject: 'services/project-api/tests/Nexus.Project.Api.UnitTests/Nexus.Project.Api.UnitTests.csproj'
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: Install Nuget
+
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud Analysis'
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'nexus-framework'
+    scannerMode: 'MSBuild'
+    projectKey: 'nexus-framework.nexus.project'
+    projectName: 'Nexus Project API'
+    extraProperties: 'sonar.coverage.exclusions=**/*Migrations/*.cs'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Solution'
+  inputs:
+    command: 'restore'
+    projects: $(project)
+    feedsToUse: 'select'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build Project API'
+  inputs:
+    command: 'build'
+    projects: $(project)
+    arguments: '--configuration $(buildConfiguration) --no-restore'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
+  inputs:
+    command: test
+    projects: $(testProject)
+    arguments: '--collect "Code Coverage"'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Results'
+  inputs:
+    pollingTimeoutSec: '300'
