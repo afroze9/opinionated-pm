@@ -34,6 +34,7 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'nexus-framework.nexus'
     projectName: 'Nexus'
+    extraProperties: 'sonar.coverage.exclusions=**/*Migrations/*.cs'
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
