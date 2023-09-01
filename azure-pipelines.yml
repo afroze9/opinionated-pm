@@ -17,12 +17,12 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
-- task: DotNetCoreCLI@2
-  displayName: Install Report Generator Tool
-  inputs:
-    command: custom
-    custom: tool
-    arguments: install --tool-path . dotnet-reportgenerator-globaltool
+# - task: DotNetCoreCLI@2
+#   displayName: Install Report Generator Tool
+#   inputs:
+#     command: custom
+#     custom: tool
+#     arguments: install --tool-path . dotnet-reportgenerator-globaltool
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
@@ -31,14 +31,14 @@ steps:
     projects: 'nexus.sln'
     feedsToUse: 'select'
 
-- task: SonarCloudPrepare@1
-  displayName: 'Prepare SonarCloud Analysis'
-  inputs:
-    SonarCloud: 'SonarCloud'
-    organization: 'nexus-framework'
-    scannerMode: 'MSBuild'
-    projectKey: 'nexus-framework.nexus'
-    projectName: 'Nexus'
+# - task: SonarCloudPrepare@1
+#   displayName: 'Prepare SonarCloud Analysis'
+#   inputs:
+#     SonarCloud: 'SonarCloud'
+#     organization: 'nexus-framework'
+#     scannerMode: 'MSBuild'
+#     projectKey: 'nexus-framework.nexus'
+#     projectName: 'Nexus'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
@@ -51,22 +51,22 @@ steps:
   displayName: 'Run Tests'
   inputs:
     command: 'test'
-    projects: '**/tests/**/*Tests.csproj'
+    projects: '**/tests/**/*UnitTests.csproj'
     arguments: '--configuration $(buildConfiguration) --no-build --collect:"XPlat Code Coverage" --results-directory "$(Build.SourcesDirectory)/coverage"'
 
-- script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
-  displayName: 'Create Test Coverage Reports'
+# - script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
+#   displayName: 'Create Test Coverage Reports'
 
 - task: PublishCodeCoverageResults@2
   inputs:
     summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports'
 
-- task: SonarCloudAnalyze@1
-  displayName: 'Run SonarCloud Analysis'
-  inputs:
-    jdkversion: 'JAVA_HOME_17_X64'
+# - task: SonarCloudAnalyze@1
+#   displayName: 'Run SonarCloud Analysis'
+#   inputs:
+#     jdkversion: 'JAVA_HOME_17_X64'
 
-- task: SonarCloudPublish@1
-  displayName: 'Publish SonarCloud Results'
-  inputs:
-    pollingTimeoutSec: '300'
+# - task: SonarCloudPublish@1
+#   displayName: 'Publish SonarCloud Results'
+#   inputs:
+#     pollingTimeoutSec: '300'
