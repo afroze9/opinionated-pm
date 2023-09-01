@@ -30,6 +30,12 @@ steps:
 - task: NuGetToolInstaller@1
   displayName: Install Nuget
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'install --global dotnet-reportgenerator-globaltool'
+
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud Analysis'
   inputs:
@@ -60,6 +66,9 @@ steps:
     command: test
     projects: $(testProject)
     arguments: '--collect "XPlat code coverage" --settings $(testSettings)'
+
+- script: reportgenerator "-reports:*\*coverage.cobertura.xml" "-targetdir:codecoverage" "-reporttypes:SonarQube"
+  displayName: Report Generator
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
