@@ -61,7 +61,7 @@ steps:
 
 - task: PublishCodeCoverageResults@2
   inputs:
-    summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports'
+    summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports/Cobertura.xml'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
