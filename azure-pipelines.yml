@@ -31,14 +31,14 @@ steps:
     projects: 'nexus.sln'
     feedsToUse: 'select'
 
-# - task: SonarCloudPrepare@1
-#   displayName: 'Prepare SonarCloud Analysis'
-#   inputs:
-#     SonarCloud: 'SonarCloud'
-#     organization: 'nexus-framework'
-#     scannerMode: 'MSBuild'
-#     projectKey: 'nexus-framework.nexus'
-#     projectName: 'Nexus'
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud Analysis'
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'nexus-framework'
+    scannerMode: 'MSBuild'
+    projectKey: 'nexus-framework.nexus'
+    projectName: 'Nexus'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
@@ -59,16 +59,16 @@ steps:
 - script: reportgenerator -reports:$(Build.SourcesDirectory)/reports/**/coverage.cobertura.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
   displayName: Create reports
 
-# - task: PublishCodeCoverageResults@2
-#   inputs:
-#     summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports'
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: '$(Build.SourcesDirectory)/coverlet/reports'
 
-# - task: SonarCloudAnalyze@1
-#   displayName: 'Run SonarCloud Analysis'
-#   inputs:
-#     jdkversion: 'JAVA_HOME_17_X64'
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
 
-# - task: SonarCloudPublish@1
-#   displayName: 'Publish SonarCloud Results'
-#   inputs:
-#     pollingTimeoutSec: '300'
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Results'
+  inputs:
+    pollingTimeoutSec: '300'
