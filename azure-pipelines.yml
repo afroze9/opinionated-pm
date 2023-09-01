@@ -52,10 +52,10 @@ steps:
   inputs:
     command: test
     projects: '**/*UnitTests.csproj'
-    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
+    arguments: '--no-build --configuration $(buildConfiguration) --results-directory "$(Build.SourcesDirectory)/reports" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
     workingDirectory: $(Build.SourcesDirectory)
 
-- script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
+- script: reportgenerator -reports:$(Build.SourcesDirectory)/reports/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
   displayName: Create reports
 
 # - task: PublishCodeCoverageResults@2
