@@ -4,8 +4,18 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
-          <Format>cobertura</Format>                              
-          <ExcludeByFile>**/*Migrations/*.cs</ExcludeByFile>       
+          <Format>cobertura</Format>
+          <ExcludeByFile>**/*Migrations/*.cs</ExcludeByFile>
+          <CodeCoverage>
+            <ModulePaths>
+              <Include>
+                <ModulePath>Nexus.Company.Api</ModulePath>
+              </Include>
+              <Include>
+                <ModulePath>.*tests.dll</ModulePath>
+              </Include>
+            </ModulePaths>
+          </CodeCoverage>
         </Configuration>
       </DataCollector>
     </DataCollectors>
