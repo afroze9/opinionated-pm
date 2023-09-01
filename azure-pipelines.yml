@@ -17,11 +17,20 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
+- task: DotNetCoreCLI@2
+  displayName: Install Report Generator Tool
+  inputs:
+    command: custom
+    custom: tool
+    arguments: install --tool-path . dotnet-reportgenerator-globaltool
+
 - task: NuGetCommand@2
+  displayName: 'Restore Solution'
   inputs:
     restoreSolution: '$(solution)'
 
 - task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud Analysis'
   inputs:
     SonarCloud: 'SonarCloud'
     organization: 'nexus-framework'
@@ -30,21 +39,30 @@ steps:
     projectName: 'Nexus'
 
 - task: VSBuild@1
+  displayName: 'Build Solution'
   inputs:
     solution: '$(solution)'
     msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
 
-- task: VSTest@2
+- task: DotNetCoreCLI@2
+  displayName: 'Run Tests'
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'test'
+    projects: '**/tests/*.tests.csproj'
+    arguments: '--no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger trx --collect:"XPlat Code Coverage" -- RunConfiguration.DisableAppDomain=true'
+    workingDirectory: $(Build.SourcesDirectory)
+
+- script: reportgenerator -reports:$(Build.SourcesDirectory)/**/coverage.opencover.xml -targetdir:$(Build.SourcesDirectory)/coverlet/reports -reporttypes:"Cobertura""
+  displayName: 'Create Test Coverage Reports'
 
 - task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
   inputs:
     jdkversion: 'JAVA_HOME_17_X64'
 
 - task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Results'
   inputs:
     pollingTimeoutSec: '300'
