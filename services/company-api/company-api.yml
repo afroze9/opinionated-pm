@@ -26,15 +26,15 @@ steps:
 - task: NuGetToolInstaller@1
   displayName: Install Nuget
 
-#- task: SonarCloudPrepare@1
-#  displayName: 'Prepare SonarCloud Analysis'
-#  inputs:
-#    SonarCloud: 'SonarCloud'
-#    organization: 'nexus-framework'
-#    scannerMode: 'MSBuild'
-#    projectKey: 'nexus-framework.nexus.company'
-#    projectName: 'Nexus Company API'
-#    extraProperties: 'sonar.coverage.exclusions=**/*Migrations/*.cs'
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud Analysis'
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'nexus-framework'
+    scannerMode: 'MSBuild'
+    projectKey: 'nexus-framework.nexus.company'
+    projectName: 'Nexus Company API'
+    extraProperties: 'sonar.coverage.exclusions=**/*Migrations/*.cs'
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
@@ -60,12 +60,12 @@ steps:
     summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
     reportDirectory: '$(coverletOutputPath)'
 
-#- task: SonarCloudAnalyze@1
-#  displayName: 'Run SonarCloud Analysis'
-#  inputs:
-#    jdkversion: 'JAVA_HOME_17_X64'
-#
-#- task: SonarCloudPublish@1
-#  displayName: 'Publish SonarCloud Results'
-#  inputs:
-#    pollingTimeoutSec: '300'
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Results'
+  inputs:
+    pollingTimeoutSec: '300'
