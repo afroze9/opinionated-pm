@@ -63,8 +63,12 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.xml'
+    testResultsFiles: '**/*.trx'
     searchFolder: '$(coverletOutputPath)'
+
+- task: PublishCodeCoverageResults@2
+  inputs:
+    summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
 
 # - task: PublishCodeCoverageResults@1
 #   displayName: 'Publish Code Coverage'
@@ -74,12 +78,6 @@ steps:
 #     reportDirectory: '$(coverletOutputPath)'
 #     mergeTestResults: true
 
-# - task: PublishTestResults@2
-#   inputs:
-#     testResultsFormat: 'XUnit'
-#     testResultsFiles: '**/*.trx'
-#     searchFolder: '$(coverletOutputPath)'
-#     mergeTestResults: true
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
