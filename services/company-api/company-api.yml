@@ -57,7 +57,7 @@ steps:
   inputs:
     command: 'test'
     projects: '$(testProject)'
-    arguments: '--collect:"XPlat Code Coverage" --logger trx --results-directory $(coverletOutputPath)'
+    arguments: '--collect:"XPlat Code Coverage,Code Coverage" --logger trx --results-directory $(coverletOutputPath)'
     publishTestResults: false
 
 - task: PublishTestResults@2
