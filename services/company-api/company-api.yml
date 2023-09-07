@@ -57,7 +57,7 @@ steps:
   displayName: 'Publish Code Coverage'
   inputs:
     codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(coverletOutputPath)/*.xml'
+    summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
     reportDirectory: '$(coverletOutputPath)'
 
 #- task: SonarCloudAnalyze@1
