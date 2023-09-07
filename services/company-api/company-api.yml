@@ -50,9 +50,9 @@ steps:
     projects: $(project)
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- script: dotnet test $(testProject) --configuration $(buildConfiguration) --results-directory $(coverletOutputPath) --logger trx
+- script: dotnet test $(testProject) --configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath) --logger trx
   displayName: 'Run Tests with Code Coverage'
-#
+
 #- task: DotNetCoreCLI@2
 #  inputs:
 #    command: 'test'
