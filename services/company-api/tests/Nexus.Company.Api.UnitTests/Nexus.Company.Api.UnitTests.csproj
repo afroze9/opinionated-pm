@@ -3,6 +3,8 @@
     <PropertyGroup>
         <RootNamespace>Nexus.CompanyAPI.UnitTests</RootNamespace>
         <IsPackable>false</IsPackable>
+        <CollectCoverage>true</CollectCoverage>
+        <CoverletOutputFormat>opencover</CoverletOutputFormat>
     </PropertyGroup>
 
     <ItemGroup>
