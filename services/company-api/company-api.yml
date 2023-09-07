@@ -60,6 +60,12 @@ steps:
     arguments: '--collect:"XPlat Code Coverage" --logger trx --results-directory $(coverletOutputPath)'
     publishTestResults: false
 
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    searchFolder: '$(coverletOutputPath)'
+
 # - task: PublishCodeCoverageResults@1
 #   displayName: 'Publish Code Coverage'
 #   inputs:
