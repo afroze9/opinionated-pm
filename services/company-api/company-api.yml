@@ -26,6 +26,12 @@ steps:
 - task: NuGetToolInstaller@1
   displayName: Install Nuget
 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'custom'
+    custom: 'tool'
+    arguments: 'install --global coverlet.console'
+
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud Analysis'
   inputs:
@@ -36,8 +42,8 @@ steps:
     projectName: 'Nexus Company API'
     extraProperties: |
       sonar.coverage.exclusions=**/*Migrations/*.cs
-      sonar.coverageReportPaths=$(coverletOutputPath)/**/*.xml
-      sonar.cs.vstest.reportsPaths=$(coverletOutputPath)/**/*.trx
+#      sonar.coverageReportPaths=$(coverletOutputPath)/**/*.xml
+#      sonar.cs.vstest.reportsPaths=$(coverletOutputPath)/**/*.trx
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
@@ -53,15 +59,17 @@ steps:
     projects: $(project)
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
+- script: coverlet $(testProject) --target "dotnet" --targetargs "test --no-build" -f=opencover -o="$(coverletOutputPath)/coverage.xml"
+
 # - script: dotnet test $(testProject) --configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath) --logger trx
 #   displayName: 'Run Tests with Code Coverage'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '$(testProject)'
-    arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=\"cobertura,opencover\" --logger trx --results-directory $(coverletOutputPath)'
-    publishTestResults: false
+# - task: DotNetCoreCLI@2
+#   inputs:
+#     command: 'test'
+#     projects: '$(testProject)'
+#     arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=\"cobertura,opencover\" --logger trx --results-directory $(coverletOutputPath)'
+#     publishTestResults: false
 
 - task: PublishTestResults@2
   inputs:
