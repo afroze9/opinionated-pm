@@ -60,7 +60,7 @@ steps:
   inputs:
     command: 'test'
     projects: '$(testProject)'
-    arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=cobertura,opencover --logger trx --results-directory $(coverletOutputPath)'
+    arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=\"cobertura,opencover\" --logger trx --results-directory $(coverletOutputPath)'
     publishTestResults: false
 
 - task: PublishTestResults@2
