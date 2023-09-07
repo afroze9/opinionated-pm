@@ -4,7 +4,7 @@
         <RootNamespace>Nexus.CompanyAPI.UnitTests</RootNamespace>
         <IsPackable>false</IsPackable>
         <CollectCoverage>true</CollectCoverage>
-        <CoverletOutputFormat>opencover</CoverletOutputFormat>
+        <CoverletOutputFormat>opencover,cobertura</CoverletOutputFormat>
     </PropertyGroup>
 
     <ItemGroup>

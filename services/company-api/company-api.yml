@@ -50,13 +50,8 @@ steps:
     projects: $(project)
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- script: dotnet test $(testProject) --configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath)
+- script: dotnet test $(testProject) --configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath) --logger trx
   displayName: 'Run Tests with Code Coverage'
-
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    projects: '$(testProject)'
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish Code Coverage'
@@ -64,6 +59,14 @@ steps:
     codeCoverageTool: 'Cobertura'
     summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
     reportDirectory: '$(coverletOutputPath)'
+    mergeTestResults: true
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFormat: 'VSTest'
+    testResultsFiles: '**/*.trx'
+    searchFolder: '$(System.DefaultWorkingDirectory)'
+    mergeTestResults: true
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
