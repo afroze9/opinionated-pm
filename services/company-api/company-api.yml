@@ -53,25 +53,26 @@ steps:
 - script: dotnet test $(testProject) --configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath) --logger trx
   displayName: 'Run Tests with Code Coverage'
 
-#- task: DotNetCoreCLI@2
-#  inputs:
-#    command: 'test'
-#    projects: '$(testProject)'
-
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish Code Coverage'
+- task: DotNetCoreCLI@2
   inputs:
-    codeCoverageTool: 'Cobertura'
-    summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
-    reportDirectory: '$(coverletOutputPath)'
-    mergeTestResults: true
+    command: 'test'
+    projects: '$(testProject)'
+    arguments: '--collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath) --logger trx'
 
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'XUnit'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(coverletOutputPath)'
-    mergeTestResults: true
+# - task: PublishCodeCoverageResults@1
+#   displayName: 'Publish Code Coverage'
+#   inputs:
+#     codeCoverageTool: 'Cobertura'
+#     summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
+#     reportDirectory: '$(coverletOutputPath)'
+#     mergeTestResults: true
+
+# - task: PublishTestResults@2
+#   inputs:
+#     testResultsFormat: 'XUnit'
+#     testResultsFiles: '**/*.trx'
+#     searchFolder: '$(coverletOutputPath)'
+#     mergeTestResults: true
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
