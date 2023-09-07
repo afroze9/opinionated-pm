@@ -68,9 +68,9 @@ steps:
 
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'VSTest'
+    testResultsFormat: 'XUnit'
     testResultsFiles: '**/*.trx'
-    searchFolder: '$(System.DefaultWorkingDirectory)'
+    searchFolder: '$(coverletOutputPath)'
     mergeTestResults: true
 
 - task: SonarCloudAnalyze@1
