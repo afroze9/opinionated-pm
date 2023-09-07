@@ -37,6 +37,7 @@ steps:
     extraProperties: |
       sonar.coverage.exclusions=**/*Migrations/*.cs
       sonar.cs.vscoveragexml.reportsPaths=$(coverletOutputPath)/**/*.xml
+      sonar.cs.vstest.reportsPaths=$(coverletOutputPath)/**/*.trx
 
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
