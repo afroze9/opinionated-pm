@@ -66,9 +66,11 @@ steps:
     testResultsFiles: '**/*.trx'
     searchFolder: '$(coverletOutputPath)'
 
-- task: PublishCodeCoverageResults@2
+- task: PublishCodeCoverageResults@1
   inputs:
     summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
+    reportDirectory: '$(coverletOutputPath)'
+    codeCoverageTool: 'Cobertura'
 
 # - task: PublishCodeCoverageResults@1
 #   displayName: 'Publish Code Coverage'
