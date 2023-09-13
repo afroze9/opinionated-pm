@@ -9,6 +9,8 @@ using Nexus.PeopleAPI.Mapping;
 using Nexus.PeopleAPI.Services;
 using Nexus.PeopleAPI.Telemetry;
 using OpenTelemetry.Resources;
+using Quartz;
+using Quartz.AspNetCore;
 
 namespace Nexus.PeopleAPI;
 
@@ -53,10 +55,31 @@ public class ServiceBootstrapper : Bootstrapper
         // Libraries
         AppBuilder.Services.AddAutoMapper(typeof(PeopleProfile));
         AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
+        AppBuilder.Services.AddQuartz(options =>
+        {
+            options.UseMicrosoftDependencyInjectionJobFactory();
+            JobKey syncJobKey = new JobKey(nameof(PeopleSyncJob));
+            options.AddJob<PeopleSyncJob>(o => o.WithIdentity(syncJobKey).DisallowConcurrentExecution());
+            options.AddTrigger(triggerOptions =>
+                triggerOptions
+                    .ForJob(syncJobKey)
+                    .WithIdentity("PeopleSyncJob-Trigger")
+                    .WithSimpleSchedule(scheduleOptions =>
+                        scheduleOptions
+                            .WithIntervalInMinutes(10)
+                            .RepeatForever()
+                    )
+            );
+        });
+        AppBuilder.Services.AddQuartzServer(options =>
+        {
+            options.WaitForJobsToComplete = true;
+        });
 
         // Persistence
         AppBuilder.Services.AddCorePersistence<ApplicationDbContext>(AppBuilder.Configuration);
         AppBuilder.Services.AddScoped<PeopleRepository>();
+        AppBuilder.Services.AddScoped<SyncStatusRepository>();
         AppBuilder.Services.AddScoped<UnitOfWork>();
     }
 

@@ -42,8 +42,8 @@ public class ApplicationDbContext : AuditableDbContext
     {
         TodoItem p1T1 = new () { Id = 1, Title = "Create React Site", Description = "Create a portfolio website using react", ProjectId = 1 };
         TodoItem p1T2 = new () { Id = 2, Title = "Deploy site", Description = "Deploy portfolio site to Netlify", ProjectId = 1 };
-        p1T1.MarkComplete();
-        p1T2.MarkComplete();
+        p1T1.MarkComplete(true);
+        p1T2.MarkComplete(true);
 
         TodoItem p2T1 = new () { Id = 3, Title = "Api Gateway", Description = "Create Api Gateway", ProjectId = 2 };
         TodoItem p2T2 = new () { Id = 4, Title = "HC Dashboard", Description = "Create Health Check Dashboard", ProjectId = 2 };
@@ -51,11 +51,11 @@ public class ApplicationDbContext : AuditableDbContext
         TodoItem p2T4 = new () { Id = 6, Title = "Company API", Description = "Create Company API", ProjectId = 2 };
         TodoItem p2T5 = new () { Id = 7, Title = "Project API", Description = "Create Project API", ProjectId = 2 };
         TodoItem p2T6 = new () { Id = 8, Title = "Documentation", Description = "Create documentation", ProjectId = 2 };
-        p2T1.MarkComplete();
-        p2T2.MarkComplete();
-        p2T3.MarkComplete();
-        p2T4.MarkComplete();
-        p2T5.MarkComplete();
+        p2T1.MarkComplete(true);
+        p2T2.MarkComplete(true);
+        p2T3.MarkComplete(true);
+        p2T4.MarkComplete(true);
+        p2T5.MarkComplete(true);
 
         TodoItem p3T1 = new () { Id = 9, Title = "Auth", Description = "Create Nexus.Auth", ProjectId = 3 };
         TodoItem p3T2 = new () { Id = 10, Title = "Common", Description = "Create Nexus.Common", ProjectId = 3 };
@@ -65,26 +65,26 @@ public class ApplicationDbContext : AuditableDbContext
         TodoItem p3T6 = new () { Id = 14, Title = "Management", Description = "Create Nexus.Management", ProjectId = 3 };
         TodoItem p3T7 = new () { Id = 15, Title = "Persistence", Description = "Create Nexus.Persistence", ProjectId = 3 };
         TodoItem p3T8 = new () { Id = 16, Title = "Telemetry", Description = "Create Nexus.Telemetry", ProjectId = 3 };
-        p3T1.MarkComplete();
-        p3T2.MarkComplete();
-        p3T3.MarkComplete();
-        p3T4.MarkComplete();
-        p3T5.MarkComplete();
-        p3T6.MarkComplete();
-        p3T7.MarkComplete();
-        p3T8.MarkComplete();
+        p3T1.MarkComplete(true);
+        p3T2.MarkComplete(true);
+        p3T3.MarkComplete(true);
+        p3T4.MarkComplete(true);
+        p3T5.MarkComplete(true);
+        p3T6.MarkComplete(true);
+        p3T7.MarkComplete(true);
+        p3T8.MarkComplete(true);
 
         TodoItem p4T1 = new () { Id = 17, Title = "Create Tool", Description = "Create Nexus CLI Tool", ProjectId = 4 };
         TodoItem p4T2 = new () { Id = 18, Title = "Testing", Description = "Test CLI Tool", ProjectId = 4 };
-        p4T1.MarkComplete();
-        p4T2.MarkComplete();
+        p4T1.MarkComplete(true);
+        p4T2.MarkComplete(true);
         
         TodoItem p5T1 = new () { Id = 19, Title = "Create Template", Description = "Create Nexus CLI Tool", ProjectId = 5 };
-        p5T1.MarkComplete();
+        p5T1.MarkComplete(true);
         
         TodoItem p6T1 = new () { Id = 20, Title = "Create Presentation", Description = "Create Presentation for Nexus", ProjectId = 6 };
         TodoItem p6T2 = new () { Id = 21, Title = "Present", Description = "Present in front of audience", ProjectId = 6 };
-        p6T1.MarkComplete();
+        p6T1.MarkComplete(true);
 
         return new List<TodoItem>
         {

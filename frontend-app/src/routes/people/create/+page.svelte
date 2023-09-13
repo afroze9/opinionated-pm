@@ -6,6 +6,9 @@
 	import { goto } from '$app/navigation';
 	import { toastStore } from '@skeletonlabs/skeleton';
 	import peopleApi from '../../../services/PeopleApi';
+	import { writable } from 'svelte/store';
+
+	let isCallingApi = writable<boolean>(false);
 
 	const name = field('name', '', [required(), min(5)], {
 		validateOnChange: true,
@@ -23,6 +26,7 @@
 	const personForm = form(name, email, password);
 
 	async function createPerson() {
+		isCallingApi.set(true);
 		if ($personForm.valid) {
 			let response = await peopleApi.createPerson({
 				name: $name.value,
@@ -38,6 +42,7 @@
 				});
 			}
 		}
+		isCallingApi.set(false);
 	}
 </script>
 
@@ -85,7 +90,7 @@
 				type="button"
 				class="btn variant-filled ml-4"
 				on:click={createPerson}
-				disabled={!$personForm.valid}>Create</button
+				disabled={!$personForm.valid || $isCallingApi}>Create</button
 			>
 		</div>
 	</section>

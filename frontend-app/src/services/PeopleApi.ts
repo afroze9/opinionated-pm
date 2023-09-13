@@ -1,10 +1,11 @@
 ﻿import ApiHelpers, { type ErrorResponse } from "./ApiHelpers";
 import { get } from "svelte/store";
 import { auth0Client } from "../store";
-import axios from "axios";
+import axios, { Axios, AxiosError } from "axios";
 
 export type PersonResponseModel = {
     id: number;
+    identityId: number;
     name: string;
     email: string;
 }
@@ -30,6 +31,28 @@ async function getPeople(): Promise<PersonResponseModel[] | ErrorResponse> {
         const response = await axios.get<PersonResponseModel[]>(url, config);
         return response.data;
     } catch (e) {
+        let error = e as AxiosError;
+        if (error.response?.status == 404) {
+            return [];
+        }
+        return {
+            message: (e as any).toString()
+        };
+    }
+}
+
+async function search(name: string): Promise<PersonResponseModel[] | ErrorResponse> {
+    try {
+        const token = await get(auth0Client).getTokenSilently();
+        const url = ApiHelpers.getUrl(`/people/search?name=${name}`);
+        const config = ApiHelpers.getAxiosConfig(token);
+        const response = await axios.get<PersonResponseModel[]>(url, config);
+        return response.data;
+    } catch (e) {
+        let error = e as AxiosError;
+        if (error.response?.status == 404) {
+            return [];
+        }
         return {
             message: (e as any).toString()
         };
@@ -94,6 +117,7 @@ async function deletePerson(id: number) {
 
 const peopleApi = {
     getPeople,
+    search,
     getPersonById,
     createPerson,
     updatePerson,

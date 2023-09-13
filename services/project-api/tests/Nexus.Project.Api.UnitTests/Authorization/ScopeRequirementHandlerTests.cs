@@ -1,6 +1,5 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
-using Moq;
 using Nexus.Auth;
 
 namespace Nexus.ProjectAPI.UnitTests.Authorization;
@@ -16,9 +15,6 @@ public class ScopeRequirementHandlerTests
         // Arrange
         ScopeRequirement requirement = new (requiredScope);
         ClaimsPrincipal user = new (new ClaimsIdentity(new Claim[] { new ("scope", userScope) }));
-        Mock<AuthorizationHandlerContext> mockContext = new ();
-        mockContext.CallBase = true;
-        mockContext.SetupGet(x => x.User).Returns(user);
         AuthorizationHandlerContext context = new (new[] { requirement }, user, null);
 
         // Act
@@ -38,9 +34,6 @@ public class ScopeRequirementHandlerTests
         // Arrange
         ScopeRequirement requirement = new (requiredScope);
         ClaimsPrincipal user = new (new ClaimsIdentity(new Claim[] { new ("scope", userScope) }));
-        Mock<AuthorizationHandlerContext> mockContext = new ();
-        mockContext.CallBase = true;
-        mockContext.SetupGet(x => x.User).Returns(user);
         AuthorizationHandlerContext context = new (new[] { requirement }, user, null);
 
         // Act

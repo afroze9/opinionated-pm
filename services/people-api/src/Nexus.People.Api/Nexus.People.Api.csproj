@@ -17,6 +17,7 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL.Design" />
         <PackageReference Include="Polly.Extensions.Http" />
+        <PackageReference Include="Quartz.AspNetCore" />
     </ItemGroup>
 
     <ItemGroup>
@@ -28,6 +29,10 @@
             <Link>appsettings.Global.json</Link>
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Data\Migrations\" />
     </ItemGroup>
 
 </Project>

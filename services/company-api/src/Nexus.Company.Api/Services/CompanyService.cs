@@ -48,18 +48,32 @@ public class CompanyService : ICompanyService
     ///     Gets all companies asynchronously.
     /// </summary>
     /// <returns>A list of all companies.</returns>
-    public async Task<List<CompanySummaryDto>> GetAllAsync()
+    public async Task<Result<List<CompanySummaryDto>>> GetAllAsync()
     {
-        List<Company> companies = await _unitOfWork.Companies.AllCompaniesWithTagsAsync();
-        List<CompanySummaryDto> mappedCompanies = _mapper.Map<List<CompanySummaryDto>>(companies);
-
-        foreach (CompanySummaryDto company in mappedCompanies)
+        try
         {
-            List<ProjectSummaryDto> projects = await _projectService.GetProjectsByCompanyIdAsync(company.Id);
-            company.ProjectCount = projects.Count;
+            List<Company> companies = await _unitOfWork.Companies.AllCompaniesWithTagsAsync();
+            if (companies.Count == 0)
+            {
+                return new Result<List<CompanySummaryDto>>(new CompanyNotFoundException(-1));
+            }
+            
+            List<CompanySummaryDto> mappedCompanies = _mapper.Map<List<CompanySummaryDto>>(companies);
+
+            foreach (CompanySummaryDto company in mappedCompanies)
+            {
+                List<ProjectSummaryDto> projects = await _projectService.GetProjectsByCompanyIdAsync(company.Id);
+                company.ProjectCount = projects.Count;
+            }
+            
+            return mappedCompanies;
         }
-        
-        return mappedCompanies;
+        catch (Exception ex)
+        {
+            FetchCompanyException companyException = new (ex);
+            _logger.LogInformation(EventIds.CreateCompanyTransactionError, companyException, CreateCompanyException.ExceptionMessage);
+            return new Result<List<CompanySummaryDto>>(companyException);
+        }
     }
 
     /// <summary>
@@ -114,7 +128,6 @@ public class CompanyService : ICompanyService
         catch (Exception ex)
         {
             CreateCompanyException companyException = new (ex);
-            
             _logger.LogInformation(EventIds.CreateCompanyTransactionError, companyException, CreateCompanyException.ExceptionMessage);
             _unitOfWork.Rollback();
             
@@ -129,18 +142,28 @@ public class CompanyService : ICompanyService
     /// <returns>The company with the specified ID, or null if not found.</returns>
     public async Task<Result<CompanyDto>> GetByIdAsync(int id)
     {
-        Company? company = await _unitOfWork.Companies.GetByIdWithTagsAsync(id);
-        
-        if (company == null)
+        try
         {
-            return new Result<CompanyDto>(new CompanyNotFoundException(id));
+            Company? company = await _unitOfWork.Companies.GetByIdWithTagsAsync(id);
+        
+            if (company == null)
+            {
+                return new Result<CompanyDto>(new CompanyNotFoundException(id));
+            }
+
+            CompanyDto mappedCompanySummary = _mapper.Map<CompanyDto>(company);
+            List<ProjectSummaryDto> projects = await _projectService.GetProjectsByCompanyIdAsync(id);
+            mappedCompanySummary.Projects = projects;
+        
+            return mappedCompanySummary;
+        }
+        catch (Exception ex)
+        {
+            FetchCompanyException companyException = new (ex);
+            _logger.LogInformation(EventIds.CreateCompanyTransactionError, companyException, CreateCompanyException.ExceptionMessage);
+            throw companyException;
         }
 
-        CompanyDto mappedCompanySummary = _mapper.Map<CompanyDto>(company);
-        List<ProjectSummaryDto> projects = await _projectService.GetProjectsByCompanyIdAsync(id);
-        mappedCompanySummary.Projects = projects;
-        
-        return mappedCompanySummary;
     }
 
     /// <summary>

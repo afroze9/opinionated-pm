@@ -5,7 +5,9 @@ public class PersonResponseModel
 {
     public int Id { get; set; }
 
-    required public string Name { get; set; }
+    public required string IdentityId { get; set; }
+    
+    public required string Name { get; set; }
 
-    required public string Email { get; set; }
+    public required string Email { get; set; }
 }

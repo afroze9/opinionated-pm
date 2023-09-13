@@ -187,4 +187,10 @@ public class PeopleService : IPeopleService
                 return new Result<Person>(personException);
             });
     }
+
+    public async Task<List<PersonDto>> SearchAsync(string name)
+    {
+        List<Person> people = await _unitOfWork.People.GetAllByNameAsync(name);
+        return _mapper.Map<List<PersonDto>>(people);
+    }
 }

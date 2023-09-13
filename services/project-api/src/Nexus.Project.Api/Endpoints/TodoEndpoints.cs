@@ -42,12 +42,12 @@ public static class TodoEndpoints
             return Results.BadRequest();
         }
 
-        itemToUpdate.AssignTodoItem(req.AssignedToId);
-
-        if (req.MarkComplete)
+        if (!string.IsNullOrEmpty(req.AssignedToId))
         {
-            itemToUpdate.MarkComplete();
+            itemToUpdate.AssignTodoItem(req.AssignedToId);
         }
+
+        itemToUpdate.MarkComplete(req.IsCompleted);
 
         unitOfWork.BeginTransaction();
         unitOfWork.Todos.Update(itemToUpdate);

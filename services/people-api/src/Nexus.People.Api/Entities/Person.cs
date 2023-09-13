@@ -10,6 +10,13 @@ public class Person : AuditableNexusEntityBase
         Email = email;
         Password = password;
     }
+
+    public Person(string name, string email)
+    {
+        Name = name;
+        Email = email;
+        Password = string.Empty;
+    }
     
     public string Name { get; private set; }
 

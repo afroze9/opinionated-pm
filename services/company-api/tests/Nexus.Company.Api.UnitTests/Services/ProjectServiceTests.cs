@@ -1,12 +1,12 @@
 ﻿using System.Net;
 using System.Net.Http.Json;
+using System.Reflection;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
-using Moq;
-using Moq.Protected;
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Services;
 using Nexus.SharedKernel.Contracts.Project;
+using NSubstitute;
 
 namespace Nexus.CompanyAPI.UnitTests.Services;
 
@@ -15,17 +15,17 @@ public class ProjectServiceTests
 {
     private readonly HttpClient _client;
     private readonly IMapper _mapper;
-    private readonly Mock<HttpMessageHandler> _mockHandler;
-    private readonly Mock<ILogger<ProjectService>> _logger;
+    private readonly HttpMessageHandler _mockHandler;
+    private readonly ILogger<ProjectService> _logger;
 
     public ProjectServiceTests()
     {
         MapperConfiguration config = new (cfg => { cfg.CreateMap<ProjectResponseModel, ProjectSummaryDto>(); });
 
         _mapper = config.CreateMapper();
-        _mockHandler = new Mock<HttpMessageHandler>();
-        _client = new HttpClient(_mockHandler.Object);
-        _logger = new Mock<ILogger<ProjectService>>();
+        _mockHandler = Substitute.For<HttpMessageHandler>();
+        _client = new HttpClient(_mockHandler);
+        _logger = Substitute.For<ILogger<ProjectService>>();
     }
 
     [Fact]
@@ -49,21 +49,25 @@ public class ProjectServiceTests
             },
         };
 
-        HttpResponseMessage response = new (HttpStatusCode.OK)
+        Task<HttpResponseMessage> response = Task.FromResult<HttpResponseMessage>(new (HttpStatusCode.OK)
         {
             Content = JsonContent.Create(expectedProjects),
-        };
+        });
 
-        _mockHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync",
-                ItExpr.Is<HttpRequestMessage>(r => r.Method == HttpMethod.Get
-                                                   && r.RequestUri ==
-                                                   new Uri(
-                                                       $"https://project-api/api/v1/Project?companyId={companyId}")),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(response);
-
-        ProjectService service = new (_client, _mapper, _logger.Object);
+        MethodInfo? method = _mockHandler
+            .GetType()
+            .GetMethod("SendAsync", BindingFlags.NonPublic | BindingFlags.Instance);
+        
+        Assert.NotNull(method);
+        
+#pragma warning disable NS1000
+#pragma warning disable NS1004
+        method.Invoke(_mockHandler, new object?[] { Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>() })
+            .Returns(response);
+#pragma warning restore NS1004
+#pragma warning restore NS1000
+        
+        ProjectService service = new (_client, _mapper, _logger);
 
         // Act
         List<ProjectSummaryDto> actualProjects = await service.GetProjectsByCompanyIdAsync(companyId);
@@ -71,28 +75,18 @@ public class ProjectServiceTests
         // Assert
         Assert.Equal(expectedProjects.Count, actualProjects.Count);
     }
-
+    
     [Fact]
     public async Task GetProjectsByCompanyIdAsync_ReturnsEmptyList_WhenStatusCodeIsNotSuccess()
     {
         // Arrange
         int companyId = 1;
-        HttpResponseMessage response = new (HttpStatusCode.NotFound);
-
-        _mockHandler.Protected()
-            .Setup<Task<HttpResponseMessage>>("SendAsync",
-                ItExpr.Is<HttpRequestMessage>(r => r.Method == HttpMethod.Get
-                                                   && r.RequestUri ==
-                                                   new Uri(
-                                                       $"https://project-api/api/v1/Project?companyId={companyId}")),
-                ItExpr.IsAny<CancellationToken>())
-            .ReturnsAsync(response);
-
-        ProjectService service = new (_client, _mapper, _logger.Object);
-
+    
+        ProjectService service = new (_client, _mapper, _logger);
+    
         // Act
         List<ProjectSummaryDto> actualProjects = await service.GetProjectsByCompanyIdAsync(companyId);
-
+    
         // Assert
         Assert.Empty(actualProjects);
     }

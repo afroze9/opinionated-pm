@@ -23,4 +23,6 @@ public class ApplicationDbContext : AuditableDbContext
     }
     
     public DbSet<Person> People => Set<Person>();
+    
+    public DbSet<SyncStatus> SyncStatuses => Set<SyncStatus>();
 }

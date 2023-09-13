@@ -44,19 +44,30 @@ public class CompanyController : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CompanySummaryResponseModel>))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
-    public async Task<ActionResult<List<CompanySummaryResponseModel>>> GetAll()
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
+    public async Task<IActionResult> GetAll()
     {
-        using Activity? activity = _activitySource.StartActivity("get all companies");
-        List<CompanySummaryDto> companies = await _companyService.GetAllAsync();
-
-        if (companies.Count == 0)
-        {
-            return NotFound();
-        }
-
-        List<CompanySummaryResponseModel> mappedCompanies = _mapper.Map<List<CompanySummaryResponseModel>>(companies);
+        using Activity? activity = _activitySource.StartActivity();
         _getAllCompaniesCounter.Add(1);
-        return Ok(mappedCompanies);
+        
+        Result<List<CompanySummaryDto>> result = await _companyService.GetAllAsync();
+        return result.Match<IActionResult>(
+            companies =>
+            {
+                List<CompanySummaryResponseModel> mappedCompanies =
+                    _mapper.Map<List<CompanySummaryResponseModel>>(companies);
+
+                return Ok(mappedCompanies);
+            },
+            error =>
+            {
+                return error switch
+                {
+                    CompanyNotFoundException => NotFound(),
+                    FetchCompanyException => StatusCode(500),
+                    _ => StatusCode(500),
+                };
+            });
     }
 
     /// <summary>
@@ -69,20 +80,20 @@ public class CompanyController : ControllerBase
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(CompanyResponseModel))]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(CompanyNotFoundException))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
     public async Task<IActionResult> GetById(int id)
     {
         Result<CompanyDto> result = await _companyService.GetByIdAsync(id);
-
-        return result.Match<IActionResult>(company => Ok(_mapper.Map<CompanyResponseModel>(company)),
+        return result.Match<IActionResult>(
+            company => Ok(_mapper.Map<CompanyResponseModel>(company)),
             error =>
             {
-                if (error is CompanyNotFoundException)
+                return error switch
                 {
-                    return NotFound();
-                }
-
-                return StatusCode(500, error);
+                    CompanyNotFoundException => NotFound(),
+                    FetchCompanyException => StatusCode(500),
+                    _ => StatusCode(500),
+                };
             });
     }
 
@@ -108,14 +119,14 @@ public class CompanyController : ControllerBase
                 CompanyResponseModel response = _mapper.Map<CompanyResponseModel>(createdCompany);
                 return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
             },
-            ex =>
+            error =>
             {
-                return ex switch
+                return error switch
                 {
-                    ValidationException => BadRequest(ex),
-                    AnotherCompanyExistsWithSameNameException => BadRequest(ex),
-                    CreateCompanyException => StatusCode(500, ex),
-                    _ => StatusCode(418),
+                    ValidationException => BadRequest(error),
+                    AnotherCompanyExistsWithSameNameException => BadRequest(error),
+                    CreateCompanyException => StatusCode(500),
+                    _ => StatusCode(500),
                 };
             });
     }
@@ -136,14 +147,14 @@ public class CompanyController : ControllerBase
         Result<Company> result = await _companyService.UpdateNameAsync(id, model.Name);
         return result.Match<IActionResult>(
             updatedCompany => Ok(_mapper.Map<CompanyResponseModel>(updatedCompany)),
-            ex =>
+            error =>
             {
-                return ex switch
+                return error switch
                 {
-                    CompanyNotFoundException => BadRequest(ex),
-                    AnotherCompanyExistsWithSameNameException => BadRequest(ex),
-                    ValidationException => BadRequest(ex),
-                    _ => StatusCode(500, ex),
+                    CompanyNotFoundException => BadRequest(error),
+                    AnotherCompanyExistsWithSameNameException => BadRequest(error),
+                    ValidationException => BadRequest(error),
+                    _ => StatusCode(500),
                 };
             });
     }
@@ -154,7 +165,6 @@ public class CompanyController : ControllerBase
     /// <param name="id">Company Id.</param>
     [Authorize("delete:company")]
     [HttpDelete("[controller]/{id}")]
-    [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<string>))]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<IActionResult> Delete(int id)
     {

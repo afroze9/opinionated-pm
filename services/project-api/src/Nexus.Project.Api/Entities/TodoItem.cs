@@ -4,7 +4,7 @@ namespace Nexus.ProjectAPI.Entities;
 
 public class TodoItem : AuditableNexusEntityBase
 {
-    required public string Title { get; set; }
+    public required string Title { get; set; }
 
     public string Description { get; set; } = string.Empty;
 
@@ -14,12 +14,9 @@ public class TodoItem : AuditableNexusEntityBase
     
     public int ProjectId { get; set; }
 
-    public void MarkComplete()
+    public void MarkComplete(bool isCompleted)
     {
-        if (!IsCompleted)
-        {
-            IsCompleted = true;
-        }
+        IsCompleted = isCompleted;
     }
 
     public void AssignTodoItem(string assignedToId)
