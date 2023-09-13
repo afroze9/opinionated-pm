@@ -1,4 +1,5 @@
 ﻿using LanguageExt.Common;
+using Nexus.Common.Contracts;
 using Nexus.PeopleAPI.Abstractions;
 using Nexus.PeopleAPI.Data;
 using Nexus.PeopleAPI.Entities;

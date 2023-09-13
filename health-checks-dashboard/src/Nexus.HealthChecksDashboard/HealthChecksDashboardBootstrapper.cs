@@ -8,7 +8,7 @@ using Steeltoe.Common.Http.Discovery;
 
 namespace Nexus.HealthChecksDashboard;
 
-public class HealthChecksDashboardBootstrapper : Bootstrapper
+public class HealthChecksDashboardBootstrapper : NexusServiceBootstrapper
 {
     public HealthChecksDashboardBootstrapper(string[] args) : base(args)
     {

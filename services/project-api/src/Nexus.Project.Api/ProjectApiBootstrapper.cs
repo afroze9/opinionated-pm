@@ -8,7 +8,7 @@ using Nexus.ProjectAPI.Mapping;
 
 namespace Nexus.ProjectAPI;
 
-public class ProjectApiBootstrapper : Bootstrapper
+public class ProjectApiBootstrapper : NexusServiceBootstrapper
 {
     public ProjectApiBootstrapper(string[] args) : base(args)
     {
@@ -23,7 +23,7 @@ public class ProjectApiBootstrapper : Bootstrapper
         AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
         // Persistence
-        AppBuilder.Services.AddCorePersistence<ApplicationDbContext>(AppBuilder.Configuration);
+        AppBuilder.Services.AddNexusPersistence<ApplicationDbContext>(AppBuilder.Configuration);
         AppBuilder.Services.AddScoped<ProjectRepository>();
         AppBuilder.Services.AddScoped<TodoRepository>();
         AppBuilder.Services.AddScoped<UnitOfWork>();

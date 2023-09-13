@@ -14,7 +14,7 @@ using Quartz.AspNetCore;
 
 namespace Nexus.PeopleAPI;
 
-public class ServiceBootstrapper : Bootstrapper
+public class ServiceBootstrapper : NexusServiceBootstrapper
 {
     public ServiceBootstrapper(string[] args) : base(args)
     {
@@ -77,7 +77,7 @@ public class ServiceBootstrapper : Bootstrapper
         });
 
         // Persistence
-        AppBuilder.Services.AddCorePersistence<ApplicationDbContext>(AppBuilder.Configuration);
+        AppBuilder.Services.AddNexusPersistence<ApplicationDbContext>(AppBuilder.Configuration);
         AppBuilder.Services.AddScoped<PeopleRepository>();
         AppBuilder.Services.AddScoped<SyncStatusRepository>();
         AppBuilder.Services.AddScoped<UnitOfWork>();

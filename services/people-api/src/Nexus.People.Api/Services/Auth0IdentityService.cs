@@ -5,6 +5,7 @@ using LanguageExt.Common;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Nexus.Common.Contracts;
 using Nexus.PeopleAPI.Abstractions;
 using Nexus.PeopleAPI.Configurations;
 using Nexus.PeopleAPI.Entities;

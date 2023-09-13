@@ -12,7 +12,7 @@ using Steeltoe.Common.Http.Discovery;
 
 namespace Nexus.CompanyAPI;
 
-public class CompanyApiBootstrapper : Bootstrapper
+public class CompanyApiBootstrapper : NexusServiceBootstrapper
 {
     public CompanyApiBootstrapper(string[] args) : base(args)
     {
@@ -76,7 +76,7 @@ public class CompanyApiBootstrapper : Bootstrapper
         AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
         // Persistence
-        AppBuilder.Services.AddCorePersistence<ApplicationDbContext>(AppBuilder.Configuration);
+        AppBuilder.Services.AddNexusPersistence<ApplicationDbContext>(AppBuilder.Configuration);
         AppBuilder.Services.AddScoped<CompanyRepository>();
         AppBuilder.Services.AddScoped<TagRepository>();
         AppBuilder.Services.AddScoped<UnitOfWork>();

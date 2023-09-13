@@ -8,7 +8,7 @@ using Ocelot.Provider.Consul;
 
 namespace Nexus.ApiGateway;
 
-public class ApiGatewayBootstrapper : Bootstrapper
+public class ApiGatewayBootstrapper : NexusServiceBootstrapper
 {
     public ApiGatewayBootstrapper(string[] args) : base(args)
     {
