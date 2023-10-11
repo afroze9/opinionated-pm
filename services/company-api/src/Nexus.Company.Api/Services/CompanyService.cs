@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using FluentValidation;
 using LanguageExt.Common;
+using Nexus.Common.Attributes;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Data;
 using Nexus.CompanyAPI.DTO;
@@ -14,6 +15,7 @@ namespace Nexus.CompanyAPI.Services;
 /// <summary>
 ///     Service for managing companies and their associated tags and projects.
 /// </summary>
+[NexusService<ICompanyService>(NexusServiceLifeTime.Scoped)]
 public class CompanyService : ICompanyService
 {
     private readonly IMapper _mapper;

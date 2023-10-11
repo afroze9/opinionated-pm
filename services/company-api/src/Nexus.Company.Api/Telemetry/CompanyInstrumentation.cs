@@ -1,8 +1,11 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using Nexus.Common.Abstractions;
+using Nexus.Common.Attributes;
 
 namespace Nexus.CompanyAPI.Telemetry;
 
+[NexusService<ICompanyInstrumentation>(NexusServiceLifeTime.Singleton)]
 public class CompanyInstrumentation : ICompanyInstrumentation, IDisposable
 {
     private readonly Meter _meter;
@@ -27,7 +30,7 @@ public class CompanyInstrumentation : ICompanyInstrumentation, IDisposable
     }
 }
 
-public interface ICompanyInstrumentation
+public interface ICompanyInstrumentation : INexusService
 {
     ActivitySource ActivitySource { get; }
 
