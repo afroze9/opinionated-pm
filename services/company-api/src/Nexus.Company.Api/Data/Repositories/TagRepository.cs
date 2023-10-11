@@ -1,9 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Nexus.Common.Attributes;
 using Nexus.CompanyAPI.Entities;
 using Nexus.Persistence;
 
 namespace Nexus.CompanyAPI.Data.Repositories;
 
+[NexusService(NexusServiceLifeTime.Scoped)]
 public class TagRepository : EfNexusRepository<Tag>
 {
     public TagRepository(ApplicationDbContext context) : base(context)

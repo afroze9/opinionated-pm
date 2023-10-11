@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
 using LanguageExt.Common;
+using Nexus.Common.Attributes;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Data;
 using Nexus.CompanyAPI.Entities;
@@ -11,6 +12,7 @@ namespace Nexus.CompanyAPI.Services;
 /// <summary>
 ///     Service for managing tags.
 /// </summary>
+[NexusService<ITagService>(NexusServiceLifeTime.Scoped)]
 public class TagService : ITagService
 {
     private readonly UnitOfWork _unitOfWork;
