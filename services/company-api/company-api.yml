@@ -20,7 +20,7 @@ variables:
   project: 'services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj'
   testProject: 'services/company-api/tests/Nexus.Company.Api.UnitTests/Nexus.Company.Api.UnitTests.csproj'
   runSettingsFile: '.runsettings'
-
+  testSettings: 'services/company-api/tests/Nexus.Company.Api.UnitTests/.runsettings'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -53,7 +53,7 @@ steps:
   inputs:
     command: 'test'
     projects: '$(testProject)'
-    arguments: '-s $(runSettingsFile)'
+    arguments: '-s $(testSettings)'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
