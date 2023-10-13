@@ -19,18 +19,16 @@ variables:
   buildConfiguration: 'Release'
   project: 'services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj'
   testProject: 'services/company-api/tests/Nexus.Company.Api.UnitTests/Nexus.Company.Api.UnitTests.csproj'
-  testSettings: 'services/company-api/tests/Nexus.Company.Api.UnitTests/.runsettings'
-  coverletOutputPath: '$(Build.ArtifactStagingDirectory)/TestResults/Coverage/'
+  runSettingsFile: '.runsettings'
+
 
 steps:
-- task: NuGetToolInstaller@1
-  displayName: Install Nuget
-
 - task: DotNetCoreCLI@2
+  displayName: 'Restore Solution'
   inputs:
-    command: 'custom'
-    custom: 'tool'
-    arguments: 'install --global coverlet.console'
+    command: 'restore'
+    projects: $(project)
+    feedsToUse: 'select'
 
 - task: SonarCloudPrepare@1
   displayName: 'Prepare SonarCloud Analysis'
@@ -42,15 +40,6 @@ steps:
     projectName: 'Nexus Company API'
     extraProperties: |
       sonar.coverage.exclusions=**/*Migrations/*.cs
-#      sonar.coverageReportPaths=$(coverletOutputPath)/**/*.xml
-#      sonar.cs.vstest.reportsPaths=$(coverletOutputPath)/**/*.trx
-
-- task: DotNetCoreCLI@2
-  displayName: 'Restore Solution'
-  inputs:
-    command: 'restore'
-    projects: $(project)
-    feedsToUse: 'select'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build Company API'
@@ -59,36 +48,12 @@ steps:
     projects: $(project)
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
-- script: coverlet $(testProject) --target "dotnet" --targetargs "test --no-build" -f=opencover -o="$(coverletOutputPath)/coverage.xml"
-
-# - script: dotnet test $(testProject) --configuration $(buildConfiguration) --collect:"XPlat Code Coverage" --results-directory $(coverletOutputPath) --logger trx
-#   displayName: 'Run Tests with Code Coverage'
-
-# - task: DotNetCoreCLI@2
-#   inputs:
-#     command: 'test'
-#     projects: '$(testProject)'
-#     arguments: '/p:CollectCoverage=true /p:CoverletOutputFormat=\"cobertura,opencover\" --logger trx --results-directory $(coverletOutputPath)'
-#     publishTestResults: false
-
-- task: PublishTestResults@2
+- task: DotNetCoreCLI@2
+  displayName: 'Dotnet Test'
   inputs:
-    testResultsFormat: 'VSTest'
-    testResultsFiles: '**/*.trx'
-    searchFolder: '$(coverletOutputPath)'
-
-- task: PublishCodeCoverageResults@2
-  inputs:
-    summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
-
-# - task: PublishCodeCoverageResults@1
-#   displayName: 'Publish Code Coverage'
-#   inputs:
-#     codeCoverageTool: 'Cobertura'
-#     summaryFileLocation: '$(coverletOutputPath)/**/*.xml'
-#     reportDirectory: '$(coverletOutputPath)'
-#     mergeTestResults: true
-
+    command: 'test'
+    projects: '$(testProject)'
+    arguments: '-s $(runSettingsFile)'
 
 - task: SonarCloudAnalyze@1
   displayName: 'Run SonarCloud Analysis'
