@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
     <DataCollectionRunSettings>
         <DataCollectors>
@@ -8,10 +8,7 @@
                     <CodeCoverage>
                         <ModulePaths>
                             <Include>
-                                <ModulePath>Nexus.Company.Api</ModulePath>
-                            </Include>
-                            <Include>
-                                <ModulePath>.*tests.dll</ModulePath>
+                                <ModulePath>Nexus.Company.Api\.dll</ModulePath>
                             </Include>
                         </ModulePaths>
                     </CodeCoverage>
@@ -23,10 +20,7 @@
                     <CodeCoverage>
                         <ModulePaths>
                             <Include>
-                                <ModulePath>Nexus.Company.Api</ModulePath>
-                            </Include>
-                            <Include>
-                                <ModulePath>.*tests.dll</ModulePath>
+                                <ModulePath>Nexus.Company.Api\.dll</ModulePath>
                             </Include>
                         </ModulePaths>
                     </CodeCoverage>
