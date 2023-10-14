@@ -16,6 +16,7 @@
             </DataCollector>
             <DataCollector friendlyName="XPlat Code Coverage">
                 <Configuration>
+                    <Format>opencover</Format>
                     <ExcludeByFile>**/*Migrations/*.cs</ExcludeByFile>
                     <CodeCoverage>
                         <ModulePaths>
