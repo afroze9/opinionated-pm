@@ -28,6 +28,7 @@ steps:
     displayName: "Setup pnpm"
 
   - script: |
+      cd frontend-app/
       pnpm install
       pnpm run build
     displayName: "pnpm install and build"
