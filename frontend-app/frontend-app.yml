@@ -1,0 +1,32 @@
+﻿trigger:
+  branches:
+    include:
+      - master
+
+pr:
+  paths:
+    include:
+      - 'frontend-app/**'
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  pnpm_config_cache: $(Pipeline.Workspace)/.pnpm-store
+  
+steps:
+  - task: Cache@2
+    inputs:
+      key: 'pnpm | "$(Agent.OS)" | frontend-app/pnpm-lock.yaml'
+      path: $(pnpm_config_cache)
+    displayName: Cache pnpm
+
+  - script: |
+      curl -f https://get.pnpm.io/install.sh | sh
+      pnpm config set store-dir $(pnpm_config_cache)
+    displayName: 'Install pnpm'
+
+  - script: |
+      pnpm install
+      pnpm run build
+    displayName: "pnpm install and build"
