@@ -17,14 +17,15 @@ variables:
 steps:
   - task: Cache@2
     inputs:
-      key: 'pnpm | "$(Agent.OS)" | frontend-app/pnpm-lock.yaml'
+      key: 'pnpm | "$(Agent.OS)" | pnpm-lock.yaml'
       path: $(pnpm_config_cache)
     displayName: Cache pnpm
 
   - script: |
-      curl -f https://get.pnpm.io/install.sh | sh
+      corepack enable
+      corepack prepare pnpm@latest-8 --activate
       pnpm config set store-dir $(pnpm_config_cache)
-    displayName: 'Install pnpm'
+    displayName: "Setup pnpm"
 
   - script: |
       pnpm install
