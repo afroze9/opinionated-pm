@@ -5,7 +5,10 @@ trigger:
   paths:
     include:
       - 'services/company-api/**'
-
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'docker-compose.yml'
+      - 'docker-compose-local.yml'
 pr:
   paths:
     include:
