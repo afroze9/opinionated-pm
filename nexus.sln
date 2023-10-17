@@ -57,24 +57,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A137
 		setup-k8s.ps1 = setup-k8s.ps1
 	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{327048CC-60AA-4FEA-AE32-21E3E3C4243F}"
-	ProjectSection(SolutionItems) = preProject
-		.dockerignore = .dockerignore
-		.editorconfig = .editorconfig
-		.env = .env
-		.gitignore = .gitignore
-		global.json = global.json
-		Directory.Packages.props = Directory.Packages.props
-		prometheus.local.yml = prometheus.local.yml
-		nexus.config.json = nexus.config.json
-		docker-compose.yml = docker-compose.yml
-		docker-compose-local.yml = docker-compose-local.yml
-		prometheus.docker.yml = prometheus.docker.yml
-		Directory.Build.props = Directory.Build.props
-		appsettings.Global.json = appsettings.Global.json
-		consul.global.json = consul.global.json
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devcerts", "devcerts", "{A8046F0D-0FA5-47C9-8E1F-2E74D220779C}"
 	ProjectSection(SolutionItems) = preProject
 		devcerts\aspnetapp.pfx = devcerts\aspnetapp.pfx
@@ -159,7 +141,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitignore = .gitignore
 		.runsettings = .runsettings
 		appsettings.Global.json = appsettings.Global.json
-		azure-pipelines.yml = azure-pipelines.yml
 		consul.global.json = consul.global.json
 		Directory.Build.props = Directory.Build.props
 		Directory.Packages.props = Directory.Packages.props
