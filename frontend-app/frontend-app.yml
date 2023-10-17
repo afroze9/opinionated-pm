@@ -34,6 +34,7 @@ steps:
     displayName: "pnpm install and build"
 
   - script: |
+      cd frontend-app/
       npx playwright install 
     displayName: "Install playwright"
 
