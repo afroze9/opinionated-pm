@@ -69,4 +69,4 @@ steps:
     failOnIssues: true
     projectName: 'People API'
     organization: 'bd187a54-4038-4785-bd50-557c98a89868'
-    additionalArguments: '--project-name-prefix=$(packagesFile)'
+    additionalArguments: '--file=$(packagesFile)'
