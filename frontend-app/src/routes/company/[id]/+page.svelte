@@ -2,18 +2,16 @@
 	import { page } from '$app/stores';
 	import LayoutPage from '$lib/layouts/LayoutPage.svelte';
 	import { writable } from 'svelte/store';
-	import type {
-		CompanyResponse,
-		CompanySummaryResponseModel
-	} from '../../../services/CompanyApi';
+	import type { CompanyResponse } from '../../../services/CompanyApi';
 	import { onMount } from 'svelte';
 	import { form, field } from 'svelte-forms';
 	import { min, required } from 'svelte-forms/validators';
 	import companyApi from '../../../services/CompanyApi';
 	import ApiHelpers from '../../../services/ApiHelpers';
-	import { ProgressRadial, toastStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, getToastStore } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 
+	const toastStore = getToastStore();
 	let id: number = +$page.params.id;
 	let company = writable<CompanyResponse>();
 

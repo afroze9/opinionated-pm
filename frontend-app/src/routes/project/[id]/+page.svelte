@@ -3,14 +3,15 @@
 	import LayoutPage from '$lib/layouts/LayoutPage.svelte';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
-	import { form, field, style } from 'svelte-forms';
+	import { form, field } from 'svelte-forms';
 	import { min, required } from 'svelte-forms/validators';
 	import ApiHelpers from '../../../services/ApiHelpers';
-	import { ProgressRadial, toastStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, getToastStore } from '@skeletonlabs/skeleton';
 	import { goto } from '$app/navigation';
 	import projectApi, { Priority, type ProjectResponse } from '../../../services/ProjectApi';
 	import taskApi from '../../../services/TaskApi';
 
+	const toastStore = getToastStore();
 	let id: number = +$page.params.id;
 	let project = writable<ProjectResponse>();
 

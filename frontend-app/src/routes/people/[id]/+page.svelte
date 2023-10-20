@@ -6,9 +6,10 @@
 	import { form, field } from 'svelte-forms';
 	import { min, required, email as emailValidator } from 'svelte-forms/validators';
 	import ApiHelpers from '../../../services/ApiHelpers';
-	import { ProgressRadial, toastStore } from '@skeletonlabs/skeleton';
+	import { ProgressRadial, getToastStore } from '@skeletonlabs/skeleton';
 	import peopleApi, { type PersonResponseModel } from '../../../services/PeopleApi';
 
+	const toastStore = getToastStore();
 	let id: number = +$page.params.id;
 	let person = writable<PersonResponseModel>();
 

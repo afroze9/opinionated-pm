@@ -4,10 +4,11 @@
 	import { required, min, email as emailValidator } from 'svelte-forms/validators';
 	import ApiHelpers from '../../../services/ApiHelpers';
 	import { goto } from '$app/navigation';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 	import peopleApi from '../../../services/PeopleApi';
 	import { writable } from 'svelte/store';
 
+	const toastStore = getToastStore();
 	let isCallingApi = writable<boolean>(false);
 
 	const name = field('name', '', [required(), min(5)], {

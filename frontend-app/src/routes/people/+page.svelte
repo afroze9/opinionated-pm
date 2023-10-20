@@ -4,10 +4,11 @@
 	import { writable } from 'svelte/store';
 	import ApiHelpers from '../../services/ApiHelpers';
 	import Loader from '$lib/components/Loader.svelte';
-	import { toastStore, Avatar } from '@skeletonlabs/skeleton';
+	import { getToastStore, Avatar } from '@skeletonlabs/skeleton';
 	import peopleApi, { type PersonResponseModel } from '../../services/PeopleApi';
 	import Helpers from '../../lib/Helpers';
 
+	const toastStore = getToastStore();
 	let people = writable<PersonResponseModel[]>([]);
 	let isCallingApi = writable<boolean>(false);
 

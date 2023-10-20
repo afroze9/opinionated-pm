@@ -2,7 +2,6 @@
 	import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import { sidebarLinks } from '../layouts/links';
-	import { auth } from '../../auth/authService';
 	import { isAuthenticated } from '../../store';
 
 	// Reactive

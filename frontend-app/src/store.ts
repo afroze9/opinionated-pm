@@ -1,5 +1,5 @@
-import type { Auth0Client, User } from "@auth0/auth0-spa-js";
-import { writable } from "svelte/store";
+import type { Auth0Client, User } from '@auth0/auth0-spa-js';
+import { writable } from 'svelte/store';
 
 export const auth0Client = writable<Auth0Client>();
 export const isAuthenticated = writable<boolean>(false);

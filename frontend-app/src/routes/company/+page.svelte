@@ -5,8 +5,9 @@
 	import { writable } from 'svelte/store';
 	import ApiHelpers from '../../services/ApiHelpers';
 	import Loader from '$lib/components/Loader.svelte';
-	import { toastStore, type ToastSettings } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 
+	const toastStore = getToastStore();
 	let companies = writable<CompanySummaryResponseModel[]>([]);
 
 	async function deleteCompany(id: number) {

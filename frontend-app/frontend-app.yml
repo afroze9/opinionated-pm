@@ -13,7 +13,7 @@ pool:
 
 variables:
   pnpm_config_cache: $(Pipeline.Workspace)/.pnpm-store
-  
+
 steps:
   - task: Cache@2
     inputs:
@@ -25,21 +25,20 @@ steps:
       corepack enable
       corepack prepare pnpm@latest-8 --activate
       pnpm config set store-dir $(pnpm_config_cache)
-    displayName: "Setup pnpm"
+    displayName: 'Setup pnpm'
 
   - script: |
       cd frontend-app/
       pnpm install
       pnpm run build
-    displayName: "pnpm install and build"
+    displayName: 'pnpm install and build'
 
   - script: |
       cd frontend-app/
-      npx playwright install 
-    displayName: "Install playwright"
+      npx playwright install
+    displayName: 'Install playwright'
 
   - script: |
       cd frontend-app/
       pnpm run test
-    displayName: "pnpm test"
-    
+    displayName: 'pnpm test'

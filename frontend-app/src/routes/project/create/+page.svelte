@@ -4,13 +4,14 @@
 	import { required, min } from 'svelte-forms/validators';
 	import ApiHelpers from '../../../services/ApiHelpers';
 	import { goto } from '$app/navigation';
-	import projectApi, { Priority } from '../../../services/ProjectApi';
+	import projectApi from '../../../services/ProjectApi';
 	import { writable } from 'svelte/store';
 	import { onMount } from 'svelte';
 	import type { CompanySummaryResponseModel } from '../../../services/CompanyApi';
 	import companyApi from '../../../services/CompanyApi';
-	import { toastStore } from '@skeletonlabs/skeleton';
+	import { getToastStore } from '@skeletonlabs/skeleton';
 
+	const toastStore = getToastStore();
 	let companies = writable<CompanySummaryResponseModel[]>([]);
 
 	const projectName = field('projectName', '', [min(5)], {

@@ -1,14 +1,14 @@
 <script lang="ts">
-	import '@skeletonlabs/skeleton/themes/theme-skeleton.css';
-	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	import '../app.postcss';
 
-	import { AppShell, AppBar, LightSwitch, ProgressRadial, Toast } from '@skeletonlabs/skeleton';
+	import { AppShell, AppBar, LightSwitch, Toast, initializeStores } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
 	import Sidebar from '$lib/components/Sidebar.svelte';
 	import { auth } from '../auth/authService';
 	import { isAuthenticated, isLoading, user } from '../store';
 	import Loader from '$lib/components/Loader.svelte';
+
+	initializeStores();
 
 	let { login, logout, initClient } = auth;
 
@@ -33,7 +33,11 @@
 				<LightSwitch />
 				{#if $isAuthenticated}
 					<span>{$user?.name}</span>
-					<button class="btn btn-sm variant-filled" on:click={logout} on:keypress={logout}>
+					<button
+						class="btn btn-sm variant-filled"
+						on:click={logout}
+						on:keypress={logout}
+					>
 						Logout
 					</button>
 				{:else}
