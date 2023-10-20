@@ -1,0 +1,59 @@
+trigger:
+  branches:
+    include:
+      - master
+  paths:
+    include:
+      - 'services/people-api/**'
+      - 'Directory.Build.props'
+      - 'Directory.Packages.props'
+      - 'docker-compose.yml'
+      - 'docker-compose-local.yml'
+pr:
+  paths:
+    include:
+      - 'services/people-api/**'
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+  project: 'services/people-api/src/Nexus.People.Api/Nexus.People.Api.csproj'
+
+steps:
+- task: DotNetCoreCLI@2
+  displayName: 'Restore Solution'
+  inputs:
+    command: 'restore'
+    projects: $(project)
+    feedsToUse: 'select'
+
+- task: SonarCloudPrepare@1
+  displayName: 'Prepare SonarCloud Analysis'
+  inputs:
+    SonarCloud: 'SonarCloud'
+    organization: 'nexus-framework'
+    scannerMode: 'MSBuild'
+    projectKey: 'nexus-framework.nexus.people'
+    projectName: 'Nexus People API'
+    extraProperties: |
+      sonar.coverage.exclusions=**/*Migrations/*.cs
+
+- task: DotNetCoreCLI@2
+  displayName: 'Build People API'
+  inputs:
+    command: 'build'
+    projects: $(project)
+    arguments: '--configuration $(buildConfiguration) --no-restore'
+
+- task: SonarCloudAnalyze@1
+  displayName: 'Run SonarCloud Analysis'
+  inputs:
+    jdkversion: 'JAVA_HOME_17_X64'
+
+- task: SonarCloudPublish@1
+  displayName: 'Publish SonarCloud Results'
+  inputs:
+    pollingTimeoutSec: '300'
