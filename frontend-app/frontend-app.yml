@@ -53,3 +53,13 @@ steps:
       pnpm run test:e2e
     displayName: "Run E2E Tests"
 
+  - task: SnykSecurityScan@1
+    inputs:
+      serviceConnectionEndpoint: 'Snyk'
+      testType: 'app'
+      targetFile: 'frontend-app/package.json'
+      severityThreshold: 'high'
+      monitorWhen: 'always'
+      failOnIssues: true
+      projectName: 'FE Test'
+      organization: 'bd187a54-4038-4785-bd50-557c98a89868'
