@@ -63,9 +63,9 @@ steps:
   inputs:
     serviceConnectionEndpoint: 'Snyk'
     testType: 'app'
-    targetFile: $(project)
     severityThreshold: 'high'
     monitorWhen: 'always'
     failOnIssues: true
     projectName: 'People API'
     organization: 'bd187a54-4038-4785-bd50-557c98a89868'
+    additionalArguments: '--project-name-prefix=$(project)'
