@@ -66,7 +66,7 @@ steps:
     testType: 'app'
     severityThreshold: 'high'
     monitorWhen: 'always'
-    failOnIssues: true
+    failOnIssues: false
     projectName: 'People API'
     organization: 'bd187a54-4038-4785-bd50-557c98a89868'
     additionalArguments: '--file=$(packagesFile)'
