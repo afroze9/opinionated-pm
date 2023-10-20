@@ -6,10 +6,10 @@ trigger:
 pr:
   paths:
     include:
-      - 'frontend-app/**'
+      - "frontend-app/**"
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: "ubuntu-latest"
 
 variables:
   pnpm_config_cache: $(Pipeline.Workspace)/.pnpm-store
@@ -25,20 +25,25 @@ steps:
       corepack enable
       corepack prepare pnpm@latest-8 --activate
       pnpm config set store-dir $(pnpm_config_cache)
-    displayName: 'Setup pnpm'
+    displayName: "Setup pnpm"
 
   - script: |
       cd frontend-app/
       pnpm install
       pnpm run build
-    displayName: 'pnpm install and build'
+    displayName: "pnpm install and build"
 
   - script: |
       cd frontend-app/
       npx playwright install
-    displayName: 'Install playwright'
+    displayName: "Install playwright"
 
   - script: |
       cd frontend-app/
-      pnpm run test
-    displayName: 'pnpm test'
+      pnpm run test:unit
+    displayName: "Run Unit Tests"
+
+  - script: |
+      cd frontend-app/
+      pnpm run test:e2e
+    displayName: "Run E2E Tests"
