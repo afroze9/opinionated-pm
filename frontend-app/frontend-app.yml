@@ -54,6 +54,7 @@ steps:
     displayName: "Run E2E Tests"
 
   - task: SnykSecurityScan@1
+    displayName: 'Snyk Security Scan'
     inputs:
       serviceConnectionEndpoint: 'Snyk'
       testType: 'app'
@@ -61,5 +62,5 @@ steps:
       severityThreshold: 'high'
       monitorWhen: 'always'
       failOnIssues: true
-      projectName: 'FE Test'
+      projectName: 'Frontend App'
       organization: 'bd187a54-4038-4785-bd50-557c98a89868'
