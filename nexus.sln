@@ -139,7 +139,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 		.env = .env
 		.gitignore = .gitignore
-		.runsettings = .runsettings
 		appsettings.Global.json = appsettings.Global.json
 		consul.global.json = consul.global.json
 		Directory.Build.props = Directory.Build.props
@@ -152,7 +151,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		prometheus.local.yml = prometheus.local.yml
 		README.md = README.md
 		setup-k8s.ps1 = setup-k8s.ps1
-		.runsettings = .runsettings
 	EndProjectSection
 EndProject
 Global
