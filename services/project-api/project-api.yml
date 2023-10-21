@@ -25,6 +25,7 @@ variables:
   testProject: 'services/project-api/tests/Nexus.Project.Api.UnitTests/Nexus.Project.Api.UnitTests.csproj'
   runSettingsFile: '.runsettings'
   testSettings: 'services/project-api/tests/Nexus.Project.Api.UnitTests/.runsettings'
+  packagesFile: 'services/project-api/src/Nexus.Project.Api/obj/project.assets.json'
 
 steps:
 - task: DotNetCoreCLI@2
@@ -68,3 +69,15 @@ steps:
   displayName: 'Publish SonarCloud Results'
   inputs:
     pollingTimeoutSec: '300'
+
+- task: SnykSecurityScan@1
+  displayName: 'Snyk Security Scan'
+  inputs:
+    serviceConnectionEndpoint: 'Snyk'
+    testType: 'app'
+    severityThreshold: 'high'
+    monitorWhen: 'always'
+    failOnIssues: false
+    projectName: 'Project API'
+    organization: 'bd187a54-4038-4785-bd50-557c98a89868'
+    additionalArguments: '--file=$(packagesFile)'
