@@ -6,6 +6,7 @@ using Nexus.Common.Attributes;
 namespace Nexus.CompanyAPI.Telemetry;
 
 [NexusService<ICompanyInstrumentation>(NexusServiceLifeTime.Singleton)]
+[NexusMeter("CompanyApi.Company")]
 public class CompanyInstrumentation : ICompanyInstrumentation, IDisposable
 {
     private readonly Meter _meter;

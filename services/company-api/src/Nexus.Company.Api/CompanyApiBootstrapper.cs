@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 using Nexus.CompanyAPI.Abstractions;
 using Nexus.CompanyAPI.Data;
+using Nexus.CompanyAPI.Mapping;
 using Nexus.CompanyAPI.Services;
-using Nexus.CompanyAPI.Telemetry;
 using Nexus.Framework.Web;
 namespace Nexus.CompanyAPI;
 
@@ -15,9 +16,11 @@ public class CompanyApiBootstrapper : NexusServiceBootstrapper
     protected override void AddServices()
     {
         base.AddServices();
+        
+        // Libraries
+        AppBuilder.Services.AddAutoMapper(typeof(CompanyProfile));
+        AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
-        AppBuilder.Services.AddNexusTelemetry(AppBuilder.Configuration);
-        AppBuilder.Services.AddNexusMeters("company-api", new[] { CompanyInstrumentation.MeterName });
         AppBuilder.Services.AddNexusTypedClient<IProjectService, ProjectService>(AppBuilder.Configuration, "projects");
         AppBuilder.Services.AddNexusPersistence<ApplicationDbContext>(AppBuilder.Configuration);
     }
