@@ -1,4 +1,5 @@
 ﻿using LanguageExt.Common;
+using Nexus.Common.Abstractions;
 using Nexus.CompanyAPI.Entities;
 
 namespace Nexus.CompanyAPI.Abstractions;
@@ -6,7 +7,7 @@ namespace Nexus.CompanyAPI.Abstractions;
 /// <summary>
 /// Provides operations for creating and retrieving tags.
 /// </summary>
-public interface ITagService
+public interface ITagService : INexusService
 {
     /// <summary>
     ///     Creates a new tag with the specified name.

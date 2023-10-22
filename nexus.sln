@@ -52,11 +52,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{0D52296F
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Project.Api.UnitTests", "services\project-api\tests\Nexus.Project.Api.UnitTests\Nexus.Project.Api.UnitTests.csproj", "{5FECAAB2-7A03-4145-81A2-0FBA398CD2EA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{A13717A5-5107-4A86-898A-ABD223ACB0D6}"
-	ProjectSection(SolutionItems) = preProject
-		setup-k8s.ps1 = setup-k8s.ps1
-	EndProjectSection
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devcerts", "devcerts", "{A8046F0D-0FA5-47C9-8E1F-2E74D220779C}"
 	ProjectSection(SolutionItems) = preProject
 		devcerts\aspnetapp.pfx = devcerts\aspnetapp.pfx
@@ -151,6 +146,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		prometheus.docker.yml = prometheus.docker.yml
 		prometheus.local.yml = prometheus.local.yml
 		README.md = README.md
+		setup-k8s.ps1 = setup-k8s.ps1
 	EndProjectSection
 EndProject
 Global

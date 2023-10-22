@@ -1,4 +1,5 @@
 ﻿using LanguageExt.Common;
+using Nexus.Common.Abstractions;
 using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Entities;
 
@@ -7,7 +8,7 @@ namespace Nexus.CompanyAPI.Abstractions;
 /// <summary>
 ///     Provides methods for managing company information.
 /// </summary>
-public interface ICompanyService
+public interface ICompanyService : INexusService
 {
     /// <summary>
     ///     Retrieves a list of all companies asynchronously.
