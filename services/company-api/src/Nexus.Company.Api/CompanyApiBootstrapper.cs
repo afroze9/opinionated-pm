@@ -21,7 +21,6 @@ public class CompanyApiBootstrapper : NexusServiceBootstrapper
         AppBuilder.Services.AddAutoMapper(typeof(CompanyProfile));
         AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
 
-        AppBuilder.Services.AddNexusTypedClient<IProjectService, ProjectService>(AppBuilder.Configuration, "projects");
         AppBuilder.Services.AddNexusPersistence<ApplicationDbContext>(AppBuilder.Configuration);
     }
 

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using AutoMapper;
+using Nexus.Common.Attributes;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Extensions.Http;
@@ -13,6 +14,7 @@ namespace Nexus.CompanyAPI.Services;
 /// <summary>
 ///     Service for managing projects.
 /// </summary>
+[NexusTypedClient<IProjectService>("projects")]
 public class ProjectService : IProjectService
 {
     private readonly HttpClient _client;
