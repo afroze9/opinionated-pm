@@ -1,10 +1,11 @@
 using LanguageExt.Common;
+using Nexus.Common.Abstractions;
 using Nexus.PeopleAPI.DTO;
 using Nexus.PeopleAPI.Entities;
 
 namespace Nexus.PeopleAPI.Abstractions;
 
-public interface IPeopleService
+public interface IPeopleService : INexusService
 {
     Task<List<PersonDto>> GetAllAsync();
 

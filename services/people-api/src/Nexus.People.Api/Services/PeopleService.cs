@@ -3,6 +3,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using LanguageExt.Common;
 using Microsoft.AspNetCore.Authorization;
+using Nexus.Common.Attributes;
 using Nexus.PeopleAPI.Abstractions;
 using Nexus.PeopleAPI.Data;
 using Nexus.PeopleAPI.DTO;
@@ -11,6 +12,7 @@ using Nexus.PeopleAPI.Exceptions;
 
 namespace Nexus.PeopleAPI.Services;
 
+[NexusService<IPeopleService>(NexusServiceLifeTime.Scoped)]
 public class PeopleService : IPeopleService
 {
     private readonly IIdentityService _identityService;

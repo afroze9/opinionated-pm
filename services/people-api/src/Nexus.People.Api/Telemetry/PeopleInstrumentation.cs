@@ -1,8 +1,12 @@
 using System.Diagnostics;
 using System.Diagnostics.Metrics;
+using Nexus.Common.Abstractions;
+using Nexus.Common.Attributes;
 
 namespace Nexus.PeopleAPI.Telemetry;
 
+[NexusService<IPeopleInstrumentation>(NexusServiceLifeTime.Singleton)]
+[NexusMeter(MeterName)]
 public class PeopleInstrumentation : IPeopleInstrumentation, IDisposable
 {
     private readonly Meter _meter;
@@ -30,7 +34,7 @@ public class PeopleInstrumentation : IPeopleInstrumentation, IDisposable
     }
 }
 
-public interface IPeopleInstrumentation
+public interface IPeopleInstrumentation : INexusService
 {
     ActivitySource ActivitySource { get; }
 

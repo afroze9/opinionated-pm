@@ -1,9 +1,11 @@
 using Microsoft.EntityFrameworkCore;
+using Nexus.Common.Attributes;
 using Nexus.PeopleAPI.Entities;
 using Nexus.Persistence;
 
 namespace Nexus.PeopleAPI.Data.Repositories;
 
+[NexusService(NexusServiceLifeTime.Scoped)]
 public class PeopleRepository : EfNexusRepository<Person>
 {
     public PeopleRepository(ApplicationDbContext context) : base(context)
