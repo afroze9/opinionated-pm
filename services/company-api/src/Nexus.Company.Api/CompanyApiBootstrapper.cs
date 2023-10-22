@@ -20,8 +20,6 @@ public class CompanyApiBootstrapper : NexusServiceBootstrapper
         // Libraries
         AppBuilder.Services.AddAutoMapper(typeof(CompanyProfile));
         AppBuilder.Services.AddValidatorsFromAssemblyContaining(typeof(Program));
-
-        AppBuilder.Services.AddNexusPersistence<ApplicationDbContext>(AppBuilder.Configuration);
     }
 
     protected override void ConfigureMiddleware()
