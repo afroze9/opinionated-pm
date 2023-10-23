@@ -1,7 +1,7 @@
 <Project>
   <!-- Variables -->
   <PropertyGroup>
-    <NexusLibraryVersion>0.16.0</NexusLibraryVersion>
+    <NexusLibraryVersion>0.17.0</NexusLibraryVersion>
   </PropertyGroup>
   <!-- Package Management Properties-->
   <PropertyGroup>
