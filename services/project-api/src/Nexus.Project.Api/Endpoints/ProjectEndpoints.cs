@@ -2,6 +2,7 @@
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OutputCaching;
 using Nexus.ProjectAPI.Data;
 using Nexus.ProjectAPI.Entities;
 using Nexus.ProjectAPI.Models;
@@ -12,37 +13,40 @@ namespace Nexus.ProjectAPI.Endpoints;
 
 public static class ProjectEndpoints
 {
+    private const string Tag = "Project";
+        
     public static void AddProjectEndpoints(this WebApplication app)
     {
         app.MapGet("api/v1/Project", GetAllProjects)
             .Produces<List<ProjectResponseModel>>()
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization("read:project")
-            .WithTags("Project");
+            .WithTags(Tag)
+            .CacheOutput(x => x.SetVaryByQuery("companyId").Expire(TimeSpan.FromSeconds(15)).Tag("Projects"));
 
         app.MapGet("api/v1/Project/{id}", GetProjectById)
             .Produces<ProjectResponseModel>()
             .Produces(StatusCodes.Status404NotFound)
             .RequireAuthorization("read:project")
-            .WithTags("Project");
+            .WithTags(Tag);
 
         app.MapPost("api/v1/Project", CreateProject)
             .Produces<ActionResult<ProjectResponseModel>>(StatusCodes.Status201Created)
             .Produces<ActionResult<List<ValidationFailure>>>(StatusCodes.Status400BadRequest)
             .RequireAuthorization("write:project")
-            .WithTags("Project");
+            .WithTags(Tag);
 
         app.MapPut("api/v1/Project/{id}", UpdateProject)
             .Produces<ActionResult<ProjectResponseModel>>()
             .Produces<IActionResult>(StatusCodes.Status404NotFound)
             .Produces<ActionResult<List<ValidationFailure>>>(StatusCodes.Status400BadRequest)
             .RequireAuthorization("update:project")
-            .WithTags("Project");
+            .WithTags(Tag);
 
         app.MapDelete("api/v1/Project/{id}", DeleteProject)
             .Produces<IActionResult>(StatusCodes.Status204NoContent)
             .RequireAuthorization("delete:project")
-            .WithTags("Project");
+            .WithTags(Tag);
     }
 
     internal static async Task<IResult> GetAllProjects(UnitOfWork unitOfWork, IMapper mapper, int? companyId)
@@ -104,9 +108,11 @@ public static class ProjectEndpoints
         UnitOfWork unitOfWork,
         IMapper mapper,
         IValidator<ProjectRequestModel> validator,
-        ProjectRequestModel req)
+        ProjectRequestModel req,
+        IOutputCacheStore cache,
+        CancellationToken cancellationToken)
     {
-        ValidationResult validationResult = await validator.ValidateAsync(req);
+        ValidationResult validationResult = await validator.ValidateAsync(req, cancellationToken);
 
         if (!validationResult.IsValid)
         {
@@ -118,6 +124,7 @@ public static class ProjectEndpoints
         unitOfWork.Projects.Add(project);
 
         unitOfWork.Commit();
+        await cache.EvictByTagAsync("Projects", cancellationToken);
         return Results.Created($"api/v1/Project/{project.Id}", mapper.Map<ProjectResponseModel>(project));
     }
 }

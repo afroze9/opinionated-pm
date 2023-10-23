@@ -9,9 +9,16 @@ public class ProjectApiBootstrapper : NexusServiceBootstrapper
     {
     }
 
+    protected override void AddServices()
+    {
+        base.AddServices();
+        AppBuilder.Services.AddOutputCache();
+    }
+
     protected override void ConfigureMiddleware()
     {
         base.ConfigureMiddleware();
+        App.UseOutputCache();
         App.AddProjectEndpoints();
         App.AddTodoEndpoints();
     }
