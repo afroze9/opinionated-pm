@@ -26,3 +26,11 @@ scrape_configs:
   scheme: https
   tls_config:
     insecure_skip_verify: true
+- job_name: company-db
+  static_configs:
+    - targets:
+      - company-postgres-exporter:9187
+- job_name: project-db
+  static_configs:
+    - targets:
+      - project-postgres-exporter:9187

@@ -143,6 +143,26 @@ services:
     networks:
       - logs
 
+  company-postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    ports:
+      - 9187:9187
+    environment:
+      - DATA_SOURCE_NAME=user=developer password=dev123 host=company-db port=5438 dbname=project_management_company sslmode=disable
+    networks:
+      - company-db
+      - tracing
+  
+  project-postgres-exporter:
+    image: quay.io/prometheuscommunity/postgres-exporter
+    ports:
+      - 9188:9187
+    environment:
+      - DATA_SOURCE_NAME=user=developer password=dev123 host=project-db port=5439 dbname=project_management_project sslmode=disable
+    networks:
+      - project-db
+      - tracing
+    
   es01:
     depends_on:
       es-setup:
