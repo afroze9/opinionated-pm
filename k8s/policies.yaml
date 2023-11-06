@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consul-acl-policies
+  namespace: consul
+data:
+  services-read-policy.hcl: |
+    agent_prefix "" {
+      policy = "read"
+    }
+    node_prefix "" {
+      policy = "read"
+    }
+
+  kv-read-write-policy.hcl: |
+    key_prefix "" {
+      policy = "read"
+    }
+    key_prefix "" {
+      policy = "write"
+    }
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: apply-consul-acl-policies
+  namespace: consul
+spec:
+  template:
+    spec:
+      containers:
+        - name: apply-policies
+          image: "hashicorp/consul:latest"
+          command: ["consul", "acl", "policy", "create", "-name", "services-read", "-namespace", "consul", "-rules", "/consul/config/services-read-policy.hcl"]
+          volumeMounts:
+            - name: acl-policies
+              mountPath: /consul/config
+      volumes:
+        - name: acl-policies
+          configMap:
+            name: consul-acl-policies
+      restartPolicy: OnFailure
+  backoffLimit: 1

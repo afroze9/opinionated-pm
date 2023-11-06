@@ -1,0 +1,202 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: consul
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: consul-secret
+  namespace: consul
+data:
+  consul-gossip-encryption-key: "Q3ZWOEJIN2o3Um05Qkw3T1ZGdFk4YS9Jd3UwLzgydmd0TVd6V2hIalJORT0="
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: consul-config
+  namespace: consul
+data:
+  server.json: |
+    {
+      "bind_addr": "0.0.0.0",
+      "client_addr": "0.0.0.0",
+      "disable_host_node_id": true,
+      "data_dir": "/consul/data",
+      "log_level": "INFO",
+      "datacenter": "us-west-2",
+      "domain": "cluster.local",
+      "ports": {
+        "http": 8500
+      },
+      "retry_join": [
+        "provider=k8s namespace=consul label_selector=\"app=consul,component=server\" self=false"
+      ],
+      "server": true,
+      "telemetry": {
+        "prometheus_retention_time": "5m"
+      },
+      "ui": true,
+      "acl": {
+        "enabled": true,
+        "default_policy": "deny",
+        "down_policy": "extend-cache",
+        "tokens": {
+          "initial_management": "dev123",
+          "agent": "dev123"
+        }
+      }
+    }
+    
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: consul
+  labels:
+    app: consul
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+    verbs:
+      - get
+      - list
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: consul
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: consul
+subjects:
+  - kind: ServiceAccount
+    name: consul
+    namespace: consul
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: consul
+  namespace: consul
+  labels:
+    app: consul
+
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: consul
+  namespace: consul
+spec:
+  selector:
+    matchLabels:
+      app: consul
+      component: server
+
+  serviceName: consul
+  podManagementPolicy: Parallel
+  replicas: 3
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+
+  template:
+    metadata:
+      labels:
+        app: consul
+        component: server
+      annotations:
+        consul.hashicorp.com/connect-inject: "false"
+
+    spec:
+      serviceAccountName: consul
+      terminationGracePeriodSeconds: 10
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: consul
+          image: "hashicorp/consul:latest"
+          args:
+            - "agent"
+            - "-advertise=$(POD_IP)"
+            - "-bootstrap-expect=3"
+            - "-config-file=/etc/consul/config/server.json"
+            - "-encrypt=$(GOSSIP_ENCRYPTION_KEY)"
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: GOSSIP_ENCRYPTION_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: consul-secret
+                  key: consul-gossip-encryption-key
+          volumeMounts:
+            - name: data
+              mountPath: /consul/data
+            - name: config
+              mountPath: /etc/consul/config
+          lifecycle:
+            preStop:
+              exec:
+                command:
+                  - /bin/sh
+                  - -c
+                  - consul leave
+          ports:
+            - containerPort: 8500
+              name: ui-port
+            - containerPort: 8400
+              name: alt-port
+            - containerPort: 53
+              name: udp-port
+            - containerPort: 8080
+              name: http-port
+            - containerPort: 8301
+              name: serflan
+            - containerPort: 8302
+              name: serfwan
+            - containerPort: 8600
+              name: consuldns
+            - containerPort: 8300
+              name: server
+      volumes:
+        - name: config
+          configMap:
+            name: consul-config
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: consul
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 3Gi
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: consul
+  namespace: consul
+spec:
+  type: LoadBalancer
+  selector:
+    app: consul
+  ports:
+    - protocol: TCP
+      port: 8500
+      targetPort: 8500
+
+---
+
