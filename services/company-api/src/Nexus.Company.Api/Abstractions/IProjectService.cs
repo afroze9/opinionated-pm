@@ -12,5 +12,5 @@ public interface IProjectService
     /// </summary>
     /// <param name="companyId">The ID of the company to get projects for.</param>
     /// <returns>A list of projects for the specified company.</returns>
-    Task<List<ProjectSummaryDto>> GetProjectsByCompanyIdAsync(int companyId);
+    Task<List<ProjectSummaryDto>> GetProjectsByCompanyIdAsync(int companyId, CancellationToken cancellationToken = default);
 }
