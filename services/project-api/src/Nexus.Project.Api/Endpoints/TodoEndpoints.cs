@@ -58,7 +58,7 @@ public static class TodoEndpoints
 
     internal static async Task<IResult> GetTodoById(int id, UnitOfWork unitOfWork, IMapper mapper)
     {
-        var todoItem = await unitOfWork.Todos.GetByIdAsync(id);
+        TodoItem? todoItem = await unitOfWork.Todos.GetByIdAsync(id);
         return todoItem == null ? Results.NotFound() : Results.Ok(mapper.Map<TodoItemResponseModel>(todoItem));
     }
 

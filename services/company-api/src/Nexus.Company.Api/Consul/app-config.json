@@ -30,5 +30,11 @@
   "TelemetrySettings": {
     "ServiceName": "company-api",
     "ServiceVersion": "v1"
+  },
+  "Resilience": {
+    "FailureRatio": 0.1,
+    "MinimumThroughput": 10,
+    "SamplingDurationSeconds": 10,
+    "BreakDurationSeconds": 30
   }
 }

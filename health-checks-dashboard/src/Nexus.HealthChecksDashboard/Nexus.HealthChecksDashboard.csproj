@@ -7,7 +7,6 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
     <PackageReference Include="Nexus.Framework.Web" />
-    <PackageReference Include="Polly.Extensions.Http" />
   </ItemGroup>
   
   <ItemGroup>

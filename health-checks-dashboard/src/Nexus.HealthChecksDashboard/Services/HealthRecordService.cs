@@ -46,7 +46,7 @@ public class HealthRecordService : IHealthRecordService
 
             if (serviceRecord != null)
             {
-                ServiceHealthRecordModel? serviceHcModel = new ServiceHealthRecordModel
+                ServiceHealthRecordModel? serviceHcModel = new()
                 {
                     CreatedAt = serviceRecord.CreatedAt,
                     ClientName = client.Name,

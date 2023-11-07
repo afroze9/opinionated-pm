@@ -85,7 +85,7 @@ public class HealthChecksService : IHealthChecksService
         _logger.LogInformation("Checking health for {ClientName} instance {InstanceNumber}...", instanceNumber,
             clientName);
 
-        Uri hcUri = new Uri(baseUri, "actuator/health");
+        Uri hcUri = new (baseUri, "actuator/health");
 
         try
         {

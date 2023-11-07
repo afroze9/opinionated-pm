@@ -13,7 +13,7 @@
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" />
         <PackageReference Include="Nexus.Framework.Web" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-        <PackageReference Include="Polly.Extensions.Http" />
+        <PackageReference Include="Polly.Extensions" />
     </ItemGroup>
     
     <ItemGroup>

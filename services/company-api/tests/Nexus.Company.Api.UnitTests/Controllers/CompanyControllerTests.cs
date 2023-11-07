@@ -151,7 +151,7 @@ public class CompanyControllerTests
         MapperConfiguration config = new (cfg => { cfg.AddProfile<CompanyProfile>(); });
         IMapper mapper = config.CreateMapper();
 
-        var mapperMock = Substitute.For<IMapper>();
+        IMapper mapperMock = Substitute.For<IMapper>();
         mapperMock.Map<CompanySummaryDto>(model).Returns(companySummaryDto);
 
         _companyServiceMock.CreateAsync(Arg.Any<Company>())

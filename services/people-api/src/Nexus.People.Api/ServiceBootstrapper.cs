@@ -24,7 +24,7 @@ public class ServiceBootstrapper : NexusServiceBootstrapper
             .AddHttpClient("auth0_token")
             .ConfigureHttpClient(httpClientOptions =>
             {
-                Auth0ManagementOptions options = new Auth0ManagementOptions();//TODO
+                Auth0ManagementOptions options = new ();//TODO
                 AppBuilder.Configuration.GetSection("Auth0Management").Bind(options);
 
                 httpClientOptions.BaseAddress = new Uri($"https://{options.Domain}");
@@ -34,7 +34,7 @@ public class ServiceBootstrapper : NexusServiceBootstrapper
         AppBuilder.Services.AddQuartz(options =>
         {
             options.UseMicrosoftDependencyInjectionJobFactory();
-            JobKey syncJobKey = new JobKey(nameof(PeopleSyncJob));
+            JobKey syncJobKey = new (nameof(PeopleSyncJob));
             options.AddJob<PeopleSyncJob>(o => o.WithIdentity(syncJobKey).DisallowConcurrentExecution());
             options.AddTrigger(triggerOptions =>
                 triggerOptions

@@ -1,4 +1,6 @@
-﻿using Nexus.Framework.Web;
+﻿using Nexus.CompanyAPI.Resilience;
+using Nexus.Framework.Web;
+
 namespace Nexus.CompanyAPI;
 
 public class CompanyApiBootstrapper : NexusServiceBootstrapper
@@ -7,6 +9,12 @@ public class CompanyApiBootstrapper : NexusServiceBootstrapper
     {
     }
 
+    protected override void AddServices()
+    {
+        base.AddServices();
+        AppBuilder.Services.AddResilience(AppBuilder.Configuration);
+    }
+    
     protected override void ConfigureMiddleware()
     {
         base.ConfigureMiddleware();

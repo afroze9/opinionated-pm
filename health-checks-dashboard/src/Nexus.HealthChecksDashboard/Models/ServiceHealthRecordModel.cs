@@ -5,7 +5,7 @@ public class ServiceHealthRecordModel
     public string ClientName { get; set; } = string.Empty;
     public DateTime CreatedAt { get; set; }
 
-    public List<InstanceHealthRecordModel> InstanceHealthRecords { get; set; } = new List<InstanceHealthRecordModel>();
+    public List<InstanceHealthRecordModel> InstanceHealthRecords { get; set; } = new ();
     public bool Expanded { get; set; }
 
     public string Status

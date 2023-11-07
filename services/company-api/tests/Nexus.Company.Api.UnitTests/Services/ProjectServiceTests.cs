@@ -7,6 +7,8 @@ using Nexus.CompanyAPI.DTO;
 using Nexus.CompanyAPI.Services;
 using Nexus.SharedKernel.Contracts.Project;
 using NSubstitute;
+using Polly;
+using Polly.Registry;
 
 namespace Nexus.CompanyAPI.UnitTests.Services;
 
@@ -17,6 +19,7 @@ public class ProjectServiceTests
     private readonly IMapper _mapper;
     private readonly HttpMessageHandler _mockHandler;
     private readonly ILogger<ProjectService> _logger;
+    private readonly ResiliencePipelineProvider<string> _resiliencePipelineProvider;
 
     public ProjectServiceTests()
     {
@@ -26,6 +29,7 @@ public class ProjectServiceTests
         _mockHandler = Substitute.For<HttpMessageHandler>();
         _client = new HttpClient(_mockHandler);
         _logger = Substitute.For<ILogger<ProjectService>>();
+        _resiliencePipelineProvider = Substitute.For<ResiliencePipelineProvider<string>>();
     }
 
     [Fact]
@@ -67,7 +71,9 @@ public class ProjectServiceTests
 #pragma warning restore NS1004
 #pragma warning restore NS1000
         
-        ProjectService service = new (_client, _mapper, _logger);
+        _resiliencePipelineProvider.GetPipeline<HttpResponseMessage>(Arg.Any<string>())
+            .Returns(ResiliencePipeline<HttpResponseMessage>.Empty);
+        ProjectService service = new (_client, _mapper, _logger, _resiliencePipelineProvider);
 
         // Act
         List<ProjectSummaryDto> actualProjects = await service.GetProjectsByCompanyIdAsync(companyId);
@@ -82,8 +88,26 @@ public class ProjectServiceTests
         // Arrange
         int companyId = 1;
     
-        ProjectService service = new (_client, _mapper, _logger);
-    
+        _resiliencePipelineProvider.GetPipeline<HttpResponseMessage>(Arg.Any<string>())
+            .Returns(ResiliencePipeline<HttpResponseMessage>.Empty);
+        
+        Task<HttpResponseMessage> response = Task.FromResult<HttpResponseMessage>(new (HttpStatusCode.BadRequest));
+        
+        MethodInfo? method = _mockHandler
+            .GetType()
+            .GetMethod("SendAsync", BindingFlags.NonPublic | BindingFlags.Instance);
+        
+        Assert.NotNull(method);
+        
+#pragma warning disable NS1000
+#pragma warning disable NS1004
+        method.Invoke(_mockHandler, new object?[] { Arg.Any<HttpRequestMessage>(), Arg.Any<CancellationToken>() })
+            .Returns(response);
+#pragma warning restore NS1004
+#pragma warning restore NS1000
+        
+        ProjectService service = new (_client, _mapper, _logger, _resiliencePipelineProvider);
+        
         // Act
         List<ProjectSummaryDto> actualProjects = await service.GetProjectsByCompanyIdAsync(companyId);
     

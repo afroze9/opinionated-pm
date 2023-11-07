@@ -43,7 +43,7 @@ public class ApplicationDbContext : AuditableDbContext
     /// </summary>
     public DbSet<Tag> Tags => Set<Tag>();
     
-    private List<Company> _companies = new List<Company>()
+    private List<Company> _companies = new ()
     {
         new Company("Undev9")
         {
@@ -55,7 +55,7 @@ public class ApplicationDbContext : AuditableDbContext
         },
     };
 
-    private List<Tag> _tags = new List<Tag>()
+    private List<Tag> _tags = new ()
     {
         new Tag("software") { Id = 1 },
         new Tag("development") { Id = 2 },

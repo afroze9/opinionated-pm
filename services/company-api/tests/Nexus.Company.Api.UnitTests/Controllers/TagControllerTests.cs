@@ -101,7 +101,7 @@ public class TagControllerTests
         _tagServiceMock.CreateAsync(Arg.Any<string>())
             .Returns(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
             {
-                new ValidationFailure("Name", "The Name field is required."),
+                new ("Name", "The Name field is required."),
             })));
 
         // Act
@@ -127,7 +127,7 @@ public class TagControllerTests
         _tagServiceMock.CreateAsync(Arg.Any<string>())
             .Returns(new Result<Tag>(new ValidationException(new List<ValidationFailure>()
             {
-                new ValidationFailure("Name", "The Name field is required."),
+                new ("Name", "The Name field is required."),
             })));
 
         // Act

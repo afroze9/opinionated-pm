@@ -15,7 +15,6 @@
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" />
         <PackageReference Include="Nexus.Framework.Web" />
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
-        <PackageReference Include="Polly.Extensions.Http" />
         <PackageReference Include="Quartz.AspNetCore" />
     </ItemGroup>
 
