@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: company-api-acl-policies
+  name: health-checks-dashboard-acl-policies
   namespace: consul
 data:
   kv-health-checks-dashboard.hcl: |
@@ -10,7 +10,7 @@ data:
       policy = "write"
       policy = "list"
     }
-    
+
     key_prefix "nexus-service/" {
       policy = "read"
       policy = "write"
@@ -22,14 +22,14 @@ data:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: apply-consul-acl-policies
+  name: apply-health-checks-dashboard-policy
   namespace: consul
 spec:
   template:
     spec:
       containers:
         - name: apply-health-checks-dashboard-policy
-          image: badouralix/curl-jq
+          image: afroze9/nexus-job
           command: ["/bin/sh", "-c"]
           args:
             - |
@@ -39,8 +39,26 @@ spec:
               POLICY_NAME="kv-health-checks-dashboard"
               DESCRIPTION="Policy for health-checks-dashboard key prefix"
               HCL_RULES=$(cat /consul/config/kv-health-checks-dashboard.hcl | jq -Rs '.')
-              JSON_PAYLOAD="{ \"Name\": \"$POLICY_NAME\", \"Description\": \"$DESCRIPTION\", \"Rules\": $HCL_RULES }"
-              curl -X PUT -H "Content-Type: application/json" -H "X-Consul-Token: CONSUL_HTTP_TOKEN" -d "$JSON_PAYLOAD" "$CONSUL_ADDR/v1/acl/policy?token=$CONSUL_TOKEN"
+              POLICY_JSON_PAYLOAD="{ \"Name\": \"$POLICY_NAME\", \"Description\": \"$DESCRIPTION\", \"Rules\": $HCL_RULES }"
+              
+              # Check if policy exists
+              POLICY_ID=$(curl -s -H "X-Consul-Token: $CONSUL_TOKEN" "$CONSUL_ADDR/v1/acl/policies?token=$CONSUL_TOKEN" | jq -r --arg POLICY_NAME "$POLICY_NAME" '.[] | select(.Name==$POLICY_NAME) | .ID')
+              
+              # Create policy if it does not exist
+              if [ -z "$POLICY_ID" ]; then
+                curl -X PUT -H "Content-Type: application/json" -H "X-Consul-Token: $CONSUL_TOKEN" -d "$POLICY_JSON_PAYLOAD" "$CONSUL_ADDR/v1/acl/policy?token=$CONSUL_TOKEN"
+              fi  
+              
+              # Check if token exists
+              TOKEN_EXISTS=$(curl -s -H "X-Consul-Token: $CONSUL_TOKEN" "$CONSUL_ADDR/v1/acl/tokens?token=$CONSUL_TOKEN" | jq -r --arg POLICY_NAME "$POLICY_NAME" '.[] | select(.Policies[].Name==$POLICY_NAME) | .SecretID')
+              
+              # Create token if it does not exist
+              if [ -z "$TOKEN_EXISTS" ]; then
+                TOKEN_JSON_PAYLOAD="{ \"Description\": \"Token for health-checks-dashboard\", \"Policies\": [ { \"Name\": \"$POLICY_NAME\" } ], \"ServiceIdentities\": [ { \"ServiceName\": \"health-checks-dashboard\" } ] }"
+                TOKEN_RESPONSE=$(curl -X PUT -H "Content-Type: application/json" -H "X-Consul-Token: $CONSUL_TOKEN" -d "$TOKEN_JSON_PAYLOAD" "$CONSUL_ADDR/v1/acl/token?token=$CONSUL_TOKEN")
+                NEW_TOKEN=$(echo $TOKEN_RESPONSE | jq -r '.SecretID')
+                kubectl create secret generic health-checks-dashboard-token --from-literal=token=$NEW_TOKEN -n consul --dry-run=client -o yaml | kubectl apply -f -
+              fi
           env:
             - name: CONSUL_HTTP_TOKEN
               valueFrom:
@@ -53,5 +71,8 @@ spec:
       volumes:
         - name: config
           configMap:
-            name: company-api-acl-policies
+            name: health-checks-dashboard-acl-policies
+        - name: health-checks-dashboard-secrets-volume
+          secret:
+            secretName: health-checks-dashboard-secrets
       restartPolicy: Never
