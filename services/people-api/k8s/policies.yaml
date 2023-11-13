@@ -1,0 +1,57 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: people-api-acl-policies
+  namespace: consul
+data:
+  kv-people-api.hcl: |
+    key_prefix "people-api/" {
+      policy = "read"
+      policy = "write"
+      policy = "list"
+    }
+    
+    key_prefix "nexus-service/" {
+      policy = "read"
+      policy = "write"
+      policy = "list"
+    }
+
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: apply-consul-acl-policies
+  namespace: consul
+spec:
+  template:
+    spec:
+      containers:
+        - name: apply-people-api-policy
+          image: badouralix/curl-jq
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              #!/bin/bash
+              CONSUL_ADDR="http://consul:8500"
+              CONSUL_TOKEN=${CONSUL_HTTP_TOKEN}
+              POLICY_NAME="kv-people-api"
+              DESCRIPTION="Policy for people-api key prefix"
+              HCL_RULES=$(cat /consul/config/kv-people-api.hcl | jq -Rs '.')
+              JSON_PAYLOAD="{ \"Name\": \"$POLICY_NAME\", \"Description\": \"$DESCRIPTION\", \"Rules\": $HCL_RULES }"
+              curl -X PUT -H "Content-Type: application/json" -H "X-Consul-Token: CONSUL_HTTP_TOKEN" -d "$JSON_PAYLOAD" "$CONSUL_ADDR/v1/acl/policy?token=$CONSUL_TOKEN"
+          env:
+            - name: CONSUL_HTTP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: consul-secrets
+                  key: consul-management-token
+          volumeMounts:
+            - name: config
+              mountPath: /consul/config
+      volumes:
+        - name: config
+          configMap:
+            name: people-api-acl-policies
+      restartPolicy: Never

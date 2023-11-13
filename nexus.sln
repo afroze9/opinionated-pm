@@ -5,7 +5,6 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api-gateway", "api-gateway", "{2B26CA81-F803-4EBD-B93A-6AEF7A4BEDB1}"
 	ProjectSection(SolutionItems) = preProject
-		api-gateway\README.md = api-gateway\README.md
 		api-gateway\.gitignore = api-gateway\.gitignore
 	EndProjectSection
 EndProject
@@ -19,9 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.ApiGateway.UnitTests"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "health-checks-dashboard", "health-checks-dashboard", "{0CFCFAEC-7350-4CED-8BBA-EFB178E4AC35}"
 	ProjectSection(SolutionItems) = preProject
-		health-checks-dashboard\README.md = health-checks-dashboard\README.md
 		health-checks-dashboard\.gitignore = health-checks-dashboard\.gitignore
-		health-checks-dashboard\nexus-hc.png = health-checks-dashboard\nexus-hc.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A7EAEA89-9122-4330-A838-D461F048D5FA}"
@@ -59,9 +56,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "devcerts", "devcerts", "{A8
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "discovery-server", "discovery-server", "{C862DE6E-48D5-4F48-9F39-74175E9C69D1}"
 	ProjectSection(SolutionItems) = preProject
-		discovery-server\README.md = discovery-server\README.md
 		discovery-server\.gitignore = discovery-server\.gitignore
-		discovery-server\nexus-service-discovery.png = discovery-server\nexus-service-discovery.png
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "config", "config", "{BAF59CCA-D41A-4851-84AB-4A7B5E93F45E}"
@@ -83,17 +78,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "k8s", "k8s", "{750AF967-D78
 	ProjectSection(SolutionItems) = preProject
 		discovery-server\k8s\values.yaml = discovery-server\k8s\values.yaml
 		discovery-server\k8s\setup-consul.ps1 = discovery-server\k8s\setup-consul.ps1
-	EndProjectSection
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{C361B747-5C97-4F92-986E-7E19CA9F7E97}"
-	ProjectSection(SolutionItems) = preProject
-		docs\scope.md = docs\scope.md
-		docs\nexus.drawio = docs\nexus.drawio
-		docs\add-service.md = docs\add-service.md
-		docs\known-issues.md = docs\known-issues.md
-		docs\nexus-overview.png = docs\nexus-overview.png
-		docs\nexus-libraries.drawio = docs\nexus-libraries.drawio
-		docs\architecture-overview.md = docs\architecture-overview.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "certs", "certs", "{9B35BFE4-F51F-46A9-A090-977A1FD8900E}"
@@ -146,7 +130,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		prometheus.docker.yml = prometheus.docker.yml
 		prometheus.local.yml = prometheus.local.yml
 		README.md = README.md
-		setup-k8s.ps1 = setup-k8s.ps1
 	EndProjectSection
 EndProject
 Global

@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: company-api-acl-policies
+  namespace: consul
+data:
+  kv-company-api.hcl: |
+    key_prefix "company-api/" {
+      policy = "read"
+      policy = "write"
+      policy = "list"
+    }
+
+    key_prefix "nexus-service/" {
+      policy = "read"
+      policy = "write"
+      policy = "list"
+    }
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: company-api-secrets
+  namespace: consul
+type: Opaque
+data:
+  .service-token: ZGV2MTIzDQo=
+---
+
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: apply-consul-acl-policies
+  namespace: consul
+spec:
+  template:
+    spec:
+      containers:
+        - name: apply-company-api-policy
+          image: badouralix/curl-jq
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              #!/bin/bash
+              CONSUL_ADDR="http://consul:8500"
+              CONSUL_TOKEN=${CONSUL_HTTP_TOKEN}
+              POLICY_NAME="kv-company-api"
+              DESCRIPTION="Policy for company-api key prefix"
+              HCL_RULES=$(cat /consul/config/kv-company-api.hcl | jq -Rs '.')
+              POLICY_JSON_PAYLOAD="{ \"Name\": \"$POLICY_NAME\", \"Description\": \"$DESCRIPTION\", \"Rules\": $HCL_RULES }"
+              TOKEN_JSON_PAYLOAD="{ \"Description\": \"Token for company-api\", \"Policies\": [ { \"Name\": \"$POLICY_NAME\" } ], \"ServiceIdentities\": [ { \"ServiceName\": \"company-api\" } ] }"
+              
+              curl -X PUT -H "Content-Type: application/json" -H "X-Consul-Token: CONSUL_HTTP_TOKEN" -d "$POLICY_JSON_PAYLOAD" "$CONSUL_ADDR/v1/acl/policy?token=$CONSUL_TOKEN"
+              curl -X PUT -H "Content-Type: application/json" -H "X-Consul-Token: CONSUL_HTTP_TOKEN" -d "$TOKEN_JSON_PAYLOAD" "$CONSUL_ADDR/v1/acl/token?token=$CONSUL_TOKEN" | jq -r '.SecretID' | base64 -d > /consul/secrets/.service1-token
+              echo done. checking files
+              cat "/consul/secrets/.service1-token"
+#              cat "/consul/myfile.txt"
+          env:
+            - name: CONSUL_HTTP_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: consul-secrets
+                  key: consul-management-token
+          volumeMounts:
+            - name: config
+              mountPath: /consul/config
+            - name: company-api-secrets-volume
+              readOnly: false
+              mountPath: "/consul/secrets"
+      volumes:
+        - name: config
+          configMap:
+            name: company-api-acl-policies
+        - name: company-api-secrets-volume
+          secret:
+              secretName: company-api-secrets
+      restartPolicy: Never

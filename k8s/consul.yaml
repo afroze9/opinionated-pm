@@ -7,10 +7,11 @@ metadata:
 apiVersion: v1
 kind: Secret
 metadata:
-  name: consul-secret
+  name: consul-secrets
   namespace: consul
 data:
   consul-gossip-encryption-key: "Q3ZWOEJIN2o3Um05Qkw3T1ZGdFk4YS9Jd3UwLzgydmd0TVd6V2hIalJORT0="
+  consul-management-token: "ZGV2MTIz"
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -113,7 +114,7 @@ spec:
         app: consul
         component: server
       annotations:
-        consul.hashicorp.com/connect-inject: "false"
+        consul.hashicorp.com/connect-inject: "true"
 
     spec:
       serviceAccountName: consul
@@ -137,7 +138,7 @@ spec:
             - name: GOSSIP_ENCRYPTION_KEY
               valueFrom:
                 secretKeyRef:
-                  name: consul-secret
+                  name: consul-secrets
                   key: consul-gossip-encryption-key
           volumeMounts:
             - name: data

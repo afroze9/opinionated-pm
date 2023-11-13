@@ -3,8 +3,11 @@ datasources:
   - name: ElasticSearch
     type: elasticsearch
     access: proxy
-    url: http://es01:9200
+    url: https://es01:9200
     uid: elasticsearch01
     basicAuth: true
     basicAuthUser: elastic
     basicAuthPassword: dev123
+    jsonData:
+      timeField: '@timestamp'
+      tlsSkipVerify: true
