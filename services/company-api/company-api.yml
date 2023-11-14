@@ -21,7 +21,8 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   project: 'services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj'
-  testProject: 'services/company-api/tests/Nexus.Company.Api.UnitTests/Nexus.Company.Api.UnitTests.csproj'
+  unitTestProject: 'services/company-api/tests/Nexus.Company.Api.UnitTests/Nexus.Company.Api.UnitTests.csproj'
+  componentTestProject: 'services/company-api/tests/Nexus.Company.Api.ComponentTests/Nexus.Company.Api.ComponentTests.csproj'
   runSettingsFile: '.runsettings'
   testSettings: 'services/company-api/tests/Nexus.Company.Api.UnitTests/.runsettings'
   packagesFile: 'services/company-api/src/Nexus.Company.Api/obj/project.assets.json'
@@ -53,10 +54,17 @@ steps:
     arguments: '--configuration $(buildConfiguration) --no-restore'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Dotnet Test'
+  displayName: 'Run Unit Tests'
   inputs:
     command: 'test'
-    projects: '$(testProject)'
+    projects: '$(unitTestProject)'
+    arguments: '-s $(testSettings)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Component Tests'
+  inputs:
+    command: 'test'
+    projects: '$(componentTestProject)'
     arguments: '-s $(testSettings)'
 
 - task: SonarCloudAnalyze@1
