@@ -18,7 +18,7 @@ public class ProjectService : IProjectService
     private readonly HttpClient _client;
     private readonly IMapper _mapper;
     private readonly ILogger<ProjectService> _logger;
-    private readonly ResiliencePipeline<HttpResponseMessage> _pipeline;
+    private readonly ResiliencePipeline<List<ProjectSummaryDto>> _pipeline;
 
     /// <summary>
     ///     Initializes a new instance of the <see cref="ProjectService" /> class.
@@ -34,7 +34,7 @@ public class ProjectService : IProjectService
         _client = client;
         _mapper = mapper;
         _logger = logger;
-        _pipeline = resiliencePipelineProvider.GetPipeline<HttpResponseMessage>(PollyExtensions.ProjectsPipeline);
+        _pipeline = resiliencePipelineProvider.GetPipeline<List<ProjectSummaryDto>>(PollyExtensions.ProjectsPipeline);
     }
 
     /// <summary>
@@ -46,20 +46,10 @@ public class ProjectService : IProjectService
     public async Task<List<ProjectSummaryDto>> GetProjectsByCompanyIdAsync(int companyId, CancellationToken cancellationToken = default)
     {
         ResilienceContext context = ResilienceContextPool.Shared.Get(cancellationToken);
-        Outcome<HttpResponseMessage> outcome = await _pipeline.ExecuteOutcomeAsync(
-            static async (context, state) =>
-            {
-                try
-                {
-                    return Outcome.FromResult(await state.Client.GetAsync(
-                        $"https://project-api/api/v1/Project?companyId={state.CompanyId}", context.CancellationToken));
-                }
-                catch (Exception ex)
-                {
-                    return Outcome.FromException<HttpResponseMessage>(ex);
-                }
-            },
-            context, new GetProjectsByCompanyIdState(_client, companyId));
+        Outcome<List<ProjectSummaryDto>> outcome = await _pipeline.ExecuteOutcomeAsync(
+            DoGetProjectsByCompanyIdAsync, 
+            context, 
+            new GetProjectsByCompanyIdState(_client, _mapper, companyId));
 
         ResilienceContextPool.Shared.Return(context);
         
@@ -69,16 +59,30 @@ public class ProjectService : IProjectService
             return new List<ProjectSummaryDto>();
         }
 
-        HttpResponseMessage? response = outcome.Result;
-        
-        if (response is not { IsSuccessStatusCode: true })
-        {
-            return new List<ProjectSummaryDto>();
-        }
+        return outcome.Result ?? new List<ProjectSummaryDto>();
+    }
 
-        List<ProjectResponseModel>? projects = await response.Content.ReadFromJsonAsync<List<ProjectResponseModel>>(cancellationToken: cancellationToken);
-        return _mapper.Map<List<ProjectSummaryDto>>(projects);
+    private static async ValueTask<Outcome<List<ProjectSummaryDto>>> DoGetProjectsByCompanyIdAsync(ResilienceContext context, GetProjectsByCompanyIdState state)
+    {
+        try
+        {
+            using (HttpResponseMessage result = await state.Client.GetAsync($"https://project-api/api/v1/Project?companyId={state.CompanyId}", context.CancellationToken))
+            {
+                if (result is not { IsSuccessStatusCode: true })
+                {
+                    return Outcome.FromResult(new List<ProjectSummaryDto>());
+                }
+
+                List<ProjectResponseModel>? projects = await result.Content.ReadFromJsonAsync<List<ProjectResponseModel>>(cancellationToken: context.CancellationToken);
+                List<ProjectSummaryDto> mappedProjects = state.Mapper.Map<List<ProjectSummaryDto>>(projects) ?? new List<ProjectSummaryDto>();
+                return Outcome.FromResult(mappedProjects);
+            }
+        }
+        catch (Exception ex)
+        {
+            return Outcome.FromException<List<ProjectSummaryDto>>(ex);
+        }
     }
 }
 
-public record GetProjectsByCompanyIdState(HttpClient Client, int CompanyId);
+public record GetProjectsByCompanyIdState(HttpClient Client, IMapper Mapper, int CompanyId);

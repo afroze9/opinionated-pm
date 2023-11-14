@@ -71,8 +71,8 @@ public class ProjectServiceTests
 #pragma warning restore NS1004
 #pragma warning restore NS1000
         
-        _resiliencePipelineProvider.GetPipeline<HttpResponseMessage>(Arg.Any<string>())
-            .Returns(ResiliencePipeline<HttpResponseMessage>.Empty);
+        _resiliencePipelineProvider.GetPipeline<List<ProjectSummaryDto>>(Arg.Any<string>())
+            .Returns(ResiliencePipeline<List<ProjectSummaryDto>>.Empty);
         ProjectService service = new (_client, _mapper, _logger, _resiliencePipelineProvider);
 
         // Act
@@ -88,8 +88,8 @@ public class ProjectServiceTests
         // Arrange
         int companyId = 1;
     
-        _resiliencePipelineProvider.GetPipeline<HttpResponseMessage>(Arg.Any<string>())
-            .Returns(ResiliencePipeline<HttpResponseMessage>.Empty);
+        _resiliencePipelineProvider.GetPipeline<List<ProjectSummaryDto>>(Arg.Any<string>())
+            .Returns(ResiliencePipeline<List<ProjectSummaryDto>>.Empty);
         
         Task<HttpResponseMessage> response = Task.FromResult<HttpResponseMessage>(new (HttpStatusCode.BadRequest));
         

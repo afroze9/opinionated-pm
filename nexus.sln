@@ -132,6 +132,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Company.Api.ComponentTests", "services\company-api\tests\Nexus.Company.Api.ComponentTests\Nexus.Company.Api.ComponentTests.csproj", "{7E87E546-FA1C-4871-8564-E0D78DFB0E7E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -181,6 +183,10 @@ Global
 		{861A01B1-ADA3-431C-802D-089D1CEFE5F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{861A01B1-ADA3-431C-802D-089D1CEFE5F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{861A01B1-ADA3-431C-802D-089D1CEFE5F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E87E546-FA1C-4871-8564-E0D78DFB0E7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E87E546-FA1C-4871-8564-E0D78DFB0E7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E87E546-FA1C-4871-8564-E0D78DFB0E7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E87E546-FA1C-4871-8564-E0D78DFB0E7E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{57A592AE-C1D6-442F-9248-E946C8BC755C} = {2B26CA81-F803-4EBD-B93A-6AEF7A4BEDB1}
@@ -212,5 +218,6 @@ Global
 		{6A75EE21-46A9-4EAC-AA86-C8BD8F7B7841} = {F84AD233-3869-4D94-BB6B-CD88325CC5D3}
 		{6D929C88-090A-4DAE-BA81-F09F98BCD34D} = {6A75EE21-46A9-4EAC-AA86-C8BD8F7B7841}
 		{861A01B1-ADA3-431C-802D-089D1CEFE5F2} = {6D929C88-090A-4DAE-BA81-F09F98BCD34D}
+		{7E87E546-FA1C-4871-8564-E0D78DFB0E7E} = {CF83F571-6023-4928-88EB-FEF6FFE61FCD}
 	EndGlobalSection
 EndGlobal

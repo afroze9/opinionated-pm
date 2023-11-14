@@ -1,6 +1,5 @@
-﻿using System.Net;
-using Nexus.CompanyAPI.Config;
-using Nexus.SharedKernel.Contracts.Project;
+﻿using Nexus.CompanyAPI.Config;
+using Nexus.CompanyAPI.DTO;
 using Polly;
 using Polly.CircuitBreaker;
 using Polly.Fallback;
@@ -15,27 +14,24 @@ public static class PollyExtensions
         ResilienceOptions resilienceOptions = new ();
         configuration.GetSection("Resilience").Bind(resilienceOptions);
         
-        CircuitBreakerStrategyOptions<HttpResponseMessage> circuitBreakerOptions = new()
+        CircuitBreakerStrategyOptions<List<ProjectSummaryDto>> circuitBreakerOptions = new()
         {
             FailureRatio = resilienceOptions.FailureRatio,
             SamplingDuration = TimeSpan.FromSeconds(resilienceOptions.SamplingDurationSeconds),
             MinimumThroughput = resilienceOptions.MinimumThroughput,
             BreakDuration = TimeSpan.FromSeconds(resilienceOptions.BreakDurationSeconds),
-            ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+            ShouldHandle = new PredicateBuilder<List<ProjectSummaryDto>>()
                 .Handle<Exception>(),
         };
 
-        FallbackStrategyOptions<HttpResponseMessage> fallbackOptions = new()
+        FallbackStrategyOptions<List<ProjectSummaryDto>> fallbackOptions = new()
         {
-            ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+            ShouldHandle = new PredicateBuilder<List<ProjectSummaryDto>>()
                 .Handle<Exception>(),
-            FallbackAction = static args => Outcome.FromResultAsValueTask(new HttpResponseMessage(HttpStatusCode.OK)
-            {
-                Content = JsonContent.Create(new List<ProjectResponseModel>()),
-            }),
+            FallbackAction = static args => Outcome.FromResultAsValueTask(new List<ProjectSummaryDto>()),
         };
 
-        services.AddResiliencePipeline<string, HttpResponseMessage>(ProjectsPipeline, builder =>
+        services.AddResiliencePipeline<string, List<ProjectSummaryDto>>(ProjectsPipeline, builder =>
         {
             builder
                 .AddFallback(fallbackOptions)
