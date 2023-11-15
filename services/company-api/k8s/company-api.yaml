@@ -1,0 +1,272 @@
+﻿apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: company-db-config
+  namespace: nexus
+data:
+  POSTGRES_DB: "project_management_company"
+  PGPORT: "5438"
+
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: company-db-secret
+  namespace: nexus
+type: Opaque
+data:
+  POSTGRES_USER: ZGV2ZWxvcGVy
+  POSTGRES_PASSWORD: ZGV2MTIz
+  
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: company-db-pvc
+  namespace: nexus
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: company-db
+  namespace: nexus
+spec:
+  selector:
+    matchLabels:
+      app: company-db
+  template:
+    metadata:
+      labels:
+        app: company-db
+    spec:
+      containers:
+        - name: company-db
+          image: postgres:latest
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: company-db-secret
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: company-db-secret
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: company-db-config
+                  key: POSTGRES_DB
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: company-db-config
+                  key: PGPORT
+          ports:
+            - containerPort: 5438
+          volumeMounts:
+            - mountPath: /var/lib/postgresql
+              name: company-db-storage
+      volumes:
+        - name: company-db-storage
+          persistentVolumeClaim:
+            claimName: company-db-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: company-db
+  namespace: nexus
+spec:
+  selector:
+    app: company-db
+  ports:
+    - protocol: TCP
+      port: 5438
+      targetPort: 5438
+      
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: aspnetapp-cert
+  namespace: nexus
+type: Opaque
+data:
+  aspnetapp.pfx: |
+    MIIKYAIBAzCCChwGCSqGSIb3DQEHAaCCCg0EggoJMIIKBTCCBe4GCSqGSIb3DQEH
+    AaCCBd8EggXbMIIF1zCCBdMGCyqGSIb3DQEMCgECoIIE7jCCBOowHAYKKoZIhvcN
+    AQwBAzAOBAhtvdY7Mw+QfwICB9AEggTIDzmnHayGNLmkwbDRjAcdY+VxUxUNu5T3
+    h9OQZH9n4K9f/LiwpaIoSYhXwcBZDKKlsxhgkxxufmvmJTQuUu8l6vmx6l6/DTc0
+    Y9eYvhRxeYKywK8axpcPzO1Q+v9KofP5smJhV/9L1bRZUG95kMAYmU2fqTgzHNeC
+    STMRHIg2mYbJoJkp9Zq1ln6kg804CV/rm4eUpZuIdwXhdlTmqyznn2cEdTN39al9
+    Yaiulib31xBBExPBqrm+Yrl2DacX2gF1daP7pzMoRH1Txsk5cOjDQgBHuAzakJ2I
+    oi3PRWSOaOysApDYAoP38dr46ao8nZRggKLkRe3cx4qwjvCIZlTOkrOFb+wlbmr7
+    gyjiuNA5e7jaUc88Vla0kiZZsTU5GQCke8XGyJ4JTcofGEEY4DJBxREG4Eyq7eGI
+    okGE6VfwnYySgvRSuFnAiF/9PmSK8BVkBAnrR7W3xEzWtlBf+fW/kYq1ROt3Y3Vy
+    fteKVDtsl3n6XuacNtGIgQN+nuq7EbNAaepRdzWgAqSwNIMbcIOap+IXtkLoEuz2
+    lR/jbLcVewR4Zj409mUg0KikDvC+nx9J0mUspn9jV3EuNeYCpHP416ffRjhAf8Pw
+    gT4OUspjwXvcsyhQUqfmjsUbSERngBzDxLXUGTEaHrQHez4A6YT6QY9g2LMMnaiV
+    QKLr9Ti/QtHgevYEu7rI44wrdnPCNM9L2vOFd6hQarPm6Qfl3+dkskh0wTaNBo+c
+    MCkLUrPVLo5C+MnZIlkk5QKf+tXzndudmK+FXlWmuuQ5a00r3HVeMjTeybPHRwVy
+    kgtz3It4UKAGiSSxVyeEFMdGI8STxlRwoG5mtdk5fan8P/RvXBSHSQr+DTcASxT3
+    r7OpfFut1Z8LrtnbbGGW/ULU6nIp6a9qKyZ1iP8KWRgzmcT8UEyHUEOr+xa/fOje
+    CDnUaEykIspSvms6JUTUQl+DWTX0M3Ge30oeOsSCANiSHMLuVmxirohXDZyR4lfR
+    d5SA0+wXH2S7eSOk4pfUmm3/9QUoYtLE4MaYbumdLhDIDo//xk5l9yEQGsmLuxgb
+    /PFipni+nFs4LKcgwLbcpkwDk39rKtNiS2zo1lqPZ2GDl/0GDHQSKcJfAonxJMWC
+    UXMDDj1hbUXTtSMhkijs/1EbnPTRJ+IPChO7XXTHeoOkk+i/Z4hl7PON24N2HUev
+    +wnIm3Zh6GywN+Ob1SiMS00QKfW567Z56dQBMe4btUaAGp5Q/AQTU7197K4ca9+z
+    Ql8gCy4fnB4Khq8HpL/wTm1UJUNmSFJsMgjpnMbbH7PMlp2k7ITxQwCnZVyeUcoP
+    Nm1mDj36/6YbVICz/iOHEkh1KpD5Wd/Unj0it3YYMnP5+/8BRoP7chEbrt0uAnyJ
+    OV66WlbNISwm5ksVuMO4vnep3qmKH2VDYBuMvqJLsVycYU+0BDfrLPuafQtTzDY1
+    z3GqP+CLzTy7ZYSthabWWf2jAZUzozFjA4RtuqJSocOeJ7k/EtzlUMQ45UG5yhQM
+    szDxxUNtsKuctQ3eiJ3eaVJUlyb0+GL2hF1wHWROmDqBE9vPYOxS345oONjBhsgC
+    PeRLQB6XDkNF83yN0VuWf+Se6lidvj9iU1H3noaPPuL6kL1YMjZRQ/GNtJQsQM7+
+    MYHRMBMGCSqGSIb3DQEJFTEGBAQBAAAAMFsGCSqGSIb3DQEJFDFOHkwAewA3ADkA
+    QwA3AEYAQQBGAEYALQBCAEUANQBGAC0ANAA3ADIANQAtAEEANwA0ADAALQAyADkA
+    NgA1ADkAQwBEAEEAQgBCADMAMwB9MF0GCSsGAQQBgjcRATFQHk4ATQBpAGMAcgBv
+    AHMAbwBmAHQAIABTAG8AZgB0AHcAYQByAGUAIABLAGUAeQAgAFMAdABvAHIAYQBn
+    AGUAIABQAHIAbwB2AGkAZABlAHIwggQPBgkqhkiG9w0BBwagggQAMIID/AIBADCC
+    A/UGCSqGSIb3DQEHATAcBgoqhkiG9w0BDAEDMA4ECFFgmqK5krysAgIH0ICCA8gt
+    Ax8/TjIdV6q3mlaDqOwy6NCXIt8BuQKbCITkX7Gq4LI1ipeL3XqpEAvcEl8HsOfG
+    RMclxras+E+SRm9zQ2VOWG2zHuKDYUt2R3dA81PLPRLSZzzd5HpAc3T8QJLAO8V9
+    xc4M2q/8GdPj+qSCnfkNgwqp0Jk0sB5kXCeMtq7TAg8AuiG/wQ+GWaZqujhoB0DO
+    HTB9SYvUHdL7yHpgX5coIL7ejaDoZKT0fHL4/WvuQXpm4nlMDUWLtEzS0hUYczwC
+    V2omlyM9EiBaLs13/90fhqHfNr7v83yOmQAdQKIdETYD5SpsC0738HiNqTsOMsI9
+    9BQx+k+728S6aSxAHWHqoHCaTAsD2EIJkawvR8A13iNJlQpNjpRdsYv3ATj0Jk+Y
+    dvxxK8WyVBP8Hce8zrcBIh/XSacX+SMO3AdrSbvZjcuuU0TqyjvXrvGWHFPUNEHb
+    I6hTIWYbhxN0cVWL6tsnd8TuyBlTr7+q3NYhAfhVqKsjVJQtlHU5IVdMLAbbKHhM
+    ghtaWt1J63YhPK9Jkg5YrVjIKyVbgTxK3NhAUo3z/CFKH2q/oknWHRse7Kf1IsTy
+    eB7EZMtFk9Xv/4TYiahMzwHz5IxHllsdep3ZzelpA/89+eK+tnLWHMYX07s6F9zv
+    cKY3HeAGpL5k8QsHFwxZFrQaDlAzpEim1SqHRN5fwMfY5KJZI+xFv9h9mRAisv3q
+    lupYyKpcAglreR2etRA2FoWp3UmyWG0GQqwoloS3Gb1InWk9mc7D03m1fRKg9IlV
+    IAhU80HC/0mYSmWXCowYLtwh1Buazeyz/su0AAVEcdkG79PGBX5hLf8/awe2dPsa
+    x6uTxAaGVBIuDiCIaHGABJRalnKINIiw7ugnTrddRFUVHdTohybagz7xw/xJtGxg
+    cxcHflQfaf+pxaCe6rbvGOCRg2DA1/Bl5l25s/Lvoyqs806yFUWogA0yKg8sVauX
+    9OHHeKRjXKLftx7igaV62Cf0xbDsQ+8p2x2oLWa5dhSpo58vMrxbuWWoNFyYEBZP
+    XDRPJWIEm0wNmpNzDLu0M3gU4DIyu/elshbBCyZOVqcqhyamuwK3AO8EWpB/OZka
+    qVEdAiVYDKQ/SaDcs8kPqb/Xfk09hHM0HVZVkS1ZE1YqOtGPKjCftKQ5DD9FwQfW
+    RwQepf5C+bOLbKuHCv0sn4c0CFbLl2wwdsCpC90phrPlufMxY2X9Y8A1y4vWNezY
+    khaQkzEYzMFkR956SP0AizPvhihR3RxT6Xdaf0DQMCTGPQZWLdQ2Q/DmTAN7xrPJ
+    m1ew9ngFGTA7MB8wBwYFKw4DAhoEFEkD+YfFyqtxsys45V5JnzyKS88IBBSB7Jxl
+    Jn4KOxgoe4SViMQgcLBT3gICB9A=
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: company-api
+  namespace: nexus
+spec:
+  ports:
+    - port: 80
+      name: http
+    - port: 443
+      name: https
+  clusterIP: None
+  selector:
+    app: company-api
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: company-api
+  namespace: nexus
+spec:
+  selector:
+    matchLabels:
+      app: company-api
+  serviceName: company-api
+  podManagementPolicy: Parallel
+  replicas: 3
+  updateStrategy:
+    rollingUpdate:     
+      partition: 0
+    type: RollingUpdate
+  
+  template:
+    metadata:
+      labels:
+        app: company-api
+        
+    spec:
+      terminationGracePeriodSeconds: 10
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: devcerts
+          secret:
+            secretName: aspnetapp-cert
+      containers:
+        - name: company-api
+          image: afroze9/nexus-company-api:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - name: devcerts
+              mountPath: /https/
+          env:
+            - name: ConsulKV__Url
+              value: http://consul:8500
+            - name: ConsulKV__AddGlobalConfig
+              value: "true"
+            - name: ConsulKV__GlobalConfigKey
+              value: "nexus-service/app-config"
+            - name: ConsulKV__Key
+              value: "company-api/app-config"
+            - name: ConsulKV__Token
+              value: "28e9e241-f42b-a4da-69f5-e891877719d6"
+#              valueFrom:
+#                secretKeyRef:
+#                  name: company-api-token
+#                  key: token
+            - name: Consul__Host
+              value: consul
+            - name: GlobalConfiguration.BaseUrl
+              value: http://localhost:5032
+            - name: ASPNETCORE_URLS
+              value: https://+:443;http://+:80
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+              value: dev123
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: /https/aspnetapp.pfx
+#            - name: ConnectionStrings.Default
+#              value: "User ID=developer;Password=dev123;Host=company-db;Port=5438;Database=project_management_company"
+#            - name: FrameworkSettings__Discovery__Enable
+#              value: "false"
+#            - name: FrameworkSettings__Logging__Enable
+#              value: "false"
+#            - name: FrameworkSettings__Telemetry__Enable
+#              value: "false"
+#            - name: Auth0Settings__Authority
+#              value: "https://teamly.us.auth0.com"
+#            - name: Auth0Settings__Audience
+#              value: "projectmanagement"
+#            - name: Postgres__Client__Host
+#              value: "company-db"
+#            - name: Postgres__Client__Port
+#              value: "5438"
+#            - name: Postgres__Client__Username
+#              value: "developer"
+#            - name: Postgres__Client__Password
+#              value: "dev123"
+#            - name: Postgres__Client__Database
+#              value: "project_management_company"

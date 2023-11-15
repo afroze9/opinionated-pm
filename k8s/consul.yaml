@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: consul
+  name: nexus
 
 ---
 apiVersion: v1
 kind: Secret
 metadata:
   name: consul-secrets
-  namespace: consul
+  namespace: nexus
 data:
   consul-gossip-encryption-key: "Q3ZWOEJIN2o3Um05Qkw3T1ZGdFk4YS9Jd3UwLzgydmd0TVd6V2hIalJORT0="
   consul-management-token: "ZGV2MTIz"
@@ -17,7 +17,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: consul-config
-  namespace: consul
+  namespace: nexus
 data:
   server.json: |
     {
@@ -32,7 +32,7 @@ data:
         "http": 8500
       },
       "retry_join": [
-        "provider=k8s namespace=consul label_selector=\"app=consul,component=server\" self=false"
+        "provider=k8s namespace=nexus label_selector=\"app=consul,component=server\" self=false"
       ],
       "server": true,
       "telemetry": {
@@ -77,14 +77,14 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: consul
-    namespace: consul
+    namespace: nexus
 
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: consul
-  namespace: consul
+  namespace: nexus
   labels:
     app: consul
 
@@ -93,7 +93,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: consul
-  namespace: consul
+  namespace: nexus
 spec:
   selector:
     matchLabels:
@@ -189,7 +189,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: consul
-  namespace: consul
+  namespace: nexus
 spec:
   type: LoadBalancer
   selector:
@@ -204,7 +204,7 @@ spec:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  namespace: consul
+  namespace: nexus
   name: secret-manager
 rules:
   - apiGroups: [""]
@@ -216,11 +216,11 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: secret-manager-binding
-  namespace: consul
+  namespace: nexus
 subjects:
   - kind: ServiceAccount
     name: default
-    namespace: consul
+    namespace: nexus
 roleRef:
   kind: Role
   name: secret-manager
