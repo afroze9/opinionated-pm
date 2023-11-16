@@ -19,6 +19,7 @@
     <PackageVersion Include="FluentAssertions" Version="6.12.0" />
     <PackageVersion Include="FluentValidation.DependencyInjectionExtensions" Version="11.8.0" />
     <PackageVersion Include="FluentValidation" Version="11.8.0" />
+    <PackageVersion Include="Grpc.Aspnetcore" Version="2.59.0" />
     <PackageVersion Include="LanguageExt.Core" Version="4.4.6" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.12" />
     <PackageVersion Include="Microsoft.AspNetCore.Authorization" Version="7.0.5" />

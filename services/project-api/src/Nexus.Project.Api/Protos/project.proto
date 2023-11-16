@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+option csharp_namespace = "Nexus.SharedKernel.GRPC";
+
+package ProjectGrpc;
+
+service ProjectGrpcService {
+    rpc GetProjectsByCompanyId(GetProjectsByCompanyIdRequest) returns (GetProjectsByCompanyIdResponse);
+}
+
+message GetProjectsByCompanyIdRequest {
+    int32 CompanyId = 1;
+}
+
+message GetProjectsByCompanyIdResponse {
+    repeated Project Projects = 1;
+}
+
+message Project {
+  int32 Id = 1;
+  int32 CompanyId = 2;
+  string Name = 3;
+  ProjectPriority Priority = 4;
+  repeated TodoItemResponseModel TodoItems = 5;
+}
+
+enum ProjectPriority {
+  None = 0;
+  Low = 1;
+  Medium = 2;
+  High = 3;
+  Critical = 4;
+}
+
+message TodoItemResponseModel {
+  int32 Id = 1;
+  string Title = 2;
+  string Description = 3;
+  string AssignedToId = 4;
+  bool IsCompleted = 5;
+}
