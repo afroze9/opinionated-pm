@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: health-checks-dashboard
+  namespace: nexus
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5052
+      targetPort: 443
+      name: https
+  selector:
+    app: health-checks-dashboard
+
+---
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: health-checks-dashboard
+  namespace: nexus
+spec:
+  selector:
+    matchLabels:
+      app: health-checks-dashboard
+  serviceName: health-checks-dashboard
+  podManagementPolicy: Parallel
+  replicas: 1
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+  
+  template:
+    metadata:
+      labels:
+        app: health-checks-dashboard
+    
+    spec:
+      terminationGracePeriodSeconds: 10
+      securityContext:
+        fsGroup: 1000
+      volumes:
+        - name: devcerts
+          secret:
+            secretName: aspnetapp-cert
+      containers:
+        - name: health-checks-dashboard
+          image: afroze9/nexus-health-checks-dashboard:latest
+          ports:
+            - containerPort: 80
+            - containerPort: 443
+          volumeMounts:
+            - name: devcerts
+              mountPath: /https/
+          env:
+            - name: ConsulKV__Url
+              value: http://consul.nexus.svc.cluster.local:8500
+            - name: ConsulKV__AddGlobalConfig
+              value: "true"
+            - name: ConsulKV__GlobalConfigKey
+              value: "nexus-service/app-config"
+            - name: ConsulKV__Key
+              value: "health-checks-dashboard/app-config"
+            - name: ConsulKV__Token
+              valueFrom:
+                secretKeyRef:
+                  name: health-checks-dashboard-token
+                  key: token
+            - name: Consul__Host
+              value: consul
+            - name: GlobalConfiguration.BaseUrl
+              value: http://localhost:5052
+            - name: ASPNETCORE_URLS
+              value: https://+:443;http://+:80
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Password
+              value: dev123
+            - name: ASPNETCORE_Kestrel__Certificates__Default__Path
+              value: /https/aspnetapp.pfx

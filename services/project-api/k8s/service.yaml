@@ -1,18 +1,18 @@
 ﻿apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: company-db-config
+  name: project-db-config
   namespace: nexus
 data:
-  POSTGRES_DB: "project_management_company"
-  PGPORT: "5438"
+  POSTGRES_DB: "project_management_project"
+  PGPORT: "5439"
 
 ---
 
 apiVersion: v1
 kind: Secret
 metadata:
-  name: company-db-secret
+  name: project-db-secret
   namespace: nexus
 type: Opaque
 data:
@@ -24,7 +24,7 @@ data:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: company-db-pvc
+  name: project-db-pvc
   namespace: nexus
 spec:
   accessModes:
@@ -38,72 +38,72 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: company-db
+  name: project-db
   namespace: nexus
 spec:
   selector:
     matchLabels:
-      app: company-db
+      app: project-db
   template:
     metadata:
       labels:
-        app: company-db
+        app: project-db
     spec:
       containers:
-        - name: company-db
+        - name: project-db
           image: postgres:latest
           env:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: company-db-secret
+                  name: project-db-secret
                   key: POSTGRES_USER
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: company-db-secret
+                  name: project-db-secret
                   key: POSTGRES_PASSWORD
             - name: POSTGRES_DB
               valueFrom:
                 configMapKeyRef:
-                  name: company-db-config
+                  name: project-db-config
                   key: POSTGRES_DB
             - name: PGPORT
               valueFrom:
                 configMapKeyRef:
-                  name: company-db-config
+                  name: project-db-config
                   key: PGPORT
           ports:
             - containerPort: 5438
           volumeMounts:
             - mountPath: /var/lib/postgresql
-              name: company-db-storage
+              name: project-db-storage
       volumes:
-        - name: company-db-storage
+        - name: project-db-storage
           persistentVolumeClaim:
-            claimName: company-db-pvc
+            claimName: project-db-pvc
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: company-db
+  name: project-db
   namespace: nexus
 spec:
   selector:
-    app: company-db
+    app: project-db
   ports:
     - protocol: TCP
-      port: 5438
-      targetPort: 5438
+      port: 5439
+      targetPort: 5439
       
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: company-api
+  name: project-api
   namespace: nexus
 spec:
   ports:
@@ -113,20 +113,20 @@ spec:
       name: https
   clusterIP: None
   selector:
-    app: company-api
+    app: project-api
 
 ---
 
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: company-api
+  name: project-api
   namespace: nexus
 spec:
   selector:
     matchLabels:
-      app: company-api
-  serviceName: company-api
+      app: project-api
+  serviceName: project-api
   podManagementPolicy: Parallel
   replicas: 3
   updateStrategy:
@@ -137,7 +137,7 @@ spec:
   template:
     metadata:
       labels:
-        app: company-api
+        app: project-api
         
     spec:
       terminationGracePeriodSeconds: 10
@@ -148,8 +148,8 @@ spec:
           secret:
             secretName: aspnetapp-cert
       containers:
-        - name: company-api
-          image: afroze9/nexus-company-api:latest
+        - name: project-api
+          image: afroze9/nexus-project-api:latest
           ports:
             - containerPort: 80
             - containerPort: 443
@@ -164,11 +164,11 @@ spec:
             - name: ConsulKV__GlobalConfigKey
               value: "nexus-service/app-config"
             - name: ConsulKV__Key
-              value: "company-api/app-config"
+              value: "project-api/app-config"
             - name: ConsulKV__Token
               valueFrom:
                 secretKeyRef:
-                  name: company-api-token
+                  name: project-api-token
                   key: token
             - name: Consul__Host
               value: consul

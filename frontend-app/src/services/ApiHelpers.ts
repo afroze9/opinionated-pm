@@ -17,7 +17,7 @@ export type PropertyError = {
 	PropertyValue: string;
 };
 
-const baseUrl = 'https://localhost:7068/api/v1';
+const baseUrl = 'https://localhost:7069/api/v1';
 
 function getAxiosConfig(token: string) {
 	return {
