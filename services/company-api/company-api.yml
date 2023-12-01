@@ -15,7 +15,7 @@ pr:
       - 'services/company-api/**'
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildPlatform: 'Any CPU'
