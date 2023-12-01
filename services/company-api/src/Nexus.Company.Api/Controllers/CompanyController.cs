@@ -43,6 +43,8 @@ public class CompanyController : ControllerBase
     [HttpGet("[controller]")]
     [Produces(MediaTypeNames.Application.Json)]
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<CompanySummaryResponseModel>))]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(NotFoundResult))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(string))]
     public async Task<IActionResult> GetAll()

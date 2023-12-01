@@ -1,20 +1,29 @@
 ﻿using System.Data.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Npgsql;
 using Nexus.CompanyAPI.Data;
+using Testcontainers.PostgreSql;
 
 namespace Nexus.CompanyAPI.IntegrationTests;
 
 [ExcludeFromCodeCoverage]
-public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>
+public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgram>, IAsyncLifetime
     where TProgram : Program
 {
+    private readonly PostgreSqlContainer _dbContainer = new PostgreSqlBuilder()
+        .WithImage("postgres:latest")
+        .WithUsername("developer")
+        .WithPassword("dev123")
+        .Build();
+    
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureServices(services =>
+        builder.ConfigureTestServices(services =>
         {
             ServiceDescriptor? dbContextDescriptor = services.SingleOrDefault(
                 d => d.ServiceType ==
@@ -37,12 +46,8 @@ public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgra
             // Create open SqliteConnection so EF won't automatically close it.
             services.AddSingleton<DbConnection>(_ =>
             {
-                NpgsqlConnection connection =
-                    new (
-                        "User ID=developer;Password=dev123;Host=localhost;Port=5448;Database=project_management_integration_test_company");
-
+                NpgsqlConnection connection = new (_dbContainer.GetConnectionString());
                 connection.Open();
-
                 return connection;
             });
 
@@ -55,9 +60,24 @@ public class TestWebApplicationFactory<TProgram> : WebApplicationFactory<TProgra
             using IServiceScope scope = services.BuildServiceProvider().CreateScope();
             using ApplicationDbContext context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             context.Database.Migrate();
+
+            services.Configure<JwtBearerOptions>(JwtBearerDefaults.AuthenticationScheme, options =>
+            {
+                options.SecurityTokenValidators.Clear();
+                options.SecurityTokenValidators.Add(new TestJwtSecurityTokenHandler());
+            });
         });
-
-
+        
         builder.UseEnvironment("Development");
+    }
+
+    public Task InitializeAsync()
+    {
+        return _dbContainer.StartAsync();
+    }
+        
+    public Task DisposeAsync()
+    {
+        return _dbContainer.DisposeAsync().AsTask();
     }
 }

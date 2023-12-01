@@ -1,7 +1,7 @@
 <Project>
   <!-- Variables -->
   <PropertyGroup>
-    <NexusLibraryVersion>0.17.0</NexusLibraryVersion>
+    <NexusLibraryVersion>0.18.0-preview2</NexusLibraryVersion>
   </PropertyGroup>
   <!-- Package Management Properties-->
   <PropertyGroup>
@@ -78,6 +78,8 @@
     <PackageVersion Include="Steeltoe.Discovery.Consul" Version="3.2.3" />
     <PackageVersion Include="Steeltoe.Management.EndpointCore" Version="3.2.3" />
     <PackageVersion Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageVersion Include="Testcontainers" Version="3.6.0" />
+    <PackageVersion Include="Testcontainers.PostgreSql" Version="3.6.0" />
     <PackageVersion Include="Winton.Extensions.Configuration.Consul" Version="3.3.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.5.3">
       <PrivateAssets>all</PrivateAssets>
