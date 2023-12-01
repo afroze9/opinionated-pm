@@ -15,7 +15,7 @@ pr:
       - 'services/company-api/**'
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildPlatform: 'Any CPU'
@@ -23,11 +23,17 @@ variables:
   project: 'services/company-api/src/Nexus.Company.Api/Nexus.Company.Api.csproj'
   unitTestProject: 'services/company-api/tests/Nexus.Company.Api.UnitTests/Nexus.Company.Api.UnitTests.csproj'
   componentTestProject: 'services/company-api/tests/Nexus.Company.Api.ComponentTests/Nexus.Company.Api.ComponentTests.csproj'
+  integrationTestProject: 'services/company-api/tests/Nexus.Company.Api.IntegrationTests/Nexus.Company.Api.IntegrationTests.csproj'
   runSettingsFile: '.runsettings'
   testSettings: 'services/company-api/tests/Nexus.Company.Api.UnitTests/.runsettings'
   packagesFile: 'services/company-api/src/Nexus.Company.Api/obj/project.assets.json'
 
 steps:
+- task: DockerInstaller@0
+  displayName: 'Install Docker CLI'
+  inputs:
+    dockerVersion: '17.09.0-ce'
+
 - task: DotNetCoreCLI@2
   displayName: 'Restore Solution'
   inputs:
@@ -65,6 +71,13 @@ steps:
   inputs:
     command: 'test'
     projects: '$(componentTestProject)'
+    arguments: '-s $(testSettings)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run Integration Tests'
+  inputs:
+    command: 'test'
+    projects: '$(integrationTestProject)'
     arguments: '-s $(testSettings)'
 
 - task: SonarCloudAnalyze@1
