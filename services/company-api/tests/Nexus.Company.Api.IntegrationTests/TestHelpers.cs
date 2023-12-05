@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Nexus.CompanyAPI.IntegrationTests;
 
+[ExcludeFromCodeCoverage]
 public static class TestHelpers
 {
     public static string GetToken(this List<Claim> claims, bool includeDefaultClaims = true)

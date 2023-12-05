@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Nexus.CompanyAPI.IntegrationTests;
 
+[ExcludeFromCodeCoverage]
 public class TestJwtSecurityTokenHandler : ISecurityTokenValidator
 {
     private readonly JwtSecurityTokenHandler _innerHandler = new();
