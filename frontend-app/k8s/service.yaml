@@ -54,6 +54,8 @@ spec:
             - name: devcerts
               mountPath: /https/
           env:
+            - name: PUBLIC_BASE_URL
+              value: https://localhost:7069
             - name: ConsulKV__Url
               value: http://consul.nexus.svc.cluster.local:8500
             - name: ConsulKV__AddGlobalConfig
