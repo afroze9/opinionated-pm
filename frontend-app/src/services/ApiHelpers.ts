@@ -1,3 +1,5 @@
+import { env } from '$env/dynamic/public';
+
 export type ErrorResponse = {
 	message: string;
 };
@@ -17,7 +19,7 @@ export type PropertyError = {
 	PropertyValue: string;
 };
 
-const baseUrl = 'https://localhost:7069/api/v1';
+const baseUrl = `${env.PUBLIC_BASE_URL}/api/v1`;
 
 function getAxiosConfig(token: string) {
 	return {
