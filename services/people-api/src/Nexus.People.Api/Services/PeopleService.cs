@@ -139,8 +139,7 @@ public class PeopleService : IPeopleService
                 return new Result<bool>(personException);
             });
     }
-
-    //TODO: Check for both null/empty
+    
     public async Task<Result<Person>> UpdateAsync(int id, string? name, string? email)
     {
         Person? personToUpdate = await _unitOfWork.People.GetByIdAsync(id);

@@ -38,7 +38,7 @@ public class ApplicationDbContext : AuditableDbContext
     
     public DbSet<TodoItem> TodoItems => Set<TodoItem>();
 
-    private List<TodoItem> GetTodoItems()
+    private static List<TodoItem> GetTodoItems()
     {
         TodoItem p1T1 = new () { Id = 1, Title = "Create React Site", Description = "Create a portfolio website using react", ProjectId = 1 };
         TodoItem p1T2 = new () { Id = 2, Title = "Deploy site", Description = "Deploy portfolio site to Netlify", ProjectId = 1 };
@@ -89,7 +89,7 @@ public class ApplicationDbContext : AuditableDbContext
         return new List<TodoItem>
         {
             p1T1, p1T2,
-            p2T1, p2T2, p2T3, p2T4, p2T5,
+            p2T1, p2T2, p2T3, p2T4, p2T5, p2T6,
             p3T1, p3T2, p3T3, p3T4, p3T5, p3T6, p3T7, p3T8,
             p4T1, p4T2,
             p5T1,

@@ -25,12 +25,12 @@ public class Project : AuditableNexusEntityBase
     {
         get
         {
-            if (_todoItems.All(x => x.IsCompleted))
+            if (_todoItems.TrueForAll(x => x.IsCompleted))
             {
                 return ProjectStatus.Completed;
             }
 
-            if (_todoItems.All(x => !x.IsCompleted))
+            if (_todoItems.TrueForAll(x => !x.IsCompleted))
             {
                 return ProjectStatus.NotStarted;
             }

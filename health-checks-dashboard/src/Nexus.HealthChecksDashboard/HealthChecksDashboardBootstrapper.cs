@@ -37,7 +37,6 @@ public class HealthChecksDashboardBootstrapper : NexusServiceBootstrapper
                     ServerCertificateCustomValidationCallback = (_, _, _, _) => true,
                 };
             });
-        //AppBuilder.Services.RegisterDependencies(AppBuilder.Configuration);
     }
 
     protected override void ConfigureMiddleware()

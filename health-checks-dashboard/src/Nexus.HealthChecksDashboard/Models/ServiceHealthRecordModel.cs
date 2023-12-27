@@ -17,12 +17,12 @@ public class ServiceHealthRecordModel
                 return "DOWN";
             }
 
-            if (InstanceHealthRecords.All(x => x.Response?.Status.ToUpper() == "UP"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Status.ToUpper() == "UP"))
             {
                 return "UP";
             }
             
-            if (InstanceHealthRecords.All(x => x.Response?.Status.ToUpper() == "DOWN"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Status.ToUpper() == "DOWN"))
             {
                 return "DOWN";
             }
@@ -41,12 +41,12 @@ public class ServiceHealthRecordModel
                 return "DOWN";
             }
 
-            if (InstanceHealthRecords.All(x => x.Response?.Database?.Status.ToUpper() == "UP"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Database?.Status.ToUpper() == "UP"))
             {
                 return "UP";
             }
             
-            if (InstanceHealthRecords.All(x => x.Response?.Database?.Status.ToUpper() == "DOWN"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Database?.Status.ToUpper() == "DOWN"))
             {
                 return "DOWN";
             }
@@ -64,12 +64,12 @@ public class ServiceHealthRecordModel
                 return "BROKEN";
             }
 
-            if (InstanceHealthRecords.All(x => x.Response?.Liveness?.LivenessState.ToUpper() == "CORRECT"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Liveness?.LivenessState.ToUpper() == "CORRECT"))
             {
                 return "CORRECT";
             }
             
-            if (InstanceHealthRecords.All(x => x.Response?.Liveness?.LivenessState.ToUpper() == "BROKEN"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Liveness?.LivenessState.ToUpper() == "BROKEN"))
             {
                 return "BROKEN";
             }
@@ -87,12 +87,12 @@ public class ServiceHealthRecordModel
                 return "REFUSING_TRAFFIC";
             }
 
-            if (InstanceHealthRecords.All(x => x.Response?.Readiness?.ReadinessState.ToUpper() == "ACCEPTING_TRAFFIC"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Readiness?.ReadinessState.ToUpper() == "ACCEPTING_TRAFFIC"))
             {
                 return "ACCEPTING_TRAFFIC";
             }
             
-            if (InstanceHealthRecords.All(x => x.Response?.Readiness?.ReadinessState.ToUpper() == "REFUSING_TRAFFIC"))
+            if (InstanceHealthRecords.TrueForAll(x => x.Response?.Readiness?.ReadinessState.ToUpper() == "REFUSING_TRAFFIC"))
             {
                 return "REFUSING_TRAFFIC";
             }

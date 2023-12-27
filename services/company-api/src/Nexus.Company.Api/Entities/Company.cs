@@ -32,7 +32,7 @@ public class Company : AuditableNexusEntityBase
     /// <param name="tag">The tag to add.</param>
     public void AddTag(Tag tag)
     {
-        if (Tags.All(t => t.Name != tag.Name))
+        if (Tags.TrueForAll(t => t.Name != tag.Name))
         {
             Tags.Add(tag);
         }

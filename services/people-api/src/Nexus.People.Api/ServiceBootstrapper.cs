@@ -24,7 +24,7 @@ public class ServiceBootstrapper : NexusServiceBootstrapper
             .AddHttpClient("auth0_token")
             .ConfigureHttpClient(httpClientOptions =>
             {
-                Auth0ManagementOptions options = new ();//TODO
+                Auth0ManagementOptions options = new ();
                 AppBuilder.Configuration.GetSection("Auth0Management").Bind(options);
 
                 httpClientOptions.BaseAddress = new Uri($"https://{options.Domain}");

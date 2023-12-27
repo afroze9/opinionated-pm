@@ -116,7 +116,7 @@ public class Auth0IdentityService : IIdentityService
 
         if (users == null || users.Count == 0)
         {
-            return new Result<PaginatedList<Person>>(new Exception("Users not found"));// TODO: Cleanup
+            return new Result<PaginatedList<Person>>(new Exception("Users not found"));
         }
 
         List<Person> mappedUsers = users
