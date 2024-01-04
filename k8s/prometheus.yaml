@@ -181,6 +181,22 @@ data:
         scheme: https
         tls_config:
           insecure_skip_verify: true
+      - job_name: 'project-api'
+        scrape_interval: 15s
+        static_configs:
+        - targets:
+          - project-api.nexus.svc.cluster.local
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+      - job_name: 'people-api'
+        scrape_interval: 15s
+        static_configs:
+        - targets:
+          - people-api.nexus.svc.cluster.local
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
       - job_name: company-db
         static_configs:
           - targets:

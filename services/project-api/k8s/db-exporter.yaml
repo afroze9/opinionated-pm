@@ -20,7 +20,7 @@ spec:
             - containerPort: 9187
           env:
             - name: DATA_SOURCE_NAME
-              value: "user=developer password=dev123 host=project-db port=5439 dbname=project_management_project sslmode=disable"
+              value: "user=developer password=dev123 host=project-db.nexus.svc.cluster.local port=5439 dbname=project_management_project sslmode=disable"
 ---
 apiVersion: v1
 kind: Service
