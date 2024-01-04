@@ -24,6 +24,8 @@ kind: Job
 metadata:
   name: apply-health-checks-dashboard-policy
   namespace: nexus
+  labels:
+    app: apply-health-checks-dashboard-policy
 spec:
   template:
     spec:

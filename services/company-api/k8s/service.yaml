@@ -34,7 +34,6 @@ spec:
       storage: 1Gi
 
 ---
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -116,7 +115,6 @@ spec:
     app: company-api
 
 ---
-
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
