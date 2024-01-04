@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: company-postgres-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: company-postgres-exporter
+  template:
+    metadata:
+      labels:
+        app: company-postgres-exporter
+    spec:
+      containers:
+        - name: postgres-exporter
+          image: quay.io/prometheuscommunity/postgres-exporter
+          ports:
+            - containerPort: 9187
+          env:
+            - name: DATA_SOURCE_NAME
+              value: "user=developer password=dev123 host=company-db.nexus.svc.cluster.local port=5438 dbname=project_management_company sslmode=disable"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: company-postgres-exporter
+  namespace: monitoring
+spec:
+  selector:
+    app: company-postgres-exporter
+  ports:
+    - protocol: TCP
+      port: 9187
+      targetPort: 9187

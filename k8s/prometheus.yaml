@@ -173,7 +173,22 @@ data:
           - source_labels: [__meta_kubernetes_service_name]
             action: replace
             target_label: kubernetes_name
-
+      - job_name: 'company-api'
+        scrape_interval: 15s
+        static_configs:
+        - targets:
+          - company-api.nexus.svc.cluster.local
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true
+      - job_name: company-db
+        static_configs:
+          - targets:
+              - company-postgres-exporter.monitoring.svc.cluster.local:9187
+      - job_name: project-db
+        static_configs:
+          - targets:
+              - project-postgres-exporter.monitoring.svc.cluster.local:9188
 ---
 apiVersion: apps/v1
 kind: Deployment

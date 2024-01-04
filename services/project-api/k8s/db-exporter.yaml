@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: project-postgres-exporter
+  namespace: monitoring
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: project-postgres-exporter
+  template:
+    metadata:
+      labels:
+        app: project-postgres-exporter
+    spec:
+      containers:
+        - name: postgres-exporter
+          image: quay.io/prometheuscommunity/postgres-exporter
+          ports:
+            - containerPort: 9187
+          env:
+            - name: DATA_SOURCE_NAME
+              value: "user=developer password=dev123 host=project-db port=5439 dbname=project_management_project sslmode=disable"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: project-postgres-exporter
+  namespace: monitoring
+spec:
+  selector:
+    app: project-postgres-exporter
+  ports:
+    - protocol: TCP
+      port: 9188
+      targetPort: 9187
