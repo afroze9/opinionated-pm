@@ -13,7 +13,7 @@
   },
   "Serilog": {
     "MinimumLevel": {
-      "Default": "Verbose",
+      "Default": "Warning",
       "Override": {
         "Microsoft": "Warning",
         "System": "Warning"
@@ -22,8 +22,8 @@
   },
   "TelemetrySettings": {
     "Endpoint": "http://localhost:4317",
-    "EnableAlwaysOnSampler": false,
-    "SampleProbability": 0.2,
+    "EnableAlwaysOnSampler": true,
+    "SampleProbability": 0.75,
     "EnableConsoleExporter": false
   },
   "management": {
